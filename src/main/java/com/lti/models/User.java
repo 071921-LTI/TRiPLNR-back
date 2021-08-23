@@ -1,11 +1,14 @@
 package com.lti.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,6 +30,8 @@ public class User {
 	private String lastName;
 	@OneToOne @JoinColumn(name = "address_id", nullable = false)
 	private Address address;
+	@OneToMany @JoinColumn(name = "trips")
+	private List<Trip> trips;
 	
 	public int getUserId() {
 		return userId;
@@ -64,34 +69,11 @@ public class User {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", " + (username != null ? "username=" + username + ", " : "")
-				+ (password != null ? "password=" + password + ", " : "")
-				+ (firstName != null ? "firstName=" + firstName + ", " : "")
-				+ (lastName != null ? "lastName=" + lastName + ", " : "")
-				+ (address != null ? "address=" + address : "") + "]";
+	public List<Trip> getTrips() {
+		return trips;
 	}
-	public User(int userId, String username, String password, String firstName, String lastName, Address address) {
-		super();
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-	}
-	public User(int userId) {
-		super();
-		this.userId = userId;
-	}
-	public User(String username, String password, String firstName, String lastName, Address address) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
+	public void setTrips(List<Trip> trips) {
+		this.trips = trips;
 	}
 	@Override
 	public int hashCode() {
@@ -101,6 +83,7 @@ public class User {
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((trips == null) ? 0 : trips.hashCode());
 		result = prime * result + userId;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -134,6 +117,11 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
+		if (trips == null) {
+			if (other.trips != null)
+				return false;
+		} else if (!trips.equals(other.trips))
+			return false;
 		if (userId != other.userId)
 			return false;
 		if (username == null) {
@@ -143,6 +131,41 @@ public class User {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", " + (username != null ? "username=" + username + ", " : "")
+				+ (password != null ? "password=" + password + ", " : "")
+				+ (firstName != null ? "firstName=" + firstName + ", " : "")
+				+ (lastName != null ? "lastName=" + lastName + ", " : "")
+				+ (address != null ? "address=" + address + ", " : "") + (trips != null ? "trips=" + trips : "") + "]";
+	}
+	public User(int userId, String username, String password, String firstName, String lastName, Address address,
+			List<Trip> trips) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.trips = trips;
+	}
+	public User(int userId) {
+		super();
+		this.userId = userId;
+	}
+	public User(String username, String password, String firstName, String lastName, Address address) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+	}
+	
+	
+	
+	
 	
 	
 
