@@ -1,5 +1,6 @@
 package com.lti.models;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,6 +34,11 @@ public class Trip {
 	private List<Address> stops;
 	@OneToMany @Column(nullable = false, name = "passengers")
 	private List<User> passengers;
+	@Column(nullable = false, name = "trip_start")
+	private Timestamp startTime;
+	@Column(name = "trip_end")
+	private Timestamp endTime;
+	
 	public int getTripId() {
 		return tripId;
 	}
@@ -76,14 +81,28 @@ public class Trip {
 	public void setPassengers(List<User> passengers) {
 		this.passengers = passengers;
 	}
+	public Timestamp getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Timestamp startTime) {
+		this.startTime = startTime;
+	}
+	public Timestamp getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Timestamp endTime) {
+		this.endTime = endTime;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
 		result = prime * result + ((manager == null) ? 0 : manager.hashCode());
 		result = prime * result + ((origin == null) ? 0 : origin.hashCode());
 		result = prime * result + ((passengers == null) ? 0 : passengers.hashCode());
+		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((stops == null) ? 0 : stops.hashCode());
 		result = prime * result + tripId;
 		result = prime * result + ((tripName == null) ? 0 : tripName.hashCode());
@@ -103,6 +122,11 @@ public class Trip {
 				return false;
 		} else if (!destination.equals(other.destination))
 			return false;
+		if (endTime == null) {
+			if (other.endTime != null)
+				return false;
+		} else if (!endTime.equals(other.endTime))
+			return false;
 		if (manager == null) {
 			if (other.manager != null)
 				return false;
@@ -117,6 +141,11 @@ public class Trip {
 			if (other.passengers != null)
 				return false;
 		} else if (!passengers.equals(other.passengers))
+			return false;
+		if (startTime == null) {
+			if (other.startTime != null)
+				return false;
+		} else if (!startTime.equals(other.startTime))
 			return false;
 		if (stops == null) {
 			if (other.stops != null)
@@ -138,10 +167,12 @@ public class Trip {
 				+ (origin != null ? "origin=" + origin + ", " : "")
 				+ (tripName != null ? "tripName=" + tripName + ", " : "")
 				+ (manager != null ? "manager=" + manager + ", " : "") + (stops != null ? "stops=" + stops + ", " : "")
-				+ (passengers != null ? "passengers=" + passengers : "") + "]";
+				+ (passengers != null ? "passengers=" + passengers + ", " : "")
+				+ (startTime != null ? "startTime=" + startTime + ", " : "")
+				+ (endTime != null ? "endTime=" + endTime : "") + "]";
 	}
 	public Trip(int tripId, Address destination, Address origin, String tripName, User manager, List<Address> stops,
-			List<User> passengers) {
+			List<User> passengers, Timestamp startTime, Timestamp endTime) {
 		super();
 		this.tripId = tripId;
 		this.destination = destination;
@@ -150,29 +181,28 @@ public class Trip {
 		this.manager = manager;
 		this.stops = stops;
 		this.passengers = passengers;
-	}
-	public Trip(Address destination, Address origin, String tripName, User manager, List<User> passengers) {
-		super();
-		this.destination = destination;
-		this.origin = origin;
-		this.tripName = tripName;
-		this.manager = manager;
-		this.passengers = passengers;
-	}
-	public Trip(Address destination, Address origin, String tripName, User manager, List<Address> stops,
-			List<User> passengers) {
-		super();
-		this.destination = destination;
-		this.origin = origin;
-		this.tripName = tripName;
-		this.manager = manager;
-		this.stops = stops;
-		this.passengers = passengers;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 	public Trip(int tripId) {
 		super();
 		this.tripId = tripId;
 	}
+	public Trip(Address destination, Address origin, String tripName, User manager, List<Address> stops,
+			List<User> passengers, Timestamp startTime) {
+		super();
+		this.destination = destination;
+		this.origin = origin;
+		this.tripName = tripName;
+		this.manager = manager;
+		this.stops = stops;
+		this.passengers = passengers;
+		this.startTime = startTime;
+	}
+	
+	
+	
+	
 	
 	
 	
