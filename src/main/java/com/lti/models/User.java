@@ -162,6 +162,13 @@ public class User {
 		this.lastName = lastName;
 		this.address = address;
 	}
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+	
+	
 	
 	
 	
