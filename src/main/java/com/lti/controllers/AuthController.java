@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +36,8 @@ public class AuthController {
 	*/
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> login(){
-		String token = as.login(new User("username", "password"));
+	public ResponseEntity<String> login(@RequestBody User user){
+		String token = as.login(user);
 		if (token != null) {
 			return new ResponseEntity<>(gson.toJson(token), HttpStatus.OK);
 		}
