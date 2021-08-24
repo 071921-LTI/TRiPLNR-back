@@ -12,8 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name="users")
 public class User {
@@ -30,7 +32,7 @@ public class User {
 	private String firstName;
 	@Column(name = "lastName", nullable = false)
 	private String lastName;
-	@OneToOne @JoinColumn(name = "address_id", nullable = false)
+	@OneToOne @JoinColumn(name = "address_id")//, nullable = false)
 	private Address address;
 	@OneToMany @JoinColumn(name = "trips")
 	private List<Trip> trips;
