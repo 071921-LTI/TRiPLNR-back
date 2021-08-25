@@ -25,6 +25,14 @@ public class Address {
 	private String state;
 	@Column(nullable = false, name = "zipcode")	
 	private int zipcode;
+	
+	
+	
+	public Address() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public int getAddressId() {
 		return addressId;
 	}

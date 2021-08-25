@@ -20,20 +20,7 @@ import com.lti.services.AuthService;
 public class AuthController {
 	
 	AuthService as;
-	private static final Gson gson = new Gson();
-	
-	/*
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody User user){
-		System.out.println("in post");
-		String token = as.login(user);
-		if (token != null) {
-			return new ResponseEntity<>(token, HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<>("wrong", HttpStatus.BAD_REQUEST);
-	}
-	*/
+	Gson gson = new Gson();
 	
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody User user){
@@ -42,18 +29,13 @@ public class AuthController {
 			return new ResponseEntity<>(gson.toJson(token), HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.OK);
+		return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
 	}
 
 
 	@Autowired
 	public AuthController(AuthService as) {
 		this.as = as;
-	}
-	
-	@GetMapping("/test")
-	public ResponseEntity<String> test(){
-		return new ResponseEntity<>("it works", HttpStatus.OK);
 	}
 	
 }

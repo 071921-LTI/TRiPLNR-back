@@ -12,10 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name="users")
 public class User {
@@ -32,7 +28,7 @@ public class User {
 	private String firstName;
 	@Column(name = "lastName", nullable = false)
 	private String lastName;
-	@OneToOne @JoinColumn(name = "address_id")//, nullable = false)
+	@OneToOne @JoinColumn(name = "address_id", nullable = false)
 	private Address address;
 	@OneToMany @JoinColumn(name = "trips")
 	private List<Trip> trips;
@@ -171,6 +167,12 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	
 	
 	
