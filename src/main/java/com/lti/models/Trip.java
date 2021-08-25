@@ -39,6 +39,12 @@ public class Trip {
 	@Column(name = "trip_end")
 	private Timestamp endTime;
 	
+	
+	
+	public Trip() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public int getTripId() {
 		return tripId;
 	}
