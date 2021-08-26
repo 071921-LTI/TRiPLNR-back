@@ -1,5 +1,6 @@
 package com.lti.triplnr20.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import com.google.gson.Gson;
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
+import com.lti.triplnr20.services.AuthService;
 import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
@@ -22,7 +24,10 @@ import com.lti.triplnr20.services.UserService;
 @CrossOrigin("*")
 public class TripController {
 	
+	
 	TripService ts;
+	
+	//UserService us;
 	UserRepository ur;
 	Gson gson = new Gson();
 	
@@ -40,6 +45,11 @@ public class TripController {
 			return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
 		}
 		
+	}
+	
+	@Autowired
+	public TripController(TripService ts) {
+		this.ts = ts;
 	}
 
 }
