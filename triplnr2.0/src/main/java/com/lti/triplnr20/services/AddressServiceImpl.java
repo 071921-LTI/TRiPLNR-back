@@ -1,10 +1,10 @@
 package com.lti.triplnr20.services;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.lti.triplnr20.models.geocoding.GeocodingJSON;
 
 @Service
 public class AddressServiceImpl implements AddressService{
@@ -12,7 +12,7 @@ public class AddressServiceImpl implements AddressService{
 	private String geocodingURL = "https://maps.googleapis.com/maps/api/geocode/json";
 
 	@Override
-	public boolean isValidAddress(String address) {
+	public String isValidAddress(String address) {
 		RestTemplate rt = new RestTemplate();
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(geocodingURL)
@@ -22,11 +22,13 @@ public class AddressServiceImpl implements AddressService{
 		String uri = builder.build(false).toUriString();
 		
 		
-		ResponseEntity<String> response = rt.getForEntity(uri, String.class);
-		System.out.println(response);
+		GeocodingJSON response = rt.getForObject(uri, GeocodingJSON.class);
 		
+		if (response.getStatus().equals("OK")) {
+			return response.getResults().get(0).getFormatted_address();
+		}
 		
-		return false;
+		return null;
 	}
 
 }
