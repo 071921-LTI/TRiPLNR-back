@@ -33,9 +33,6 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-
-<<<<<<< Updated upstream
-=======
 	@Override
 	@Transactional
 	public boolean updateUser(User user) {
@@ -55,5 +52,5 @@ public class UserServiceImpl implements UserService {
 	public User getUserById(int id) {
 		return ur.getById(id);
 	}
->>>>>>> Stashed changes
+
 }
