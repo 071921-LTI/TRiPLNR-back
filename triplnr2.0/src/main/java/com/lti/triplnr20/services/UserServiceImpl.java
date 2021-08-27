@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
+import com.lti.triplnr20.exceptions.AuthenticationException;
 import com.lti.triplnr20.models.User;
 
 @Service
@@ -23,14 +24,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User createUser(User user) {
-		String address = null;
-		address = as.isValidAddress(user.getAddress());
-		if (address != null) {
-			user.setAddress(address);
-			ur.save(user);
-			return user;
+		if (ur.findUserByUsername(user.getUsername()) == null) {
+			String address = null;
+			address = as.isValidAddress(user.getAddress());
+			if (address != null) {
+				user.setAddress(address);
+				ur.save(user);
+				return user;
+			} else {
+				throw new AuthenticationException();
+			}
 		}else {
-			return null;
+			throw new AuthenticationException();
 		}
 	}
 
