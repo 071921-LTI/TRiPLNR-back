@@ -38,5 +38,24 @@ public class UserServiceImpl implements UserService {
 			throw new AuthenticationException();
 		}
 	}
+	@Override
+	@Transactional
+	public boolean updateUser(User user) {
+		String address = null;
+		address = as.isValidAddress(user.getAddress());
+		if (address != null) {
+			user.setAddress(address);
+			ur.save(user);
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	@Transactional
+	public User getUserById(int id) {
+		return ur.getById(id);
+	}
 
 }
