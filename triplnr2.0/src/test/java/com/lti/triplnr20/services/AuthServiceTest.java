@@ -25,15 +25,23 @@ public class AuthServiceTest {
 	
 	static User mockUser;
 	
+	static String mockToken;
+	
 	@BeforeAll
 	public static void setup() {
 		User u1 = new User(1, "user", "pass", "first", "last", "address", null);
 		mockUser = u1;
+		mockToken  = "1:user";
 	}
 	
 	@Test
 	public void createAuthToken() {
 		assertEquals("1:user", as.createAuthToken(mockUser));
+	}
+	
+	@Test
+	public void loginValid() {
+		assertEquals("1:user", as.login(mockUser));
 	}
 	
 	
