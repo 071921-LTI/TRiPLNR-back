@@ -1,6 +1,7 @@
 package com.lti.triplnr20.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +18,7 @@ import com.lti.triplnr20.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
+@CrossOrigin(exposedHeaders="Authorization")
 public class AuthController {
 	
 	AuthService as;
@@ -27,7 +28,12 @@ public class AuthController {
 	public ResponseEntity<String> login(@RequestBody User user){
 		String token = as.login(user);
 		if (token != null) {
-			return new ResponseEntity<>(gson.toJson(token), HttpStatus.OK);
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.set("Authorization", token);
+			
+			return ResponseEntity.status(HttpStatus.OK)
+					.headers(responseHeaders)
+					.body(gson.toJson("success"));
 		}
 		
 		return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
@@ -37,7 +43,12 @@ public class AuthController {
 	public ResponseEntity<String> register(@RequestBody User user){
 		String token = as.register(user);
 		if (token != null) {
-			return new ResponseEntity<>(gson.toJson(token), HttpStatus.CREATED);
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.set("Authorization", token);
+			
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.headers(responseHeaders)
+					.body(gson.toJson("success"));
 		}else {
 			return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
 		}

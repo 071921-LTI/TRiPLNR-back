@@ -6,4 +6,8 @@ public interface UserService {
 	
 	User createUser(User user);
 
+	boolean updateUser(User user);
+
+	User getUserById(int id);
+
 }
