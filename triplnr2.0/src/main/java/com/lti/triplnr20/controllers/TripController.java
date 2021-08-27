@@ -22,11 +22,14 @@ import com.lti.triplnr20.services.UserService;
 @RestController
 @RequestMapping("/trip")
 @CrossOrigin(exposedHeaders = "Authorization")
+
 public class TripController {
 	
 	
 	TripService ts;
+
 	UserService us;
+
 	
 	//UserService us;
 	UserRepository ur;
@@ -58,9 +61,11 @@ public class TripController {
 	}
 	
 	@Autowired
+
 	public TripController(TripService ts, UserService us) {
 		this.ts = ts;
 		this.us = us;
+
 	}
 
 }
