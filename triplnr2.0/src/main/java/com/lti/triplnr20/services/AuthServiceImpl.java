@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.triplnr20.daos.UserRepository;
+import com.lti.triplnr20.exceptions.AuthenticationException;
 import com.lti.triplnr20.models.User;
 
 @Service
@@ -31,22 +32,16 @@ public class AuthServiceImpl implements AuthService {
 		if (ur.findUserByUsername(user.getUsername()) != null) {
 			user.setUserId(ur.findUserByUsername(user.getUsername()).getUserId());
 			token = createAuthToken(user);
+			return token;
+		}else {
+			throw new AuthenticationException();
 		}
 
-		return token;
 	}
 
 	@Override
 	public String register(User user) {
-		String token = null;
-		if (user != null) {
-			if (ur.findUserByUsername(user.getUsername()) != null) {
-				return null;
-			} else {
-				token = createAuthToken(us.createUser(user));
-			}
-		}
-		return token;
+		return createAuthToken(us.createUser(user));
 	}
 
 }
