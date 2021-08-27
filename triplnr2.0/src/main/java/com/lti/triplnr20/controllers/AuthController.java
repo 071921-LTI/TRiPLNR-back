@@ -18,7 +18,7 @@ import com.lti.triplnr20.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
+@CrossOrigin(exposedHeaders="Authorization")
 public class AuthController {
 	
 	AuthService as;
