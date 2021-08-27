@@ -37,7 +37,7 @@ public class Trip {
 	private List<String> stops;
 	@OneToMany @JoinColumn
 	private List<User> passengers;
-	@Column(nullable = false)
+	@Column
 	private Timestamp startTime;
 	@Column
 	private Timestamp endTime;

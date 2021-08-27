@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User createUser(User user) {
-		if (ur.findUserByUsername(user.getUsername()) == null) {
+		if (ur.getById(user.getUserId()) == null) {
 			String address = null;
 			address = as.isValidAddress(user.getAddress());
 			if (address != null) {
