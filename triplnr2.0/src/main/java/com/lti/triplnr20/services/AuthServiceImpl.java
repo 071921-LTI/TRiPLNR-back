@@ -19,7 +19,7 @@ public class AuthServiceImpl implements AuthService {
 		this.ur = ur;
 	}
 
-	private String createAuthToken(User user) {
+	public String createAuthToken(User user) {
 		String token = null;
 		token = user.getUserId() + ":" + user.getUsername();
 		return token;
