@@ -21,11 +21,15 @@ import com.lti.triplnr20.services.UserService;
 
 @RestController
 @RequestMapping("/trip")
-@CrossOrigin("*")
+@CrossOrigin(exposedHeaders = "Authorization")
+
 public class TripController {
 	
 	
 	TripService ts;
+
+	UserService us;
+
 	
 	//UserService us;
 	UserRepository ur;
@@ -33,23 +37,35 @@ public class TripController {
 	
 	
 	@PostMapping("/create")
-	public ResponseEntity<String> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token ){
+	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token ){
+		System.out.println("in post create trip");
+		System.out.println(trip);
 		String[] authToken = token.split(":");
-		int userId = Integer.valueOf(authToken[0]);
-		User u = ur.getById(userId);
+		//int userId = Integer.valueOf(authToken[0]);
+		int userId = Integer.parseInt(authToken[0]);
+		
+		System.out.println("user id from authtoken is: "+userId);
+		User u = us.getUserById(userId);
+		//User u = ur.getById(userId);
+		System.out.println("user: "+u);
+		
 		trip.setManager(u);
 		trip.setOrigin(u.getAddress());
-		if(ts.createTrip(trip) != null) {
-			return new ResponseEntity<>(gson.toJson(trip), HttpStatus.CREATED);
+		Trip newTrip = ts.createTrip(trip);
+		if(newTrip != null) {
+			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 		}
 		
 	}
 	
 	@Autowired
-	public TripController(TripService ts) {
+
+	public TripController(TripService ts, UserService us) {
 		this.ts = ts;
+		this.us = us;
+
 	}
 
 }

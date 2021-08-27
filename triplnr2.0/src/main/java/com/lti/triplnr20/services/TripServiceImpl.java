@@ -12,12 +12,13 @@ public class TripServiceImpl implements TripService {
 	private TripRepository tr;
 	private UserRepository ur;
 	private AddressService as;
+	private UserService us;
 	
 	@Autowired
-	public TripServiceImpl(TripRepository tr, UserRepository ur, AddressService as) {
+	public TripServiceImpl(TripRepository tr, UserService us, AddressService as) {
 		super();
 		this.tr = tr;
-		this.ur = ur;
+		this.us = us;
 		this.as = as;
 	}
 	
@@ -25,7 +26,9 @@ public class TripServiceImpl implements TripService {
 	@Transactional
 	public Trip createTrip(Trip trip) {
 		String destination = null;
+		System.out.println("dest in trip: "+trip.getDestination());
 		destination = as.isValidAddress(trip.getDestination());
+		System.out.println("destination: "+destination);
 		if(destination != null) {
 			trip.setDestination(destination);
 			tr.save(trip);
