@@ -6,7 +6,7 @@ public interface UserService {
 	
 	User createUser(User user);
 
-	String updateUser(User user);
+	boolean updateUser(User user);
 
 	User getUserById(int id);
 

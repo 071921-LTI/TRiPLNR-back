@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService{
 		
 		
 		GeocodingJSON response = rt.getForObject(uri, GeocodingJSON.class);
-		System.out.println(response);
+		
 		if (response.getStatus().equals("OK")) {
 			return response.getResults().get(0).getFormatted_address();
 		}

@@ -40,28 +40,22 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	@Transactional
-	public String updateUser(User user) {
-		try {
-			String address = null;
-			address = as.isValidAddress(user.getAddress());
-			System.out.println(address);
-			System.out.println(user.getAddress());
-			if (address != null) {
-				user.setAddress(address);
-				ur.save(user);
-				return "Successful";
-			}else {
-				return "Invalid Address";
-			}
-		}catch (IllegalArgumentException e) {
-			return "Username in use";
+	public boolean updateUser(User user) {
+		String address = null;
+		address = as.isValidAddress(user.getAddress());
+		if (address != null) {
+			user.setAddress(address);
+			ur.save(user);
+			return true;
+		}else {
+			return false;
 		}
 	}
 
 	@Override
 	@Transactional
 	public User getUserById(int id) {
-		return ur.findById(id).get();
+		return ur.getById(id);
 	}
 
 }

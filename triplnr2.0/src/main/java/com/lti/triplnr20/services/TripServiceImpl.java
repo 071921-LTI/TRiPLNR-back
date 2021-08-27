@@ -1,14 +1,12 @@
 package com.lti.triplnr20.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.models.Trip;
 
-@Service
 public class TripServiceImpl implements TripService {
 	
 	private TripRepository tr;
