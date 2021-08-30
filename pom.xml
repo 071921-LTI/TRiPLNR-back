@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lti</groupId>
-	<artifactId>triplnr2.0</artifactId>
+	<artifactId>trip2.0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>triplnr2.0</name>
+	<name>trip2.0</name>
 	<description>TRiPLNR</description>
 	<properties>
 		<java.version>1.8</java.version>
