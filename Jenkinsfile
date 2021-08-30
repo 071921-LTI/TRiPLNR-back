@@ -7,7 +7,7 @@ pipeline {
         IMAGE_TAG="triplnr-image"
         CONTAINER_NAME="triplnr-app"
         P2_DB_URL=credentials('P2_DB_URL')
-        P2_DB_USERNAME=credentials('P2_DB_USER')
+        P2_DB_USER=credentials('P2_DB_USER')
         P2_DB_PASS=credentials('P2_DB_PASS')
 	MAPS_API_KEY=credentials('MAPS_API_KEY')
     }
@@ -24,13 +24,11 @@ pipeline {
       }
       stage('clean') {
          steps {
-	    sh 'cd ~/TRiPLNR-back/triplnr2.0/'
             sh 'mvn clean'
          }
       }
       stage('package') {
          steps {
-	    sh 'cd ~/TRiPLNR-back/triplnr2.0/'
             sh 'mvn package -Dmaven.test.skip=true'
          }
       }
@@ -42,7 +40,6 @@ pipeline {
 
        stage('create image') {
             steps {
-		sh 'cd ~/TRiPLNR-back/triplnr2.0/'
                 sh 'docker build -t ${IMAGE_TAG} -f Dockerfile .'
             }
         }
@@ -53,7 +50,7 @@ pipeline {
         }
         stage('create container') {
             steps {
-                sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USERNAME} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
+                sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USER} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
             }
         }
     }
