@@ -86,6 +86,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>trip2.0</finalName>
 	</build>
 
 </project>
