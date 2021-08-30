@@ -1,3 +1,3 @@
 FROM openjdk:8-jdk-alpine
-COPY target/datarest.jar datarest.jar
-ENTRYPOINT ["java", "-jar", "/datarest.jar"]
+COPY target/trip2.0.jar trip2.0.jar
+ENTRYPOINT ["java", "-jar", "/trip2.0.jar"]
