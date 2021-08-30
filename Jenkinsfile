@@ -7,7 +7,7 @@ pipeline {
         IMAGE_TAG="triplnr-image"
         CONTAINER_NAME="triplnr-app"
         P2_DB_URL=credentials('P2_DB_URL')
-        P2_DB_USER=credentials('P2_DB_USER')
+        P2_DB_USER=credentials('P2_DB_USERNAME')
         P2_DB_PASS=credentials('P2_DB_PASS')
 	MAPS_API_KEY=credentials('MAPS_API_KEY')
     }
@@ -53,7 +53,6 @@ pipeline {
         }
         stage('create container') {
             steps {
-		sh 'cd ~/TRiPLNR-back/triplnr2.0/'
                 sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USER} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
             }
         }
