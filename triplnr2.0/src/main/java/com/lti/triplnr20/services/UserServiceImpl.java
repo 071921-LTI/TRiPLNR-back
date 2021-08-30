@@ -1,11 +1,15 @@
 package com.lti.triplnr20.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
+import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 
 @Service
@@ -56,6 +60,13 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User getUserById(int id) {
 		return ur.getById(id);
+	}
+	
+	public List<Trip> getTripsByUser(int userId) {
+		List<Trip> trips = new ArrayList<>();
+		trips.addAll(ur.getById(userId).getTrips());
+		return trips;
+		
 	}
 
 }

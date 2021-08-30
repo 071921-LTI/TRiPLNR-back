@@ -1,5 +1,8 @@
 package com.lti.triplnr20.services;
 
+import java.util.List;
+
+import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 
 public interface UserService {
@@ -9,5 +12,7 @@ public interface UserService {
 	boolean updateUser(User user);
 
 	User getUserById(int id);
+	
+	List<Trip> getTripsByUser(int userId);
 
 }

@@ -1,20 +1,22 @@
 package com.lti.triplnr20.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
-import com.lti.triplnr20.services.AuthService;
 import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
@@ -34,6 +36,13 @@ public class TripController {
 	//UserService us;
 	UserRepository ur;
 	Gson gson = new Gson();
+	
+	@GetMapping("/dashboard")
+	public ResponseEntity<List<Trip>> getTripsByUser(@RequestHeader("Authorization") String token){
+		String[] authToken = token.split(":");
+		int userId = Integer.valueOf(authToken[0]);
+		return new ResponseEntity<>(us.getTripsByUser(userId), HttpStatus.OK);
+	}
 	
 	
 	@PostMapping("/create")
