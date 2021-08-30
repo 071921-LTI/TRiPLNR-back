@@ -30,7 +30,7 @@ pipeline {
       stage('package') {
          steps {
             sh 'mvn package -Dmaven.test.skip=true'
-	    sh 'chmod +x target/trip2.0.jar'
+	    //sh 'chmod +x target/trip2.0.jar'
          }
       }
       stage('remove previous image if exists') {
