@@ -24,11 +24,13 @@ pipeline {
       }
       stage('clean') {
          steps {
+	    sh 'cd ~/TRiPLNR-back/triplnr2.0/'
             sh 'mvn clean'
          }
       }
       stage('package') {
          steps {
+	    sh 'cd ~/TRiPLNR-back/triplnr2.0/'
             sh 'mvn package -Dmaven.test.skip=true'
          }
       }
@@ -40,6 +42,7 @@ pipeline {
 
        stage('create image') {
             steps {
+		sh 'cd ~/TRiPLNR-back/triplnr2.0/'
                 sh 'docker build -t ${IMAGE_TAG} -f Dockerfile .'
             }
         }
@@ -50,6 +53,7 @@ pipeline {
         }
         stage('create container') {
             steps {
+		sh 'cd ~/TRiPLNR-back/triplnr2.0/'
                 sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USER} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
             }
         }
