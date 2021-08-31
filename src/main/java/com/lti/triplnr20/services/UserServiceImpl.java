@@ -1,5 +1,6 @@
 package com.lti.triplnr20.services;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
+
 import com.lti.triplnr20.models.Trip;
+
 import com.lti.triplnr20.models.User;
 
 @Service
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User createUser(User user) {
-		if (ur.getById(user.getUserId()) == null) {
+		if (ur.findUserByUsername(user.getUsername()) == null) {
 			String address = null;
 			address = as.isValidAddress(user.getAddress());
 			if (address != null) {
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
 			throw new AuthenticationException();
 		}
 	}
+
 
 	@Override
 	@Transactional

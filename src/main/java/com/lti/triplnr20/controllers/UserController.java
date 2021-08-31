@@ -8,16 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.google.gson.Gson;
+
 import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.UserService;
 
 @RestController
 @RequestMapping("/user")
+
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -29,6 +33,7 @@ public class UserController {
 		super();
 		this.us = us;
 	}
+
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<String> update(@RequestBody User user, @PathVariable("id") int id){
@@ -47,6 +52,7 @@ public class UserController {
 	@GetMapping(value="/{id}")
 	public ResponseEntity<String> getById(@PathVariable("id") int id){
 		return new ResponseEntity<>(gson.toJson(us.getUserById(id)), HttpStatus.OK);
+
 	}
 	
 }

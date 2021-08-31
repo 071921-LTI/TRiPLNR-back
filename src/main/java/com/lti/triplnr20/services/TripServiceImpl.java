@@ -26,9 +26,7 @@ public class TripServiceImpl implements TripService {
 	@Transactional
 	public Trip createTrip(Trip trip) {
 		String destination = null;
-		System.out.println("dest in trip: "+trip.getDestination());
 		destination = as.isValidAddress(trip.getDestination());
-		System.out.println("destination: "+destination);
 		if(destination != null) {
 			trip.setDestination(destination);
 			tr.save(trip);
