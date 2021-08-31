@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,9 +21,10 @@ import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 
 @CrossOrigin(origins = "*")
+//@CrossOrigin(exposedHeaders = "Authorization")
 public class UserController {
 
 	UserService us;
@@ -35,8 +37,11 @@ public class UserController {
 	}
 
 
-	@PutMapping("/update/{id}")
-	public ResponseEntity<String> update(@RequestBody User user, @PathVariable("id") int id){
+	@PutMapping("/update")
+	public ResponseEntity<String> update(@RequestBody User user, @RequestHeader("Authorization") String token ){
+		String[] authToken = token.split(":");
+	
+		int id = Integer.parseInt(authToken[0]);
 		User u = us.getUserById(id);
 		System.out.println(u);
 		user.setUserId(u.getUserId());
@@ -44,7 +49,7 @@ public class UserController {
 		String res = us.updateUser(user);
 		System.out.println(user);
 		if (res.equals("Successful")) {
-			return new ResponseEntity<>(gson.toJson("Successful"), HttpStatus.OK);
+			return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(gson.toJson(res), HttpStatus.BAD_REQUEST);
 		}
@@ -54,5 +59,14 @@ public class UserController {
 		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 
 	}
+	
+	@GetMapping(value="/user")
+	public ResponseEntity<User> getByUser(@RequestHeader("Authorization") String token ){
+		String[] authToken = token.split(":");
+		int id = Integer.parseInt(authToken[0]);
+		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
+
+	}
+	
 	
 }
