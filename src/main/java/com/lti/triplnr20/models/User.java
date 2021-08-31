@@ -13,10 +13,12 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="users")
 public class User {
 

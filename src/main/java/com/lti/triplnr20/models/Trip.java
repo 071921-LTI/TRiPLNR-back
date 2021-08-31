@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Entity
@@ -31,13 +34,15 @@ public class Trip {
 	private String origin;
 	@Column(nullable = false)
 	private String tripName;
+	@JsonIgnoreProperties("trips")
 	@ManyToOne @JoinColumn(nullable = false, name = "manager")
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
+	@JsonIgnoreProperties("trips")
 	@OneToMany @JoinColumn
 	private List<User> passengers;
-	@Column(nullable = false)
+	@Column
 	private Timestamp startTime;
 	@Column
 	private Timestamp endTime;
