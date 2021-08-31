@@ -50,8 +50,8 @@ public class UserController {
 		}
 	}
 	@GetMapping(value="/{id}")
-	public ResponseEntity<String> getById(@PathVariable("id") int id){
-		return new ResponseEntity<>(gson.toJson(us.getUserById(id)), HttpStatus.OK);
+	public ResponseEntity<User> getById(@PathVariable("id") int id){
+		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 
 	}
 	
