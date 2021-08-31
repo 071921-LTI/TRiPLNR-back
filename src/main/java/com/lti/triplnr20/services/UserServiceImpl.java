@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 			address = as.isValidAddress(user.getAddress());
 			System.out.println(address);
 			System.out.println(user.getAddress());
-			if (!address.equals("5842 Merriam Dr, Merriam, KS 66203, USA")) {
+			if (address != null) {
 				user.setAddress(address);
 				ur.save(user);
 				return "Successful";
