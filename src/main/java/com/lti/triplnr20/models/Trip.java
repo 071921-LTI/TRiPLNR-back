@@ -17,10 +17,14 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "trips")
 public class Trip {
 
@@ -30,12 +34,12 @@ public class Trip {
 	private int tripId;
 	@Column(name = "destination")
 	private String destination;
-	@Column(nullable = false)
+	@Column
 	private String origin;
 	@Column(nullable = false)
 	private String tripName;
 	@JsonIgnoreProperties("trips")
-	@ManyToOne @JoinColumn(nullable = false, name = "manager")
+	@ManyToOne @JoinColumn(nullable = false)
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
