@@ -20,6 +20,16 @@ public class AuthServiceImpl implements AuthService {
 		this.ur = ur;
 	}
 
+	public static String getUserFromToken(String token) {
+		String[] split = token.split(":");
+		return split[1];
+	}
+	
+	public static int getIdFromToken(String token) {
+		String[] split = token.split(":");
+		return Integer.valueOf(split[0]);
+	}
+	
 	public String createAuthToken(User user) {
 		String token = null;
 		token = user.getUserId() + ":" + user.getUsername();

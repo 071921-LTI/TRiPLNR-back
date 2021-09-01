@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
-
+import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.Trip;
 
 import com.lti.triplnr20.models.User;
@@ -79,6 +79,12 @@ public class UserServiceImpl implements UserService {
 		trips.addAll(ur.getById(userId).getTrips());
 		return trips;
 		
+	}
+
+	@Override
+	public List<User> getFriends(String username) {
+		List<User> friends = ur.findUserByUsername(username).getFriends();
+		return friends;
 	}
 
 }
