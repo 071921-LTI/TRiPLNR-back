@@ -42,16 +42,10 @@ public class UserController {
 	
 		int id = Integer.parseInt(authToken[0]);
 		User u = us.getUserById(id);
-		System.out.println(u);
 		user.setUserId(u.getUserId());
 
-		String res = us.updateUser(user);
-		System.out.println(user);
-		if (res.equals("Successful")) {
-			return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>(gson.toJson(res), HttpStatus.BAD_REQUEST);
-		}
+		us.updateUser(user);
+		return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
 	}
 	@GetMapping(value="/{id}")
 	public ResponseEntity<User> getById(@PathVariable("id") int id){
