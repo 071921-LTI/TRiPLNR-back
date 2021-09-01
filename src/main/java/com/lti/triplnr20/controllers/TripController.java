@@ -3,11 +3,12 @@ package com.lti.triplnr20.controllers;
 
 import java.util.List;
 
+import javax.sound.sampled.TargetDataLine;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.google.gson.Gson;
+import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
+import com.lti.triplnr20.exceptions.AuthorizationException;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
-
-import com.lti.triplnr20.services.AuthService;
 import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
@@ -34,11 +34,9 @@ public class TripController {
 	
 	
 	TripService ts;
+	TripRepository tr;
 
 	UserService us;
-
-
-	//UserService us;
 	UserRepository ur;
 	Gson gson = new Gson();
 	
@@ -50,37 +48,72 @@ public class TripController {
 		return new ResponseEntity<>(us.getTripsByUser(userId), HttpStatus.OK);
 	}
 	
-	
+	/*
 	@PostMapping("/create")
 	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token ){
 		System.out.println("in post create trip");
-		System.out.println(trip);
+		//System.out.println(trip);
 		String[] authToken = token.split(":");
-		//int userId = Integer.valueOf(authToken[0]);
 		int userId = Integer.parseInt(authToken[0]);
 		
 		System.out.println("user id from authtoken is: "+userId);
+		
 		User u = us.getUserById(userId);
-		//User u = ur.getById(userId);
-		System.out.println("user: "+u);
+		System.out.println("user: "+ u.getUsername());
+		
+		System.out.println("Passengers: "+trip.getPassengers());
 		
 		trip.setManager(u);
 		trip.setOrigin(u.getAddress());
+		
 		Trip newTrip = ts.createTrip(trip);
 		if(newTrip != null) {
 			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( HttpStatus.OK);
 
 		}
 		
 	}
+	*/
+	
+	@PostMapping("/create")
+	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token){
+		System.out.println("in create trip");
+		String[] authToken = token.split(":");
+		int userId = Integer.valueOf(authToken[0]);
+		
+		User user = us.getUserById(userId);
+		if (user == null) {
+			throw new AuthorizationException();
+		}
+		//System.out.println(user);
+		trip.setManager(user);
+		trip.setOrigin(user.getAddress());
+		System.out.println(user.getAddress());
+		Trip newTrip = ts.createTrip(trip);
+		System.out.println(newTrip);
+		if (newTrip != null) {
+			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	/*
+	@PostMapping("/create")
+	public ResponseEntity<String> test(@RequestHeader("Authorization") String token){
+		return new ResponseEntity<>(token, HttpStatus.CREATED);
+	}
+	*/
 	
 	@Autowired
-	public TripController(TripService ts, UserService us) {
+	public TripController(TripService ts, UserService us, UserRepository ur, TripRepository tr) {
 		this.ts = ts;
 		this.us = us;
-
+		this.ur = ur;
+		this.tr = tr;
 	}
 
 }
