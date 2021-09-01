@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User getUserById(int id) {
-		return ur.findById(id).get();
+		return ur.getById(id);
 	}
 
 	
