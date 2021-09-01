@@ -3,6 +3,8 @@ package com.lti.triplnr20.controllers;
 
 import java.util.List;
 
+import javax.sound.sampled.TargetDataLine;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthorizationException;
 import com.lti.triplnr20.models.Trip;
@@ -31,11 +34,9 @@ public class TripController {
 	
 	
 	TripService ts;
+	TripRepository tr;
 
 	UserService us;
-
-
-	//UserService us;
 	UserRepository ur;
 	Gson gson = new Gson();
 	
@@ -53,21 +54,23 @@ public class TripController {
 		System.out.println("in post create trip");
 		//System.out.println(trip);
 		String[] authToken = token.split(":");
-		//int userId = Integer.valueOf(authToken[0]);
 		int userId = Integer.parseInt(authToken[0]);
 		
 		System.out.println("user id from authtoken is: "+userId);
+		
 		User u = us.getUserById(userId);
-		//User u = ur.getById(userId);
-		System.out.println("user: "+u);
+		System.out.println("user: "+ u.getUsername());
+		
+		System.out.println("Passengers: "+trip.getPassengers());
 		
 		trip.setManager(u);
 		trip.setOrigin(u.getAddress());
+		
 		Trip newTrip = ts.createTrip(trip);
 		if(newTrip != null) {
 			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( HttpStatus.OK);
 
 		}
 		
@@ -106,10 +109,11 @@ public class TripController {
 	*/
 	
 	@Autowired
-	public TripController(TripService ts, UserService us) {
+	public TripController(TripService ts, UserService us, UserRepository ur, TripRepository tr) {
 		this.ts = ts;
 		this.us = us;
-
+		this.ur = ur;
+		this.tr = tr;
 	}
 
 }
