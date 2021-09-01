@@ -49,4 +49,9 @@ public class TripServiceImpl implements TripService {
 		}
 	}
 
+	@Override
+	public Trip getTripById(int tripId) {
+		return tr.getById(tripId);
+	}
+
 }
