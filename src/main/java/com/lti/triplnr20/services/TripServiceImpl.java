@@ -30,14 +30,12 @@ public class TripServiceImpl implements TripService {
 	@Override
 	@Transactional
 	public Trip createTrip(Trip trip) {
-		System.out.println("in create trip service");
 		String destination = null;
 		User u = trip.getManager();
 		List<Trip> temptrip = u.getTrips();
 		
 		destination = as.isValidAddress(trip.getDestination());
 		if(destination != null) {
-			System.out.println("checking dest != null");
 			trip.setDestination(destination);
 			tr.save(trip);
 			temptrip.add(trip);

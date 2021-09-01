@@ -38,12 +38,12 @@ public class Trip {
 	private String origin;
 	@Column(nullable = false)
 	private String tripName;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@OneToMany @JoinColumn
 	private List<User> passengers;
 	@Column
