@@ -42,7 +42,7 @@ public class User {
 	@JsonIgnoreProperties("trips")
 	@OneToMany @JoinColumn(name = "trips")
 	private List<Trip> trips;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@OneToMany @JoinColumn
 	private List<User> friends;
 	

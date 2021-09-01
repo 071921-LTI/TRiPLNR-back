@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,18 +40,18 @@ public class FriendController {
 	}
 	
 	@PostMapping("/newrequest")
-	public ResponseEntity<FriendRequest> newRequest(@RequestHeader("Authorization") String token, FriendRequest request){
+	public ResponseEntity<FriendRequest> newRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		return new ResponseEntity<>(fs.makeRequest(request), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/accept")
-	public ResponseEntity<Void> acceptRequest(@RequestHeader("Authorization") String token, FriendRequest request){
+	public ResponseEntity<Void> acceptRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		fs.acceptRequest(request);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
 	
 	@PutMapping("/deny")
-	public ResponseEntity<Void> denyRequest(@RequestHeader("Authorization") String token, FriendRequest request){
+	public ResponseEntity<Void> denyRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		fs.denyRequest(request);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
