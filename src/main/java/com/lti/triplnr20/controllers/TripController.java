@@ -1,6 +1,7 @@
 package com.lti.triplnr20.controllers;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,20 +48,28 @@ public class TripController {
 		return new ResponseEntity<>(us.getTripsByUser(userId), HttpStatus.OK);
 	}
 	
-	/*
+	
 	@PostMapping("/create")
-	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token ){
+	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString ){
 		System.out.println("in post create trip");
-		//System.out.println(trip);
+		
+		
 		String[] authToken = token.split(":");
 		int userId = Integer.parseInt(authToken[0]);
-		
-		System.out.println("user id from authtoken is: "+userId);
-		
 		User u = us.getUserById(userId);
-		System.out.println("user: "+ u.getUsername());
 		
-		System.out.println("Passengers: "+trip.getPassengers());
+		System.out.println("starting time string header value:" +startTimeString);
+		
+		if(startTimeString == "0000-00-00 00:00:00"){
+			String canFollowDirections = "0000-00-00 00:00:00";
+			Timestamp startTimeStamp = Timestamp.valueOf(canFollowDirections);
+			trip.setStartTime(startTimeStamp);
+		} else {
+			Timestamp startTimeStamp = Timestamp.valueOf(startTimeString);
+			trip.setStartTime(startTimeStamp);
+			
+		}
+		
 		
 		trip.setManager(u);
 		trip.setOrigin(u.getAddress());
@@ -74,31 +83,6 @@ public class TripController {
 		}
 		
 	}
-	*/
-	
-	@PostMapping("/create")
-	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token){
-		System.out.println("in create trip");
-		String[] authToken = token.split(":");
-		int userId = Integer.valueOf(authToken[0]);
-		
-		User user = us.getUserById(userId);
-		if (user == null) {
-			throw new AuthorizationException();
-		}
-		//System.out.println(user);
-		trip.setManager(user);
-		trip.setOrigin(user.getAddress());
-		System.out.println(user.getAddress());
-		Trip newTrip = ts.createTrip(trip);
-		System.out.println(newTrip);
-		if (newTrip != null) {
-			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
-		}else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Trip> getTrip(@PathVariable("id") int tripId, @RequestHeader("Authorization") String token){
