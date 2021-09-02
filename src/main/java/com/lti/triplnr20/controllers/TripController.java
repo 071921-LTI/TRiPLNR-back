@@ -50,36 +50,33 @@ public class TripController {
 	
 	
 	@PostMapping("/create")
+	//create trip receives trip object, authorization header and starttime header
 	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString ){
-		System.out.println("in post create trip");
 		
-		
+		//gets token of current user and splits
 		String[] authToken = token.split(":");
 		int userId = Integer.parseInt(authToken[0]);
+		//gets current user object
 		User u = us.getUserById(userId);
 		
-		System.out.println("starting time string header value:" +startTimeString);
-		
+		//checks startTimeString header
 		if(startTimeString == "0000-00-00 00:00:00"){
-			String canFollowDirections = "0000-00-00 00:00:00";
-			Timestamp startTimeStamp = Timestamp.valueOf(canFollowDirections);
+			String cantFollowDirections = "0000-00-00 00:00:00";
+			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
 			trip.setStartTime(startTimeStamp);
-			System.out.println("start time stamp: "+startTimeStamp);
 		} else {
+			//if startTimeString is in proper format, creates Timestamp datatype using string data
 			Timestamp startTimeStamp = Timestamp.valueOf(startTimeString);
-			trip.setStartTime(startTimeStamp);
-			
+			//sets new startTimeStamp to startTime of trip
+			trip.setStartTime(startTimeStamp);	
 		}
-		
-		
-		
-		
+		//sets current user to manager of trip
 		trip.setManager(u);
-		System.out.println("Manager" + trip.getManager().getUsername());
+		//gets address of current user and set to trip origin location
 		trip.setOrigin(u.getAddress());
-		System.out.println("address" + trip.getOrigin());
-		
+		//calls tripServicese method create trip and passes through new trip object
 		Trip newTrip = ts.createTrip(trip);
+		//checks to see if a new trip has been created and saved and returns proper response 
 		if(newTrip != null) {
 			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
 		} else {
@@ -88,7 +85,7 @@ public class TripController {
 		}
 		
 	}
-	
+	//get method to return trip by provided trip id
 	@GetMapping("/{id}")
 	public ResponseEntity<Trip> getTrip(@PathVariable("id") int tripId, @RequestHeader("Authorization") String token){
 		return new ResponseEntity<>(ts.getTripById(tripId), HttpStatus.OK);
