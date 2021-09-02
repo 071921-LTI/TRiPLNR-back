@@ -64,6 +64,7 @@ public class TripController {
 			String canFollowDirections = "0000-00-00 00:00:00";
 			Timestamp startTimeStamp = Timestamp.valueOf(canFollowDirections);
 			trip.setStartTime(startTimeStamp);
+			System.out.println("start time stamp: "+startTimeStamp);
 		} else {
 			Timestamp startTimeStamp = Timestamp.valueOf(startTimeString);
 			trip.setStartTime(startTimeStamp);
@@ -71,8 +72,12 @@ public class TripController {
 		}
 		
 		
+		
+		
 		trip.setManager(u);
+		System.out.println("Manager" + trip.getManager().getUsername());
 		trip.setOrigin(u.getAddress());
+		System.out.println("address" + trip.getOrigin());
 		
 		Trip newTrip = ts.createTrip(trip);
 		if(newTrip != null) {
