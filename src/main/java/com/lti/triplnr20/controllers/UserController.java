@@ -40,7 +40,7 @@ public class UserController {
 
 
 	@PutMapping("/update")
-	public ResponseEntity<String> update(@RequestBody User user, @RequestHeader("Authorization") String token ) throws SQLException{
+	public ResponseEntity<String> update(@RequestBody User user, @RequestHeader("Authorization") String token ){
 		String[] authToken = token.split(":");
 	
 		int id = Integer.parseInt(authToken[0]);
