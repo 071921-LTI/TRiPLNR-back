@@ -38,13 +38,13 @@ public class Trip {
 	private String origin;
 	@Column(nullable = false)
 	private String tripName;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
-	@JsonIgnoreProperties("trips")
 	@ElementCollection @Column
+	@JsonIgnoreProperties({"trips", "friends"})
 	private List<User> passengers;
 	@Column
 	private Timestamp startTime;

@@ -33,6 +33,12 @@ public class GlobalExceptionHandler {
 	public void handleUserDoesNotExistException() {
 	}
 	
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Address is invalid.")
+	@ExceptionHandler(InvalidAddressException.class)
+	public void handleInvalidAddressExistException() {
+		
+	}
+	
 	
 	
 	

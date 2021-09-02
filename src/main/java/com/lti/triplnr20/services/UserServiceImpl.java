@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
+import com.lti.triplnr20.exceptions.InvalidAddressException;
+import com.lti.triplnr20.exceptions.UserAlreadyExistsException;
 import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.Trip;
 
@@ -50,20 +52,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public String updateUser(User user) {
-		try {
-			String address = null;
-			address = as.isValidAddress(user.getAddress());
-			System.out.println(address);
-			System.out.println(user.getAddress());
-			if (address != null) {
-				user.setAddress(address);
+		String address = null;
+		address = as.isValidAddress(user.getAddress());
+		if (address != null) {
+			user.setAddress(address);
+			if (ur.findUserByUsername(user.getUsername()) != null){
+				throw new UserAlreadyExistsException();
+			}else {
 				ur.save(user);
 				return "Successful";
-			}else {
-				return "Invalid Address";
 			}
-		}catch (IllegalArgumentException e) {
-			return "Username in use";
+		
+		}else {
+			throw new InvalidAddressException();
 		}
 	}
 
