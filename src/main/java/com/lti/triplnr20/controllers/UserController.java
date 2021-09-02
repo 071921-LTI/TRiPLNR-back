@@ -1,7 +1,9 @@
 package com.lti.triplnr20.controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.lti.triplnr20.exceptions.UserAlreadyExistsException;
 import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.UserService;
@@ -43,7 +46,6 @@ public class UserController {
 		int id = Integer.parseInt(authToken[0]);
 		User u = us.getUserById(id);
 		user.setUserId(u.getUserId());
-
 		us.updateUser(user);
 		return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
 	}
