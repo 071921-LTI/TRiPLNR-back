@@ -56,7 +56,8 @@ public class UserServiceImpl implements UserService {
 		address = as.isValidAddress(user.getAddress());
 		if (address != null) {
 			user.setAddress(address);
-			if (ur.findUserByUsername(user.getUsername()) != null){
+			User u = ur.findUserByUsername(user.getUsername());
+			if (u != null && u.getUserId() != user.getUserId()){
 				throw new UserAlreadyExistsException();
 			}else {
 				ur.save(user);
