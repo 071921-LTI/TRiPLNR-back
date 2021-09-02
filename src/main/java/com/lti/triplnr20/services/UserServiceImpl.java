@@ -30,6 +30,8 @@ public class UserServiceImpl implements UserService {
 		this.as = as;
 	}
 
+	
+	//Users can only be create if valid address is given and will throw an AuthenticationException if not valid, saves valid users into the database 
 	@Override
 	@Transactional
 	public User createUser(User user) {
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-
+	//Update user function that allows for update of user info, will throw exception to be handled by ExceptionHandler if update unsuccessful
 	@Override
 	@Transactional
 	public String updateUser(User user) {
@@ -69,13 +71,14 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	//Gets the user with the given user id will return null if not found
 	@Override
 	@Transactional
 	public User getUserById(int id) {
 		return ur.getById(id);
 	}
 
-	
+	//Gets the list of trips by given user id will return null if not found
 	public List<Trip> getTripsByUser(int userId) {
 		List<Trip> trips = new ArrayList<>();
 		trips.addAll(ur.getById(userId).getTrips());
@@ -83,6 +86,7 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	//Gets the list of friends for a give user by its username will return null if none
 	@Override
 	public List<User> getFriends(String username) {
 		List<User> friends = ur.findUserByUsername(username).getFriends();

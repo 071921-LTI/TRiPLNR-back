@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//This is the model setup for friend requests for database
 @Entity
 @Data
 @AllArgsConstructor
