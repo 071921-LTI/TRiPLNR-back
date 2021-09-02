@@ -32,21 +32,28 @@ public class TripServiceImpl implements TripService {
 	public Trip createTrip(Trip trip) {
 		String destination = null;
 		User u = trip.getManager();
+		//list of current user trips
 		List<Trip> temptrip = u.getTrips();
-		
+		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
 		if(destination != null) {
+			//sets destination in object
 			trip.setDestination(destination);
+			//saves trip
 			tr.save(trip);
+			//adds new trip object to existing trips list
 			temptrip.add(trip);
+			//sets new list to current user
 			u.setTrips(temptrip);
+			//updates user with new trips list
 			us.updateUser(u);
 			return trip;
 		} else {
 			return null;
 		}
 	}
-
+	
+	//gets grip by trip id
 	@Override
 	public Trip getTripById(int tripId) {
 		return tr.getById(tripId);
