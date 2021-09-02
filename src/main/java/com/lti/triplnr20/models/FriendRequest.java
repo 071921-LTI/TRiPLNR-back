@@ -26,10 +26,10 @@ public class FriendRequest {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private int requestId;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User from;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User to;
 

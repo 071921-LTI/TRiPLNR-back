@@ -3,6 +3,7 @@ package com.lti.triplnr20.models;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,10 +41,10 @@ public class User {
 	@Column(nullable = false)
 	private String address;
 	@JsonIgnoreProperties("trips")
-	@OneToMany @JoinColumn(name = "trips")
+	@ElementCollection @Column
 	private List<Trip> trips;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@OneToMany @JoinColumn
+	@ElementCollection @Column
 	private List<User> friends;
 	
 }

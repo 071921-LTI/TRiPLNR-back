@@ -32,7 +32,7 @@ public class Trip {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private int tripId;
-	@Column(name = "destination")
+	@Column
 	private String destination;
 	@Column
 	private String origin;
@@ -43,8 +43,8 @@ public class Trip {
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
+	@ElementCollection @Column
 	@JsonIgnoreProperties({"trips", "friends"})
-	@OneToMany @JoinColumn
 	private List<User> passengers;
 	@Column
 	private Timestamp startTime;
