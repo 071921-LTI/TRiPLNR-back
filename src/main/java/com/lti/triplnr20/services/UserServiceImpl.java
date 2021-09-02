@@ -12,7 +12,6 @@ import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
 import com.lti.triplnr20.exceptions.InvalidAddressException;
 import com.lti.triplnr20.exceptions.UserAlreadyExistsException;
-import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.Trip;
 
 import com.lti.triplnr20.models.User;
@@ -87,5 +86,17 @@ public class UserServiceImpl implements UserService {
 		List<User> friends = ur.findUserByUsername(username).getFriends();
 		return friends;
 	}
+
+	@Override
+	public List<User> getProfiles(String username) {
+		List<User> profiles = ur.findAll();
+		User user = ur.findUserByUsername(username);
+		List<User> friends = user.getFriends();
+		
+		profiles.removeAll(friends);
+		profiles.remove(user);
+		return profiles;
+	}
+	
 
 }

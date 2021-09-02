@@ -66,4 +66,10 @@ public class UserController {
 		return new ResponseEntity<>(us.getFriends(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
 	}
 	
+	@GetMapping("/profiles")
+	public ResponseEntity<List<User>> getProfiles(@RequestHeader("Authorization") String token){
+		return new ResponseEntity<>(us.getProfiles(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
+		
+	}
+	
 }

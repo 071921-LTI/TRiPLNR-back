@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
-import com.lti.triplnr20.exceptions.AuthorizationException;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.TripService;
