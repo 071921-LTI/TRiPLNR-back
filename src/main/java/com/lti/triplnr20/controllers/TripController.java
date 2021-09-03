@@ -75,11 +75,19 @@ public class TripController {
 		trip.setOrigin(u.getAddress());
 		//calls tripServicese method create trip and passes through new trip object
 		Trip newTrip = ts.createTrip(trip);
+		//adds trip to passengers trips
+		for (User user : newTrip.getPassengers()) {
+			user = us.getUserById(user.getUserId());
+			List<Trip> trips = user.getTrips();
+			trips.add(newTrip);
+			user.setTrips(trips);
+			ur.save(user);
+		}
 		//checks to see if a new trip has been created and saved and returns proper response 
 		if(newTrip != null) {
 			return new ResponseEntity<>(newTrip, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>( HttpStatus.OK);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 
 		}
 		
