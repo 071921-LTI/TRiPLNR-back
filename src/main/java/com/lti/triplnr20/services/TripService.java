@@ -6,5 +6,6 @@ public interface TripService {
 	
 	Trip createTrip(Trip trip);
 	Trip getTripById(int tripId);
+	Trip updateTrip(Trip trip);
 
 }
