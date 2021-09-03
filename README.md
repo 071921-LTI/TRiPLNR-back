@@ -13,6 +13,9 @@ Update Maven project
 ## Development Server
 if using local spring boot, open server window view, start server.
 
+## Database
+Set database enviornment variables in the application.yml file and ddl-auto to create for first time database creation.
+
 
 
 
