@@ -139,9 +139,7 @@ public class TripController {
 		}
 		
 		//gets address of current user and set to trip origin location
-		trip.setOrigin(trip.getOrigin());
-		trip.setDestination(trip.getDestination());
-		
+		trip.setManager(u);
 		//calls tripServicese method create trip and passes through new trip object
 		Trip newTrip = ts.updateTrip(trip);
 		//checks to see if a new trip has been created and saved and returns proper response 

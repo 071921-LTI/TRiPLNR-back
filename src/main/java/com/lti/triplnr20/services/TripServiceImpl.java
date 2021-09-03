@@ -1,12 +1,12 @@
 package com.lti.triplnr20.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.TSFBuilder;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.models.Trip;
@@ -21,11 +21,12 @@ public class TripServiceImpl implements TripService {
 	private UserService us;
 	
 	@Autowired
-	public TripServiceImpl(TripRepository tr, UserService us, AddressService as) {
+	public TripServiceImpl(TripRepository tr, UserService us, AddressService as, UserRepository ur) {
 		super();
 		this.tr = tr;
 		this.us = us;
 		this.as = as;
+		this.ur = ur;
 	}
 	
 	@Override
@@ -56,31 +57,41 @@ public class TripServiceImpl implements TripService {
 	
 	@Override
 	public Trip updateTrip(Trip trip) {
-		String destination = null;
-		String origin = null;
-		Trip existingTrip = tr.getById(trip.getTripId());
-		User u = trip.getManager();
-		List<Trip> temptrip = u.getTrips();
+		System.out.println(trip.getDestination());
 		//list of current user trips
 		//checks to make sure address is formated in a way google maps api will accept
-		destination = as.isValidAddress(trip.getDestination());
-		origin = as.isValidAddress(trip.getOrigin());
-		if(destination != null && origin != null) {
+		trip.setDestination(as.isValidAddress(trip.getDestination()));
+		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
+		if(trip.getDestination() != null && trip.getOrigin() != null) {
 			//removes trip to be updated from list
-			temptrip.remove(existingTrip);
-			us.updateUser(u);
+			Trip tempTrip = tr.getById(trip.getTripId());
+			for (User user : tempTrip.getPassengers()) {
+				if (!trip.getPassengers().contains(user)) {
+					List<Trip> tempTrips = user.getTrips();
+					tempTrips.remove(tempTrip);
+					user.setTrips(tempTrips);
+					ur.save(user);
+				}
+				
+			}
+			for (User user : trip.getPassengers()) {
+				user = us.getUserById(user.getUserId());
+				if (!tempTrip.getPassengers().contains(user)) {
+					List<Trip> tempTrips = user.getTrips();
+					if (tempTrips == null) {
+						tempTrips = new ArrayList<>();
+						tempTrips.add(trip);
+					}else {
+						tempTrips.add(trip);
+					}
+					user.setTrips(tempTrips);
+					ur.save(user);
+				}
+			}
 			
-			//sets destination in object
-			existingTrip.setDestination(destination);
-			existingTrip.setOrigin(origin);
-			//adds updated trip to trip list
-			temptrip.add(existingTrip);
-			//saves trip
-			tr.save(existingTrip);
-			//updates user with new list
-			us.updateUser(u);
+			tr.save(trip);
 
-			return existingTrip;
+			return trip;
 		} else {
 			return null;
 		}
