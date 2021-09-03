@@ -39,7 +39,7 @@ public class User {
 	private String lastName;
 	@Column(nullable = false)
 	private String address;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"manager", "passengers"})
 	@ManyToMany @Column
 	private List<Trip> trips;
 	@JsonIgnoreProperties({"trips", "friends"})

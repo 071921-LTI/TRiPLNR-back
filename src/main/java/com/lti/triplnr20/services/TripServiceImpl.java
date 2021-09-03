@@ -48,7 +48,16 @@ public class TripServiceImpl implements TripService {
 			//sets new list to current user
 			u.setTrips(temptrip);
 			//updates user with new trips list
-			us.updateUser(u);
+			ur.save(u);
+			
+			for (User user : trip.getPassengers()) {
+				user = us.getUserById(user.getUserId());
+				List<Trip> trips = user.getTrips();
+				trips.add(trip);
+				user.setTrips(trips);
+				ur.save(user);
+			}
+			
 			return trip;
 		} else {
 			return null;
