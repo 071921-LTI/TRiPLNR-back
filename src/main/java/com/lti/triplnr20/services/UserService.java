@@ -15,4 +15,7 @@ public interface UserService {
 	
 	List<Trip> getTripsByUser(int userId);
 
+	List<User> getFriends(String username);
+	
+	List<User> getProfiles(String username);
 }
