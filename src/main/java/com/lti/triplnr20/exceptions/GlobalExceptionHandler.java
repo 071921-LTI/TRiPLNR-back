@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
+//This is the global exception handler that handles all exceptions and http responses for each exception 
 public class GlobalExceptionHandler {
 	
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="User Cannot Be Authenticated.")

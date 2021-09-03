@@ -24,6 +24,7 @@ public class FriendServiceImpl implements FriendService{
 		this.ur = ur;
 	}
 
+	//Accepts a friend request by adding  
 	@Override
 	public void acceptRequest(FriendRequest request) {
 		User from = ur.getById(request.getFrom().getUserId());
