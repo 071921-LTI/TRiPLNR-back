@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
 
 	//Gets the list of trips by given user id will return null if not found
 	public List<Trip> getTripsByUser(int userId) {
-		List<Trip> trips = new ArrayList<>();
-		trips.addAll(ur.getById(userId).getTrips());
-		return trips;
+		//List<Trip> trips = new ArrayList<>();
+		//trips.addAll(ur.getById(userId).getTrips());
+		return ur.getById(userId).getTrips();
 		
 	}
 
