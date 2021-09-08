@@ -10,10 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,19 +31,19 @@ public class Trip {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private int tripId;
-	@Column(name = "destination")
+	@Column
 	private String destination;
 	@Column
 	private String origin;
 	@Column(nullable = false)
 	private String tripName;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User manager;
 	@ElementCollection @Column
 	private List<String> stops;
-	@JsonIgnoreProperties("trips")
-	@OneToMany @JoinColumn
+	@ManyToMany @Column
+	@JsonIgnoreProperties({"trips", "friends"})
 	private List<User> passengers;
 	@Column
 	private Timestamp startTime;

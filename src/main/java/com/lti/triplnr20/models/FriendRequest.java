@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//This is the model setup for friend requests for database
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,10 +27,10 @@ public class FriendRequest {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private int requestId;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User from;
-	@JsonIgnoreProperties("trips")
+	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User to;
 

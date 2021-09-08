@@ -3,12 +3,12 @@ package com.lti.triplnr20.models;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="users")
 public class User {
-
+	//This is the model setup for friend requests
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false)
@@ -39,11 +39,12 @@ public class User {
 	private String lastName;
 	@Column(nullable = false)
 	private String address;
-	@JsonIgnoreProperties("trips")
-	@OneToMany @JoinColumn(name = "trips")
+	@JsonIgnoreProperties({"manager", "passengers"})
+	@ManyToMany @Column
 	private List<Trip> trips;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@OneToMany @JoinColumn
+	@ManyToMany @Column
 	private List<User> friends;
+	
 	
 }

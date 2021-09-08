@@ -34,22 +34,26 @@ public class FriendController {
 		this.us = us;
 	}
 	
+	//Requests for all friend requests for the current user logged in 
 	@GetMapping("/myrequests")
 	public ResponseEntity<List<FriendRequest>> getRequests(@RequestHeader("Authorization") String token){
 		return new ResponseEntity<>(fs.getRequestsByUser(us.getUserById(AuthServiceImpl.getIdFromToken(token))), HttpStatus.OK);
 	}
 	
+	//Make a new friend request 
 	@PostMapping("/newrequest")
 	public ResponseEntity<FriendRequest> newRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		return new ResponseEntity<>(fs.makeRequest(request), HttpStatus.CREATED);
 	}
 	
+	//Request is used to accept a given friend request for given user 
 	@PutMapping("/accept")
 	public ResponseEntity<Void> acceptRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		fs.acceptRequest(request);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
 	
+	//Request is used to dent a given friend request
 	@PutMapping("/deny")
 	public ResponseEntity<Void> denyRequest(@RequestHeader("Authorization") String token, @RequestBody FriendRequest request){
 		fs.denyRequest(request);

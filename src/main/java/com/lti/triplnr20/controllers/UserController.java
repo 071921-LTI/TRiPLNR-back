@@ -1,5 +1,6 @@
 package com.lti.triplnr20.controllers;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import com.lti.triplnr20.services.UserService;
 @RequestMapping("/users")
 
 @CrossOrigin(origins = "*")
-//@CrossOrigin(exposedHeaders = "Authorization")
+
 public class UserController {
 
 	UserService us;
@@ -35,30 +36,30 @@ public class UserController {
 		this.us = us;
 	}
 
-
+	
+	/* 
+	* Update will receive user in request body and try to update changes to the database will throw 
+	* InvalidAddressException and UserAlreadyExistsException which is handled by the Exception Handler if thrown
+	*/
 	@PutMapping("/update")
 	public ResponseEntity<String> update(@RequestBody User user, @RequestHeader("Authorization") String token ){
 		String[] authToken = token.split(":");
 	
 		int id = Integer.parseInt(authToken[0]);
 		User u = us.getUserById(id);
-		System.out.println(u);
 		user.setUserId(u.getUserId());
-
-		String res = us.updateUser(user);
-		System.out.println(user);
-		if (res.equals("Successful")) {
-			return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>(gson.toJson(res), HttpStatus.BAD_REQUEST);
-		}
+		us.updateUser(user);
+		return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
 	}
+	
+	//Receives a user id as path parameter and gets the current user with matched id in the database 
 	@GetMapping(value="/{id}")
 	public ResponseEntity<User> getById(@PathVariable("id") int id){
 		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 
 	}
 	
+	//Requests for the authorization token in the request header and will send corresponding user information back 
 	@GetMapping(value="/user")
 	public ResponseEntity<User> getByUser(@RequestHeader("Authorization") String token ){
 		String[] authToken = token.split(":");
@@ -67,9 +68,16 @@ public class UserController {
 
 	}
 	
+	///Requests for the authorization token in the request header and will send corresponding user friend list back 
 	@GetMapping("/myfriends")
 	public ResponseEntity<List<User>> getFriends(@RequestHeader("Authorization") String token){
 		return new ResponseEntity<>(us.getFriends(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
+	}
+	
+	@GetMapping("/profiles")
+	public ResponseEntity<List<User>> getProfiles(@RequestHeader("Authorization") String token){
+		return new ResponseEntity<>(us.getProfiles(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
+		
 	}
 	
 }

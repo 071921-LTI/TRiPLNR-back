@@ -20,6 +20,7 @@ public class AuthServiceImpl implements AuthService {
 		this.ur = ur;
 	}
 
+	//
 	public static String getUserFromToken(String token) {
 		String[] split = token.split(":");
 		return split[1];
@@ -30,12 +31,14 @@ public class AuthServiceImpl implements AuthService {
 		return Integer.valueOf(split[0]);
 	}
 	
+	//creates the authorization token needed for validation and authorization 
 	public String createAuthToken(User user) {
 		String token = null;
 		token = user.getUserId() + ":" + user.getUsername();
 		return token;
 	}
 
+	//checks if user credentials are valid and sets user authorization token, if invalid throws AuthenticationException 
 	@Override
 	public String login(User user) {
 		String token = null;

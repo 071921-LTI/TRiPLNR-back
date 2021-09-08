@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
-import com.lti.triplnr20.models.FriendRequest;
+import com.lti.triplnr20.exceptions.InvalidAddressException;
+import com.lti.triplnr20.exceptions.UserAlreadyExistsException;
 import com.lti.triplnr20.models.Trip;
 
 import com.lti.triplnr20.models.User;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
 		this.as = as;
 	}
 
+	
+	//Users can only be create if valid address is given and will throw an AuthenticationException if not valid, saves valid users into the database 
 	@Override
 	@Transactional
 	public User createUser(User user) {
@@ -46,45 +49,59 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-
+	//Update user function that allows for update of user info, will throw exception to be handled by ExceptionHandler if update unsuccessful
 	@Override
 	@Transactional
 	public String updateUser(User user) {
-		try {
-			String address = null;
-			address = as.isValidAddress(user.getAddress());
-			System.out.println(address);
-			System.out.println(user.getAddress());
-			if (address != null) {
-				user.setAddress(address);
+		String address = null;
+		address = as.isValidAddress(user.getAddress());
+		if (address != null) {
+			user.setAddress(address);
+			User u = ur.findUserByUsername(user.getUsername());
+			if (u != null && u.getUserId() != user.getUserId()){
+				throw new UserAlreadyExistsException();
+			}else {
 				ur.save(user);
 				return "Successful";
-			}else {
-				return "Invalid Address";
 			}
-		}catch (IllegalArgumentException e) {
-			return "Username in use";
+		
+		}else {
+			throw new InvalidAddressException();
 		}
 	}
 
+	//Gets the user with the given user id will return null if not found
 	@Override
 	@Transactional
 	public User getUserById(int id) {
 		return ur.getById(id);
 	}
 
-	
+	//Gets the list of trips by given user id will return null if not found
 	public List<Trip> getTripsByUser(int userId) {
-		List<Trip> trips = new ArrayList<>();
-		trips.addAll(ur.getById(userId).getTrips());
-		return trips;
+		//List<Trip> trips = new ArrayList<>();
+		//trips.addAll(ur.getById(userId).getTrips());
+		return ur.getById(userId).getTrips();
 		
 	}
 
+	//Gets the list of friends for a give user by its username will return null if none
 	@Override
 	public List<User> getFriends(String username) {
 		List<User> friends = ur.findUserByUsername(username).getFriends();
 		return friends;
 	}
+
+	@Override
+	public List<User> getProfiles(String username) {
+		List<User> profiles = ur.findAll();
+		User user = ur.findUserByUsername(username);
+		List<User> friends = user.getFriends();
+		
+		profiles.removeAll(friends);
+		profiles.remove(user);
+		return profiles;
+	}
+	
 
 }
