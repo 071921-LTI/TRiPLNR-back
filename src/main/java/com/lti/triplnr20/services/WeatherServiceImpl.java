@@ -19,7 +19,7 @@ public class WeatherServiceImpl implements WeatherService {
 	}
 
 	@Override
-	public String getDestinationWeather(String address, int day) {
+	public String getDestinationWeather(String address, String day) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -4,5 +4,5 @@ public interface WeatherService {
 	
 	 String getCurrentWeather(String address);
 	 
-	 String getDestinationWeather(String address, int day);
+	 String getDestinationWeather(String address, String day);
 }
