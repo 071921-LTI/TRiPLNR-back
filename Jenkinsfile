@@ -29,7 +29,7 @@ pipeline {
       }
       stage('package') {
          steps {
-            sh 'mvn package -Dmaven.test.skip=true'
+            sh 'mvn package -Dmaven.test.skip=true -Pprod'
 	    //sh 'chmod +x target/trip2.0.jar'
          }
       }
