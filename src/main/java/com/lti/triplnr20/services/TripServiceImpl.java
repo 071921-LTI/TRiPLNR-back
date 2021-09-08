@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.triplnr20.daos.PassengerRequestRepository;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
+import com.lti.triplnr20.models.FriendRequest;
+import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 
@@ -16,17 +19,21 @@ import com.lti.triplnr20.models.User;
 public class TripServiceImpl implements TripService {
 	
 	private TripRepository tr;
+	private PassengerRequestRepository pr;
 	private UserRepository ur;
+	
+	
 	private AddressService as;
 	private UserService us;
 	
 	@Autowired
-	public TripServiceImpl(TripRepository tr, UserService us, AddressService as, UserRepository ur) {
+	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, UserService us, AddressService as, UserRepository ur) {
 		super();
 		this.tr = tr;
 		this.us = us;
 		this.as = as;
 		this.ur = ur;
+		this.pr = pr;
 	}
 	
 	@Override
@@ -106,9 +113,40 @@ public class TripServiceImpl implements TripService {
 		}
 	}
 
+	
+	//Accepts a trip request by adding requested as passenger to trip and the trip to their list
+	@Override
+	public void acceptRequest(PassengerRequest request) {
+		/*This code is weird, extracting user id from user objects to then 
+		use the id to find the associated users you just extracted the ids from?
+		- Christian*/
+//		User from = ur.getById(request.getFrom().getUserId());
+		User to = ur.getById(request.getTo().getUserId());
+		Trip trip = request.getTrip();
+		
+		/*Add person who was sent request as passenger to trip
+		 and then add the trip on the request to their trip list*/
+		trip.getPassengers().add(to);
+		to.getTrips().add(trip);
+		
+//		List<Trip> addTrip = to.getTrips();
+//		addTrip.add(trip);
+		
+		tr.save(trip);
+		ur.save(to);
+		
+		pr.delete(request);
+	}
 
+	@Override
+	public void denyRequest(PassengerRequest request) {
+		pr.delete(request);
+	}
 	
-	
+	@Override
+	public PassengerRequest makeRequest(PassengerRequest request) {
+		return pr.save(request);
+	}
 	
 	//gets grip by trip id
 	@Override
