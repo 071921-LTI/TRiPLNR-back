@@ -28,7 +28,7 @@ public class WeatherController {
 	}
 	
 	@GetMapping("/{address}")
-	public ResponseEntity<?> getCurrentWeather(@PathVariable("address") String address, @RequestHeader("Authorization") String token){
+	public ResponseEntity<?> getCurrentWeather(@PathVariable("address") String address){
 		return new ResponseEntity<>(ws.getCurrentWeather(address), HttpStatus.OK);
 	}
 	

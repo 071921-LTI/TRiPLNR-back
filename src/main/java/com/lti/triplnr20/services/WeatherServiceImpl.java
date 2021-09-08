@@ -21,8 +21,7 @@ public class WeatherServiceImpl implements WeatherService {
 		String res = r.getDays().get(0).datetime + " "
 		+ String.valueOf(r.getDays().get(0).temp)+ " "
 		+r.getDays().get(0).conditions;
-		return res;
-		
+		return res;	
 	}
 
 	@Override
