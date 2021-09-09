@@ -83,15 +83,19 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public Trip updateTrip(Trip trip) {
 		System.out.println(trip.getDestination());
-		//list of current user trips
-		//checks to make sure address is formated in a way google maps api will accept
+		
+		List<User> tempusers = trip.getPassengers();
+		trip.setPassengers(new ArrayList <User>());
+		
+		/*list of current user trips
+		checks to make sure address is formated in a way google maps api will accept*/
 		trip.setDestination(as.isValidAddress(trip.getDestination()));
 		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
 		if(trip.getDestination() != null && trip.getOrigin() != null) {
 			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
 			for (User user : tempTrip.getPassengers()) {
-				if (!trip.getPassengers().contains(user)) {
+				if (!tempusers.contains(user)) {
 					List<Trip> tempTrips = user.getTrips();
 					tempTrips.remove(tempTrip);
 					user.setTrips(tempTrips);
@@ -101,7 +105,7 @@ public class TripServiceImpl implements TripService {
 			
 			/*Go through passenger list of new the trip, and for every new passenger create a
 			   new passenger request for them if one doesn't currently exists for this trip for them*/
-			for (User user : trip.getPassengers()) {
+			for (User user : tempusers) {
 				user = us.getUserById(user.getUserId());
 				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
 					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
@@ -175,7 +179,7 @@ public class TripServiceImpl implements TripService {
 	//gets passenger request by trip id
 	@Override
 	public boolean getByToAndFromAndTrip(User to, User from, Trip trip) {
-		return pr.findByToAndFromAndTrip(to, from, trip);
+		return pr.existsByToAndFromAndTrip(to, from, trip);
 	}
 	
 }

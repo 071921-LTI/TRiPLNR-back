@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
+import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.TripService;
@@ -141,6 +142,18 @@ public class TripController {
 			return new ResponseEntity<>( HttpStatus.OK);
 			}
 }
+	
+	@PutMapping("/accept")
+	public ResponseEntity<Trip> acceptPassengerRequest(@RequestBody PassengerRequest passengerRequest) {
+		ts.acceptRequest(passengerRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/deny")
+	public ResponseEntity<Trip> denyPassengerRequest(@RequestBody PassengerRequest passengerRequest) {
+		ts.denyRequest(passengerRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	
 	//get method to return trip by provided trip id

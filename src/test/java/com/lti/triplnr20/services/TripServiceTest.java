@@ -192,12 +192,12 @@ public class TripServiceTest {
 	
 	@Test
 	public void getByToAndFromAndTripValid() {
-		when(mockPr.findByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(true);
+		when(mockPr.existsByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(true);
 		assertEquals(true, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
 	}
 	@Test
 	public void getByToAndFromAndTripInvalid() {
-		when(mockPr.findByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(false);
+		when(mockPr.existsByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(false);
 		assertEquals(false, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
 	}
 }
