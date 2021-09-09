@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lti.triplnr20.models.weather.Day;
 import com.lti.triplnr20.models.weather.WeatherJSON;
 import com.lti.triplnr20.services.WeatherService;
 import com.lti.triplnr20.services.WeatherServiceImpl;
@@ -28,13 +29,15 @@ public class WeatherController {
 	}
 	
 	@GetMapping("/{address}")
-	public ResponseEntity<?> getCurrentWeather(@PathVariable("address") String address){
-		return new ResponseEntity<>(ws.getCurrentWeather(address), HttpStatus.OK);
+	public ResponseEntity<Day> getCurrentWeather(@PathVariable("address") String address){
+//		return new ResponseEntity<>(ws.getCurrentWeather(address), HttpStatus.OK);
+		return ResponseEntity.ok(ws.getCurrentWeather(address));
 	}
 	
 	@GetMapping("/{address}/{day}")
-	public ResponseEntity<?> getDestinationWeather(@PathVariable("address") String address,@PathVariable("day") String day){
-		return new ResponseEntity<>(ws.getDestinationWeather(address, day), HttpStatus.OK);
+	public ResponseEntity<Day> getDestinationWeather(@PathVariable("address") String address,@PathVariable("day") int day){
+//		return new ResponseEntity<>(ws.getDestinationWeather(address, day), HttpStatus.OK);
+		return ResponseEntity.ok(ws.getDestinationWeather(address, day));
 	}
 	
 

@@ -33,8 +33,7 @@ public class WeatherControllerTest {
 
 	@Test
 	public void getCurrentWeather() throws Exception {
-		String res = "2021-09-08 71.1 Rain, Partially cloudy";
-		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(res);
+		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(null);
 		
 		mockMvc.perform(get("/weather/Uncasville,CT")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -44,7 +43,7 @@ public class WeatherControllerTest {
 	@Test
 	public void getCurrentWeatherFail() throws Exception {
 		String res = "2021-09-08 71.1 Rain, Partially cloudy";
-		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(res);
+		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(null);
 		
 		mockMvc.perform(get("/weather/")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -54,7 +53,7 @@ public class WeatherControllerTest {
 	@Test
 	public void getDestWeather() throws Exception {
 		String res = "2021-09-10 66.8 Clear";
-		when(ws.getDestinationWeather("Unvasville,CT","1")).thenReturn(res);
+		when(ws.getDestinationWeather("Unvasville,CT",1)).thenReturn(null);
 		
 		mockMvc.perform(get("/weather/Uncasville,CT/1")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -64,7 +63,7 @@ public class WeatherControllerTest {
 	@Test
 	public void getDestWeatherFail() throws Exception {
 		String res = "2021-09-10 66.8 Clear";
-		when(ws.getDestinationWeather("Unvasville,CT","100")).thenReturn(res);
+		when(ws.getDestinationWeather("Unvasville,CT",10)).thenReturn(null);
 		
 		mockMvc.perform(get("/weather/")
 				.contentType(MediaType.APPLICATION_JSON))
