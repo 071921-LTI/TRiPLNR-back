@@ -1,7 +1,10 @@
 package com.lti.triplnr20.services;
 
+import java.util.List;
+
 import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
+import com.lti.triplnr20.models.User;
 
 public interface TripService {
 	
@@ -11,4 +14,5 @@ public interface TripService {
 	void denyRequest(PassengerRequest request);
 	void acceptRequest(PassengerRequest request);
 	PassengerRequest makeRequest(PassengerRequest request);
+	boolean getByToAndFromAndTrip(User to, User from, Trip trip);
 }

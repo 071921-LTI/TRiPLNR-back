@@ -100,7 +100,7 @@ public class TripServiceImpl implements TripService {
 			}
 			for (User user : trip.getPassengers()) {
 				user = us.getUserById(user.getUserId());
-				if (!tempTrip.getPassengers().contains(user)) {
+				if (!tempTrip.getPassengers().contains(user) || !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
 					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
 					makeRequest(request);
 //					List<Trip> tempTrips = user.getTrips();
@@ -163,10 +163,16 @@ public class TripServiceImpl implements TripService {
 		return request1;
 	}
 	
-	//gets grip by trip id
+	//gets trip by trip id
 	@Override
 	public Trip getTripById(int tripId) {
 		return tr.getById(tripId);
+	}
+	
+	//gets passenger request by trip id
+	@Override
+	public boolean getByToAndFromAndTrip(User to, User from, Trip trip) {
+		return pr.findByToAndFromAndTrip(to, from, trip);
 	}
 	
 }
