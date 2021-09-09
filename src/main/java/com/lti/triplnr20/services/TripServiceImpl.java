@@ -66,7 +66,6 @@ public class TripServiceImpl implements TripService {
 	
 	@Override
 	public Trip updateTrip(Trip trip) {
-		System.out.println(trip.getDestination());
 		//list of current user trips
 		//checks to make sure address is formated in a way google maps api will accept
 		trip.setDestination(as.isValidAddress(trip.getDestination()));

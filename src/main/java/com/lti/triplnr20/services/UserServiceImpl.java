@@ -1,7 +1,6 @@
 package com.lti.triplnr20.services;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +87,7 @@ public class UserServiceImpl implements UserService {
 	//Gets the list of friends for a give user by its username will return null if none
 	@Override
 	public List<User> getFriends(String username) {
-		List<User> friends = ur.findUserByUsername(username).getFriends();
-		return friends;
+		return ur.findUserByUsername(username).getFriends();
 	}
 
 	@Override
