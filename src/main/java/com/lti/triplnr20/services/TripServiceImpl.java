@@ -97,20 +97,21 @@ public class TripServiceImpl implements TripService {
 					user.setTrips(tempTrips);
 					ur.save(user);
 				}
-				
 			}
 			for (User user : trip.getPassengers()) {
 				user = us.getUserById(user.getUserId());
 				if (!tempTrip.getPassengers().contains(user)) {
-					List<Trip> tempTrips = user.getTrips();
-					if (tempTrips == null) {
-						tempTrips = new ArrayList<>();
-						tempTrips.add(trip);
-					}else {
-						tempTrips.add(trip);
-					}
-					user.setTrips(tempTrips);
-					ur.save(user);
+					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
+					makeRequest(request);
+//					List<Trip> tempTrips = user.getTrips();
+//					if (tempTrips == null) {
+//						tempTrips = new ArrayList<>();
+//						tempTrips.add(trip);
+//					}else {
+//						tempTrips.add(trip);
+//					}
+//					user.setTrips(tempTrips);
+//					ur.save(user);
 				}
 			}
 			
@@ -158,7 +159,8 @@ public class TripServiceImpl implements TripService {
 	
 	@Override
 	public PassengerRequest makeRequest(PassengerRequest request) {
-		return pr.save(request);
+		PassengerRequest request1 = pr.save(request);
+		return request1;
 	}
 	
 	//gets grip by trip id
