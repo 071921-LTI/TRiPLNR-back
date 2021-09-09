@@ -16,7 +16,7 @@ import com.lti.triplnr20.models.User;
 
 @SpringBootTest(classes=AuthServiceImpl.class)
 public class AuthServiceTest {
-
+	//this tests the authservice
 	@Autowired
 	private AuthService as;
 	
@@ -74,5 +74,17 @@ public class AuthServiceTest {
 		when(mockUs.createUser(mockUser)).thenThrow(AuthenticationException.class);
 		
 		assertThrows(AuthenticationException.class, () -> as.register(mockUser));
+	}
+	
+	@Test
+	public void getUserFromToken() {
+		String token = "1:user";
+		assertEquals(AuthServiceImpl.getUserFromToken(token), "user");
+	}
+	
+	@Test
+	public void getIdFromToken() {
+		String token = "1:user";
+		assertEquals(AuthServiceImpl.getIdFromToken(token), 1);
 	}
 }
