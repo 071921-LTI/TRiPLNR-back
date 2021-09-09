@@ -98,9 +98,12 @@ public class TripServiceImpl implements TripService {
 					ur.save(user);
 				}
 			}
+			
+			/*Go through passenger list of new the trip, and for every new passenger create a
+			   new passenger request for them if one doesn't currently exists for this trip for them*/
 			for (User user : trip.getPassengers()) {
 				user = us.getUserById(user.getUserId());
-				if (!tempTrip.getPassengers().contains(user) || !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
+				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
 					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
 					makeRequest(request);
 //					List<Trip> tempTrips = user.getTrips();
