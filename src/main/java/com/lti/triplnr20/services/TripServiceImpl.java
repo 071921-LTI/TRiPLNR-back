@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lti.triplnr20.daos.PassengerRequestRepository;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
-import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
@@ -43,6 +42,11 @@ public class TripServiceImpl implements TripService {
 		User u = trip.getManager();
 		//list of current user trips
 		List<Trip> temptrip = u.getTrips();
+		
+		//Save list of seperate passengers on trip
+		List<User> tempusers = trip.getPassengers();
+		trip.setPassengers(new ArrayList <User>());
+		
 		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
 		if(destination != null) {
@@ -57,12 +61,17 @@ public class TripServiceImpl implements TripService {
 			//updates user with new trips list
 			ur.save(u);
 			
-			for (User user : trip.getPassengers()) {
-				user = us.getUserById(user.getUserId());
-				List<Trip> trips = user.getTrips();
-				trips.add(trip);
-				user.setTrips(trips);
-				ur.save(user);
+			for (User user : tempusers) {
+				
+				//Send out passenger requests to all passengers on trip
+				PassengerRequest request = new PassengerRequest(0, u, user, trip);
+				makeRequest(request);
+				
+//				user = us.getUserById(user.getUserId());
+//				List<Trip> trips = user.getTrips();
+//				trips.add(trip);
+//				user.setTrips(trips);
+//				ur.save(user);
 			}
 			
 			return trip;
@@ -117,17 +126,21 @@ public class TripServiceImpl implements TripService {
 	//Accepts a trip request by adding requested as passenger to trip and the trip to their list
 	@Override
 	public void acceptRequest(PassengerRequest request) {
-		/*This code is weird, extracting user id from user objects to then 
-		use the id to find the associated users you just extracted the ids from?
-		- Christian*/
 //		User from = ur.getById(request.getFrom().getUserId());
 		User to = ur.getById(request.getTo().getUserId());
 		Trip trip = request.getTrip();
+	
+		List<Trip> trips = to.getTrips();
+		List<User> passengers = trip.getPassengers();
+		
 		
 		/*Add person who was sent request as passenger to trip
 		 and then add the trip on the request to their trip list*/
-		trip.getPassengers().add(to);
-		to.getTrips().add(trip);
+		trips.add(trip);
+		passengers.add(to);
+		
+		to.setTrips(trips);
+		trip.setPassengers(passengers);
 		
 //		List<Trip> addTrip = to.getTrips();
 //		addTrip.add(trip);
