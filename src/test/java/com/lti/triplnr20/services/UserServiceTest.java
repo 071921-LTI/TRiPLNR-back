@@ -1,8 +1,8 @@
 package com.lti.triplnr20.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
+import com.lti.triplnr20.exceptions.InvalidAddressException;
+import com.lti.triplnr20.exceptions.UserAlreadyExistsException;
 import com.lti.triplnr20.models.User;
 
 @SpringBootTest(classes=UserServiceImpl.class)
@@ -68,15 +70,15 @@ public class UserServiceTest {
 	@Test
 	public void updateUserNotValid() {
 		when(mockAs.isValidAddress("address")).thenReturn("address");
-		when(mockUr.findUserByUsername("user")).thenReturn(mockUser);
-		assertThrows(AuthenticationException.class, () -> us.createUser(mockUser));
+		when(mockUr.findUserByUsername("user")).thenReturn(new User(2, "user2", "pass","first", "last", "address", null, null));
+		assertThrows(UserAlreadyExistsException.class, () -> us.updateUser(mockUser));
 	}
 	
 	@Test
 	public void updateUserAddressNotValid() {
 		when(mockUr.findUserByUsername("user")).thenReturn(null);
 		when(mockAs.isValidAddress("address")).thenReturn(null);
-		assertThrows(AuthenticationException.class, () -> us.createUser(mockUser));
+		assertThrows(InvalidAddressException.class, () -> us.updateUser(mockUser));
 	}
 	
 	@Test
