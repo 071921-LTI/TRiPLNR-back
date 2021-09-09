@@ -33,7 +33,7 @@ public class WeatherController {
 	}
 	
 	@GetMapping("/{address}/{day}")
-	public ResponseEntity<?> getDestinationWeather(@PathVariable("address") String address,@PathVariable("day") String day, @RequestHeader("Authorization") String token){
+	public ResponseEntity<?> getDestinationWeather(@PathVariable("address") String address,@PathVariable("day") String day){
 		return new ResponseEntity<>(ws.getDestinationWeather(address, day), HttpStatus.OK);
 	}
 	

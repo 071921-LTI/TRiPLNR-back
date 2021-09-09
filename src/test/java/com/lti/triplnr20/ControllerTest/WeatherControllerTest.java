@@ -41,4 +41,36 @@ public class WeatherControllerTest {
 				.andExpect(status().isOk());
 	}
 	
+	@Test
+	public void getCurrentWeatherFail() throws Exception {
+		String res = "2021-09-08 71.1 Rain, Partially cloudy";
+		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(res);
+		
+		mockMvc.perform(get("/weather/")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void getDestWeather() throws Exception {
+		String res = "2021-09-10 66.8 Clear";
+		when(ws.getDestinationWeather("Unvasville,CT","1")).thenReturn(res);
+		
+		mockMvc.perform(get("/weather/Uncasville,CT/1")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void getDestWeatherFail() throws Exception {
+		String res = "2021-09-10 66.8 Clear";
+		when(ws.getDestinationWeather("Unvasville,CT","100")).thenReturn(res);
+		
+		mockMvc.perform(get("/weather/")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	
+	
 }
