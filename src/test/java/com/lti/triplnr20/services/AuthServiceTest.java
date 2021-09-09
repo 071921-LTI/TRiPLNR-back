@@ -16,7 +16,7 @@ import com.lti.triplnr20.models.User;
 
 @SpringBootTest(classes=AuthServiceImpl.class)
 public class AuthServiceTest {
-
+	//this tests the authservice
 	@Autowired
 	private AuthService as;
 	
