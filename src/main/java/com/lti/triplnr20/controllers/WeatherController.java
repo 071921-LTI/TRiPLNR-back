@@ -30,13 +30,11 @@ public class WeatherController {
 	
 	@GetMapping("/{address}")
 	public ResponseEntity<Day> getCurrentWeather(@PathVariable("address") String address){
-//		return new ResponseEntity<>(ws.getCurrentWeather(address), HttpStatus.OK);
 		return ResponseEntity.ok(ws.getCurrentWeather(address));
 	}
 	
 	@GetMapping("/{address}/{day}")
 	public ResponseEntity<Day> getDestinationWeather(@PathVariable("address") String address,@PathVariable("day") int day){
-//		return new ResponseEntity<>(ws.getDestinationWeather(address, day), HttpStatus.OK);
 		return ResponseEntity.ok(ws.getDestinationWeather(address, day));
 	}
 	
