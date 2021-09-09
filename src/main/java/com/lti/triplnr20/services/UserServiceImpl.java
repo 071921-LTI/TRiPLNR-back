@@ -28,6 +28,15 @@ public class UserServiceImpl implements UserService {
 		this.as = as;
 	}
 
+	@Override
+	public boolean checkIfExistingUser(String sub) {
+		if (ur.findUserBySub(sub) != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	
 	//Users can only be create if valid address is given and will throw an AuthenticationException if not valid, saves valid users into the database 
 	@Override
