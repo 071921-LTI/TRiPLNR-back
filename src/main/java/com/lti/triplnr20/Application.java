@@ -17,9 +17,6 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-//		WeatherService ws = new WeatherServiceImpl();
-//		System.out.println(ws.getCurrentWeather("Uncasville,CT"));
-//		System.out.println(ws.getDestinationWeather("Uncasville,CT","1"));
 	}
 
 	@Bean
