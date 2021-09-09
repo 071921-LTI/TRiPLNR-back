@@ -46,7 +46,6 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody User user){
 		String token = as.register(user);
-		System.out.println(token);
 		if (token != null) {
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("Authorization", token);
