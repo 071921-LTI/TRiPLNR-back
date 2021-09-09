@@ -108,7 +108,7 @@ public class TripController {
 		User u = us.getUserById(userId);
 		
 		//checks startTimeString header
-		if(startTimeString == "0000-00-00 00:00:00"){
+		if(startTimeString.equals("0000-00-00 00:00:00")){
 			String cantFollowDirections = "0000-00-00 00:00:00";
 			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
 			trip.setStartTime(startTimeStamp);
