@@ -41,7 +41,8 @@ public class TripController {
 	UserRepository ur;
 	Gson gson = new Gson();
 	
-
+	String timeFormat = "0000-00-00 00:00:00";
+	
 	@GetMapping("/dashboard")
 	public ResponseEntity<List<Trip>> getTripsByUser(@RequestHeader("Authorization") String token){
 		String[] authToken = token.split(":");
@@ -61,8 +62,8 @@ public class TripController {
 		User u = us.getUserById(userId);
 		
 		//checks startTimeString header
-		if(startTimeString == "0000-00-00 00:00:00"){
-			String cantFollowDirections = "0000-00-00 00:00:00";
+		if(startTimeString.equals(timeFormat)){
+			String cantFollowDirections = timeFormat;
 			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
 			trip.setStartTime(startTimeStamp);
 		} else {
@@ -72,8 +73,8 @@ public class TripController {
 			trip.setStartTime(startTimeStamp);	
 		}
 		
-		if(endTimeString == "0000-00-00 00:00:00"){
-			String cantFollowDirections2 = "0000-00-00 00:00:00";
+		if(endTimeString.equals(timeFormat)){
+			String cantFollowDirections2 = timeFormat;
 			Timestamp endTimeStamp = Timestamp.valueOf(cantFollowDirections2);
 			trip.setEndTime(endTimeStamp);
 		} else {
@@ -109,8 +110,8 @@ public class TripController {
 		User u = us.getUserById(userId);
 		
 		//checks startTimeString header
-		if(startTimeString == "0000-00-00 00:00:00"){
-			String cantFollowDirections = "0000-00-00 00:00:00";
+		if(startTimeString.equals(timeFormat)){
+			String cantFollowDirections = timeFormat;
 			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
 			trip.setStartTime(startTimeStamp);
 		} else {
@@ -120,8 +121,8 @@ public class TripController {
 			trip.setStartTime(startTimeStamp);	
 		}
 		
-		if(endTimeString == "0000-00-00 00:00:00"){
-			String cantFollowDirections2 = "0000-00-00 00:00:00";
+		if(endTimeString.equals(timeFormat)){
+			String cantFollowDirections2 = timeFormat;
 			Timestamp endTimeStamp = Timestamp.valueOf(cantFollowDirections2);
 			trip.setEndTime(endTimeStamp);
 		} else {
