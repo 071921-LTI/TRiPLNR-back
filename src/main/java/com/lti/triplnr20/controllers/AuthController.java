@@ -42,7 +42,7 @@ public class AuthController {
 	// 	return new ResponseEntity<>(gson.toJson("wrong"), HttpStatus.BAD_REQUEST);
 	// }
 	
-	// //Register will insert a new user into the database and set the corresponding authorization token
+	//Register will insert a new user into the database and set the corresponding authorization token
 	// @PostMapping("/register")
 	// public ResponseEntity<String> register(@RequestBody User user){
 	// 	String token = as.register(user);
@@ -58,15 +58,15 @@ public class AuthController {
 	// 	}
 	// }
 	
-	// @GetMapping("/test")
-	// public ResponseEntity<String> test(){
-	// 	return new ResponseEntity<>(gson.toJson("test works"), HttpStatus.OK);
-	// }
-
-
-	@Autowired
-	public AuthController(AuthService as) {
-		this.as = as;
+	@GetMapping("/test")
+	public ResponseEntity<String> test(){
+		return new ResponseEntity<>(gson.toJson("test works"), HttpStatus.OK);
 	}
+
+
+	// @Autowired
+	// public AuthController(AuthService as) {
+	// 	this.as = as;
+	// }
 
 }

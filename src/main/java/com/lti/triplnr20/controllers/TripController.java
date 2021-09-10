@@ -143,7 +143,7 @@ public class TripController {
 	//Requests for all friend requests for the current user logged in 
 	@GetMapping("/myrequests")
 	public ResponseEntity<List<PassengerRequest>> getRequests(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(ts.getRequestByTo(us.getUserById(AuthServiceImpl.getIdFromToken(token))), HttpStatus.OK);
+		return new ResponseEntity<>(ts.getRequestByTo(us.getUserBySub(token)), HttpStatus.OK);
 	}
 	
 	@PutMapping("/accept")
