@@ -41,8 +41,6 @@ public class TripServiceImpl implements TripService {
 		String destination = null;
 		User u = trip.getManager();
 		
-		System.out.println(trip.getManager());
-		
 		//list of current user trips
 		List<Trip> temptrip = u.getTrips();
 		
@@ -85,8 +83,6 @@ public class TripServiceImpl implements TripService {
 	
 	@Override
 	public Trip updateTrip(Trip trip) {
-		System.out.println(trip.getDestination());
-		
 		List<User> tempusers = trip.getPassengers();
 		trip.setPassengers(new ArrayList <User>());
 		
@@ -142,10 +138,8 @@ public class TripServiceImpl implements TripService {
 		User to = ur.getById(request.getTo().getUserId());
 		Trip trip = request.getTrip();
 		
-		System.out.println(request.getTrip());
-		
 		List<Trip> tempTrips = to.getTrips();
-		if (to.getTrips() == null) {
+		if (tempTrips == null) {
 			tempTrips = new ArrayList<>();
 			tempTrips.add(trip);
 		}else {
@@ -154,7 +148,7 @@ public class TripServiceImpl implements TripService {
 		to.setTrips(tempTrips);
 		
 		List<User> tempPass = trip.getPassengers();
-		if (trip.getPassengers() == null) {
+		if (tempPass == null) {
 			tempPass = new ArrayList<>();
 			tempPass.add(to);
 		}else {

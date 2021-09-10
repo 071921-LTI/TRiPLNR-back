@@ -49,7 +49,9 @@ public class TripServiceTest {
 	
 	static User mockUser1;
 	static User mockUser2;
+	static User mockUser4;
 	static PassengerRequest mockRequest;
+	static PassengerRequest mockRequestNull;
 	static Trip mockTrip1;
 	static Trip mockTrip2;
 	
@@ -57,9 +59,10 @@ public class TripServiceTest {
 	
 	@BeforeEach
 	public void setup() {
-		User u1 = new User(1, "user", "pass", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2", "pass","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3", "pass","first", "last", "address", new ArrayList<Trip>(), null);
+		User u1 = new User(1, "user", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
+		User u4 = new User(4, "user4", "pass", "", "first", "last", "address", null, null);
 		
 		List<User> p1 = new ArrayList<User>();
 		p1.add(u1);
@@ -69,10 +72,9 @@ public class TripServiceTest {
 		Timestamp t2 = new Timestamp (1);
 		
 		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, null, p1, t1, t2);
-		
 		p1.add(u3);
-		
-		Trip trip2 = new Trip(1, "destination", "origin", "tName", u1, null, p1, t1, t2);
+		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, null, p1, t1, t2);
+		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, null, null, t1, t2);
 		
 		List<Trip> trips = new ArrayList<Trip>();	
 		trips.add(trip1);
@@ -80,6 +82,7 @@ public class TripServiceTest {
 		u2.setTrips(trips);
 		
 		PassengerRequest r1 = new PassengerRequest(1, u1, u2, trip1);
+		PassengerRequest r2 = new PassengerRequest(1, u2, u4, trip3);
 		
 		mockUsers = new ArrayList<>();
 		mockUsers.add(u1);
@@ -87,7 +90,9 @@ public class TripServiceTest {
 		
 		mockUser1 = u1;
 		mockUser2 = u2;
+		mockUser4 = u4;
 		mockRequest = r1;
+		mockRequestNull = r2;
 		mockTrip1 = trip1;
 		mockTrip2 = trip2;
 		
@@ -147,12 +152,19 @@ public class TripServiceTest {
 		verify(mockPr,times(1)).delete(mockRequest);
 	}
 	@Test
+	public void acceptRequestValidNullPassTrip() {
+		when(mockUr.getById(4)).thenReturn(mockUser4);
+		ts.acceptRequest(mockRequestNull);
+		verify(mockPr,times(1)).delete(mockRequestNull);
+	}
+	@Test
 	public void acceptRequestInvalid() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		doNothing().when(mockPr).delete(mockRequest);
 		ts.acceptRequest(mockRequest);
 		verify(mockPr,times(1)).delete(mockRequest);
 	}
+
 	
 	@Test
 	public void denyRequestValid() {
