@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.lti.triplnr20.models.User;
-import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.UserService;
 
 @RestController
@@ -57,6 +57,12 @@ public class UserController {
 	public ResponseEntity<User> getById(@PathVariable("id") int id){
 		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
 
+	}
+	
+	@PostMapping(value="/create")
+	public ResponseEntity<Void> createUser(@RequestBody User user){
+		us.createUser(user);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	// Recieves the sub in header to find logged in user
