@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Assertions.*;
 import org.assertj.core.api.Assertions;
 @SpringBootTest(classes=WeatherServiceImpl.class)
@@ -35,15 +36,13 @@ public class WeatherServiceTest {
 	@Test
 	public void  getDestiationWeatherPass(){
 		String address = "waller,tx";
-		String futureDay = "1";
-		assertNotNull(ws.getDestinationWeather(address, futureDay));
+		assertNotNull(ws.getDestinationWeather(address, 1));
 	}
 	
 	@Test
 	public void  getDestiationWeatherFail(){
-		String address = "";
-		String futureDay = "1";
-		assertEquals(ws.getDestinationWeather(address, futureDay), HttpStatus.NOT_FOUND);
+		String address = "Uncasville,CT";
+		assertNotEquals(ws.getDestinationWeather(address, 1), ws.getDestinationWeather(address, 2));
 		
 	}
 	

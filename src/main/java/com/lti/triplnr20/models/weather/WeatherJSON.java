@@ -14,6 +14,7 @@ import lombok.Data;
 public class WeatherJSON {
 	private String address;
 	private List<Day> days;
+	private Day currentConditions;
 	private List<Object> alerts;
 	
 	

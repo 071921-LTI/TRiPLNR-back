@@ -1,8 +1,12 @@
 package com.lti.triplnr20.services;
 
+import java.util.List;
+
+import com.lti.triplnr20.models.weather.Day;
+
 public interface WeatherService {
 	
-	 String getCurrentWeather(String address);
+	 Day getCurrentWeather(String address);
 	 
-	 String getDestinationWeather(String address, String day);
+	 Day getDestinationWeather(String address, int day);
 }
