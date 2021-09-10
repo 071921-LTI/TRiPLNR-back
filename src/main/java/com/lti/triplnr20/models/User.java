@@ -29,10 +29,6 @@ public class User {
 	@Column(nullable = false)
 	private int userId;
 	@Column(unique = true, nullable = false)
-	private String username;
-	@Column(nullable = false)
-	private String password;
-	@Column(unique = true)
 	private String sub;
 	@Column(nullable = false)
 	private String firstName;

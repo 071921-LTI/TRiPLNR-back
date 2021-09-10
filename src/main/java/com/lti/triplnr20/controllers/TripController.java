@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
-import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
-import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
@@ -47,9 +45,7 @@ public class TripController {
 	
 	@GetMapping("/dashboard")
 	public ResponseEntity<List<Trip>> getTripsByUser(@RequestHeader("Authorization") String token){
-		String[] authToken = token.split(":");
-		int userId = Integer.valueOf(authToken[0]);
-		return new ResponseEntity<>(us.getTripsByUser(userId), HttpStatus.OK);
+		return new ResponseEntity<>(us.getTripsByUser(token), HttpStatus.OK);
 	}
 	
 	
@@ -57,11 +53,9 @@ public class TripController {
 	//create trip receives trip object, authorization header and starttime header
 	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString, @RequestHeader("EndTime") String endTimeString ){
 		
-		//gets token of current user and splits
-		String[] authToken = token.split(":");
-		int userId = Integer.parseInt(authToken[0]);
+		
 		//gets current user object
-		User u = us.getUserById(userId);
+		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
 		if(startTimeString.equals(timeFormat)){
@@ -105,11 +99,9 @@ public class TripController {
 	
 	@PutMapping("/update")
 	public ResponseEntity<Trip> updateTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString, @RequestHeader("EndTime") String endTimeString ){
-		//gets token of current user and splits
-		String[] authToken = token.split(":");
-		int userId = Integer.parseInt(authToken[0]);
+		
 		//gets current user object
-		User u = us.getUserById(userId);
+		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
 		if(startTimeString.equals(timeFormat)){
@@ -149,7 +141,7 @@ public class TripController {
 	//Requests for all friend requests for the current user logged in 
 	@GetMapping("/myrequests")
 	public ResponseEntity<List<PassengerRequest>> getRequests(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(ts.getRequestByTo(us.getUserById(AuthServiceImpl.getIdFromToken(token))), HttpStatus.OK);
+		return new ResponseEntity<>(ts.getRequestByTo(us.getUserBySub(token)), HttpStatus.OK);
 	}
 	
 	@PutMapping("/accept")

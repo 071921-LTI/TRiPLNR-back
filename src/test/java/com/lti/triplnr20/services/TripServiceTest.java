@@ -59,10 +59,10 @@ public class TripServiceTest {
 	
 	@BeforeEach
 	public void setup() {
-		User u1 = new User(1, "user", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3", "pass", "", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u4 = new User(4, "user4", "pass", "", "first", "last", "address", null, null);
+		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
+		User u4 = new User(4, "user4", "first", "last", "address", null, null);
 		
 		List<User> p1 = new ArrayList<User>();
 		p1.add(u1);

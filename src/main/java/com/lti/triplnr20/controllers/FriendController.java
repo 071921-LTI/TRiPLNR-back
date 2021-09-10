@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.triplnr20.models.FriendRequest;
-import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.FriendService;
 import com.lti.triplnr20.services.UserService;
 
@@ -37,7 +36,7 @@ public class FriendController {
 	//Requests for all friend requests for the current user logged in 
 	@GetMapping("/myrequests")
 	public ResponseEntity<List<FriendRequest>> getRequests(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(fs.getRequestsByUser(us.getUserById(AuthServiceImpl.getIdFromToken(token))), HttpStatus.OK);
+		return new ResponseEntity<>(fs.getRequestsByUser(us.getUserBySub(token)), HttpStatus.OK);
 	}
 	
 	//Make a new friend request 
