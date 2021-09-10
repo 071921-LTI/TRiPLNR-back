@@ -68,21 +68,19 @@ public class UserController {
 	//Requests for the authorization token in the request header and will send corresponding user information back 
 	@GetMapping(value="/user")
 	public ResponseEntity<User> getByUser(@RequestHeader("Authorization") String token ){
-		String[] authToken = token.split(":");
-		int id = Integer.parseInt(authToken[0]);
-		return new ResponseEntity<>(us.getUserById(id), HttpStatus.OK);
+		return new ResponseEntity<>(us.getUserBySub(token), HttpStatus.OK);
 
 	}
 	
 	///Requests for the authorization token in the request header and will send corresponding user friend list back 
 	@GetMapping("/myfriends")
 	public ResponseEntity<List<User>> getFriends(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(us.getFriends(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
+		return new ResponseEntity<>(us.getFriends(token), HttpStatus.OK);
 	}
 	
 	@GetMapping("/profiles")
 	public ResponseEntity<List<User>> getProfiles(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(us.getProfiles(AuthServiceImpl.getUserFromToken(token)), HttpStatus.OK);
+		return new ResponseEntity<>(us.getProfiles(token), HttpStatus.OK);
 		
 	}
 	

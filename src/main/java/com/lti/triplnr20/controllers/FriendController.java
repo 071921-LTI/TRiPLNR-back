@@ -37,7 +37,7 @@ public class FriendController {
 	//Requests for all friend requests for the current user logged in 
 	@GetMapping("/myrequests")
 	public ResponseEntity<List<FriendRequest>> getRequests(@RequestHeader("Authorization") String token){
-		return new ResponseEntity<>(fs.getRequestsByUser(us.getUserById(AuthServiceImpl.getIdFromToken(token))), HttpStatus.OK);
+		return new ResponseEntity<>(fs.getRequestsByUser(us.getUserBySub(token)), HttpStatus.OK);
 	}
 	
 	//Make a new friend request 
