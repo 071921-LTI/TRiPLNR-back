@@ -110,4 +110,16 @@ public class UserServiceTest {
 		assertEquals( new ArrayList<User>(), us.getProfiles("user"));
 	}
 
+	@Test
+	public void userExists() {
+		when(mockUr.findUserBySub("")).thenReturn(mockUser);
+		assertEquals(true, us.checkIfExistingUser(""));
+	}
+
+	@Test
+	public void userNotExists() {
+		when(mockUr.findUserBySub("")).thenReturn(null);
+		assertEquals(false, us.checkIfExistingUser(""));
+	}
+
 }

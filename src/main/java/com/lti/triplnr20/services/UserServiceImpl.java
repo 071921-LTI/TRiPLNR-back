@@ -30,11 +30,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean checkIfExistingUser(String sub) {
+		boolean exists = false;
 		if (ur.findUserBySub(sub) != null) {
-			return true;
+			exists = true;
 		}
 
-		return false;
+		return exists;
 	}
 
 	
