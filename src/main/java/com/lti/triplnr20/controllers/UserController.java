@@ -61,8 +61,8 @@ public class UserController {
 
 	// Recieves the sub in header to find logged in user
 	@GetMapping(value="/sub")
-	public boolean getBySub(@RequestHeader("Authorization") String sub) {
-		return us.checkIfExistingUser(sub);
+	public ResponseEntity<User> getBySub(@RequestHeader("Authorization") String sub) {
+		return new ResponseEntity<>(us.getUserBySub(sub), HttpStatus.OK);
 	}
 	
 	//Requests for the authorization token in the request header and will send corresponding user information back 

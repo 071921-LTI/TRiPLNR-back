@@ -7,7 +7,7 @@ import com.lti.triplnr20.models.User;
 
 public interface UserService {
 	
-	boolean checkIfExistingUser(String sub);
+	User getUserBySub(String sub);
 
 	User createUser(User user);
 
@@ -17,7 +17,7 @@ public interface UserService {
 	
 	List<Trip> getTripsByUser(int userId);
 
-	List<User> getFriends(String username);
+	List<User> getFriends(String sub);
 	
-	List<User> getProfiles(String username);
+	List<User> getProfiles(String sub);
 }

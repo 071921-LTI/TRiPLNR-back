@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.lti.triplnr20.controllers.UserController;
+import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.UserService;
 
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,8 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void checkIfExistingUserTrue() throws Exception {
-        when(us.checkIfExistingUser("")).thenReturn(true);
+    public void getUserBySubExists() throws Exception {
+        when(us.getUserBySub("")).thenReturn(new User());
 
         mockMvc.perform(get("/users/sub")
             .contentType(MediaType.APPLICATION_JSON)
@@ -33,8 +34,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void checkIfExistingUserFalse() throws Exception {
-        when(us.checkIfExistingUser("")).thenReturn(false);
+    public void getUserBySubNotExists() throws Exception {
+        when(us.getUserBySub("")).thenReturn(null);
 
         mockMvc.perform(get("/users/sub")
             .contentType(MediaType.APPLICATION_JSON)

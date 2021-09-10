@@ -32,29 +32,29 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	//creates the authorization token needed for validation and authorization 
-	public String createAuthToken(User user) {
-		String token = null;
-		token = user.getUserId() + ":" + user.getUsername();
-		return token;
-	}
+	// public String createAuthToken(User user) {
+	// 	String token = null;
+	// 	token = user.getUserId() + ":" + user.getUsername();
+	// 	return token;
+	// }
 
-	//checks if user credentials are valid and sets user authorization token, if invalid throws AuthenticationException 
-	@Override
-	public String login(User user) {
-		String token = null;
-		if (ur.findUserByUsername(user.getUsername()) != null) {
-			user.setUserId(ur.findUserByUsername(user.getUsername()).getUserId());
-			token = createAuthToken(user);
-			return token;
-		}else {
-			throw new AuthenticationException();
-		}
+	// //checks if user credentials are valid and sets user authorization token, if invalid throws AuthenticationException 
+	// @Override
+	// public String login(User user) {
+	// 	String token = null;
+	// 	if (ur.findUserByUsername(user.getUsername()) != null) {
+	// 		user.setUserId(ur.findUserByUsername(user.getUsername()).getUserId());
+	// 		token = createAuthToken(user);
+	// 		return token;
+	// 	}else {
+	// 		throw new AuthenticationException();
+	// 	}
 
-	}
+	// }
 
-	@Override
-	public String register(User user) {
-		return createAuthToken(us.createUser(user));
-	}
+	// @Override
+	// public String register(User user) {
+	// 	return createAuthToken(us.createUser(user));
+	// }
 
 }

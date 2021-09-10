@@ -29,13 +29,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean checkIfExistingUser(String sub) {
-		boolean exists = false;
-		if (ur.findUserBySub(sub) != null) {
-			exists = true;
-		}
-
-		return exists;
+	public User getUserBySub(String sub) {
+		return ur.findUserBySub(sub);
 	}
 
 	
@@ -43,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User createUser(User user) {
-		if (ur.findUserByUsername(user.getUsername()) == null) {
+		if (ur.findUserBySub(user.getSub()) == null) {
 			String address = null;
 			address = as.isValidAddress(user.getAddress());
 			if (address != null) {
@@ -66,7 +61,7 @@ public class UserServiceImpl implements UserService {
 		address = as.isValidAddress(user.getAddress());
 		if (address != null) {
 			user.setAddress(address);
-			User u = ur.findUserByUsername(user.getUsername());
+			User u = ur.findUserBySub(user.getSub());
 			if (u != null && u.getUserId() != user.getUserId()){
 				throw new UserAlreadyExistsException();
 			}else {
@@ -96,14 +91,14 @@ public class UserServiceImpl implements UserService {
 
 	//Gets the list of friends for a give user by its username will return null if none
 	@Override
-	public List<User> getFriends(String username) {
-		return ur.findUserByUsername(username).getFriends();
+	public List<User> getFriends(String sub) {
+		return ur.findUserBySub(sub).getFriends();
 	}
 
 	@Override
 	public List<User> getProfiles(String username) {
 		List<User> profiles = ur.findAll();
-		User user = ur.findUserByUsername(username);
+		User user = ur.findUserBySub(username);
 		List<User> friends = user.getFriends();
 		
 		profiles.removeAll(friends);
