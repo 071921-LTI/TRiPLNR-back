@@ -47,9 +47,7 @@ public class TripController {
 	
 	@GetMapping("/dashboard")
 	public ResponseEntity<List<Trip>> getTripsByUser(@RequestHeader("Authorization") String token){
-		String[] authToken = token.split(":");
-		int userId = Integer.valueOf(authToken[0]);
-		return new ResponseEntity<>(us.getTripsByUser(userId), HttpStatus.OK);
+		return new ResponseEntity<>(us.getTripsByUser(token), HttpStatus.OK);
 	}
 	
 	
@@ -57,11 +55,9 @@ public class TripController {
 	//create trip receives trip object, authorization header and starttime header
 	public ResponseEntity<Trip> createTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString, @RequestHeader("EndTime") String endTimeString ){
 		
-		//gets token of current user and splits
-		String[] authToken = token.split(":");
-		int userId = Integer.parseInt(authToken[0]);
+		
 		//gets current user object
-		User u = us.getUserById(userId);
+		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
 		if(startTimeString.equals(timeFormat)){
@@ -105,11 +101,9 @@ public class TripController {
 	
 	@PutMapping("/update")
 	public ResponseEntity<Trip> updateTrip(@RequestBody Trip trip, @RequestHeader("Authorization") String token, @RequestHeader("StartTime") String startTimeString, @RequestHeader("EndTime") String endTimeString ){
-		//gets token of current user and splits
-		String[] authToken = token.split(":");
-		int userId = Integer.parseInt(authToken[0]);
+		
 		//gets current user object
-		User u = us.getUserById(userId);
+		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
 		if(startTimeString.equals(timeFormat)){

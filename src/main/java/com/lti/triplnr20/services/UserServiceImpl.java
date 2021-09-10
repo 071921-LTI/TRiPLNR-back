@@ -82,10 +82,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	//Gets the list of trips by given user id will return null if not found
-	public List<Trip> getTripsByUser(int userId) {
+	public List<Trip> getTripsByUser(String sub) {
 		//List<Trip> trips = new ArrayList<>();
 		//trips.addAll(ur.getById(userId).getTrips());
-		return ur.getById(userId).getTrips();
+		return ur.findUserBySub(sub).getTrips();
 		
 	}
 
@@ -96,9 +96,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getProfiles(String username) {
+	public List<User> getProfiles(String sub) {
 		List<User> profiles = ur.findAll();
-		User user = ur.findUserBySub(username);
+		User user = ur.findUserBySub(sub);
 		List<User> friends = user.getFriends();
 		
 		profiles.removeAll(friends);
