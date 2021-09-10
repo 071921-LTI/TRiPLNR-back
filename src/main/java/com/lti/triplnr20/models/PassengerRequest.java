@@ -33,7 +33,6 @@ public class PassengerRequest {
 	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private User to;
-	@JsonIgnoreProperties({"manager", "passengers"})
 	@ManyToOne @JoinColumn(nullable = false)
 	private Trip trip;
 }

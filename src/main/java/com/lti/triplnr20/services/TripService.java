@@ -14,5 +14,6 @@ public interface TripService {
 	void denyRequest(PassengerRequest request);
 	void acceptRequest(PassengerRequest request);
 	PassengerRequest makeRequest(PassengerRequest request);
+	List<PassengerRequest> getRequestByTo(User to);
 	boolean getByToAndFromAndTrip(User to, User from, Trip trip);
 }

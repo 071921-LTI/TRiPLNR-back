@@ -40,6 +40,9 @@ public class TripServiceImpl implements TripService {
 	public Trip createTrip(Trip trip) {
 		String destination = null;
 		User u = trip.getManager();
+		
+		System.out.println(trip.getManager());
+		
 		//list of current user trips
 		List<Trip> temptrip = u.getTrips();
 		
@@ -122,6 +125,7 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 			
+			trip.setPassengers(tempTrip.getPassengers());
 			tr.save(trip);
 
 			return trip;
@@ -137,25 +141,29 @@ public class TripServiceImpl implements TripService {
 //		User from = ur.getById(request.getFrom().getUserId());
 		User to = ur.getById(request.getTo().getUserId());
 		Trip trip = request.getTrip();
-	
-		List<Trip> trips = to.getTrips();
-		List<User> passengers = trip.getPassengers();
 		
+		System.out.println(request.getTrip());
 		
-		/*Add person who was sent request as passenger to trip
-		 and then add the trip on the request to their trip list*/
-		trips.add(trip);
-		passengers.add(to);
+		List<Trip> tempTrips = to.getTrips();
+		if (to.getTrips() == null) {
+			tempTrips = new ArrayList<>();
+			tempTrips.add(trip);
+		}else {
+			tempTrips.add(trip);	
+		}
+		to.setTrips(tempTrips);
 		
-		to.setTrips(trips);
-		trip.setPassengers(passengers);
-		
-//		List<Trip> addTrip = to.getTrips();
-//		addTrip.add(trip);
-		
-		tr.save(trip);
+		List<User> tempPass = trip.getPassengers();
+		if (trip.getPassengers() == null) {
+			tempPass = new ArrayList<>();
+			tempPass.add(to);
+		}else {
+			tempPass.add(to);	
+		}
+		trip.setPassengers(tempPass);
+
 		ur.save(to);
-		
+		tr.save(trip);
 		pr.delete(request);
 	}
 
@@ -174,6 +182,12 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public Trip getTripById(int tripId) {
 		return tr.getById(tripId);
+	}
+	
+	//gets trip by trip id
+	@Override
+	public List<PassengerRequest> getRequestByTo(User to) {
+		return pr.findByTo(to);
 	}
 	
 	//gets passenger request by trip id
