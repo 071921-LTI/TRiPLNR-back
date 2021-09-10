@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.triplnr20.models.FriendRequest;
-import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.FriendService;
 import com.lti.triplnr20.services.UserService;
 

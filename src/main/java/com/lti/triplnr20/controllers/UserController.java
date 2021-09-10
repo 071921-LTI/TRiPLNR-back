@@ -36,6 +36,12 @@ public class UserController {
 		this.us = us;
 	}
 
+	// Test Route
+	@GetMapping("/test")
+	public ResponseEntity<String> test(){
+		return new ResponseEntity<>(gson.toJson("test works"), HttpStatus.OK);
+	}
+
 	
 	/* 
 	* Update will receive user in request body and try to update changes to the database will throw 

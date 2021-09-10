@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.lti.triplnr20.daos.TripRepository;
 import com.lti.triplnr20.daos.UserRepository;
-import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
-import com.lti.triplnr20.services.AuthServiceImpl;
 import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
