@@ -35,7 +35,7 @@ public class AuthServiceTest {
 	
 	@BeforeAll
 	public static void setup() {
-		User u1 = new User(1, "user", "pass", "first", "last", "address", null, null);
+		User u1 = new User(1, "user", "pass", "", "first", "last", "address", null, null);
 		mockUser = u1;
 		mockToken  = "1:user";
 	}

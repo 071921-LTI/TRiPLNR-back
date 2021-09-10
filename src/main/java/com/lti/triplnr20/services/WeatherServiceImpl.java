@@ -3,14 +3,17 @@ package com.lti.triplnr20.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.lti.triplnr20.models.weather.Day;
 import com.lti.triplnr20.models.weather.WeatherJSON;
+
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
 	@Override
-	public String getCurrentWeather(String address) {
+	public Day getCurrentWeather(String address) {
 		String url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+address+"?unitGroup=us";
 		RestTemplate rt = new RestTemplate();
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
@@ -18,14 +21,12 @@ public class WeatherServiceImpl implements WeatherService {
 		String uri = builder.build(false).toUriString();
 		System.out.println(uri);
 		WeatherJSON r = rt.getForObject(uri, WeatherJSON.class);
-		String res = r.getDays().get(0).datetime + " "
-		+ String.valueOf(r.getDays().get(0).temp)+ " "
-		+r.getDays().get(0).conditions;
-		return res;	
+		
+		return r.getCurrentConditions();	
 	}
 
 	@Override
-	public String getDestinationWeather(String address, String day) {
+	public Day getDestinationWeather(String address, int day) {
 		String url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+address+"?unitGroup=us";
 		RestTemplate rt = new RestTemplate();
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
@@ -33,10 +34,7 @@ public class WeatherServiceImpl implements WeatherService {
 		String uri = builder.build(false).toUriString();
 		System.out.println(uri);
 		WeatherJSON r = rt.getForObject(uri, WeatherJSON.class);
-		String res = r.getDays().get(Integer.parseInt(day)).datetime + " " 
-		+String.valueOf(r.getDays().get(Integer.parseInt(day)).temp) +" "
-				+r.getDays().get(Integer.parseInt(day)).conditions;
-		return res;
+		return r.getDays().get(day);
 	}
 	
 

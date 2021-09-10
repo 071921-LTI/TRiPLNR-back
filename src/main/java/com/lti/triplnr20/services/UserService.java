@@ -7,6 +7,8 @@ import com.lti.triplnr20.models.User;
 
 public interface UserService {
 	
+	boolean checkIfExistingUser(String sub);
+
 	User createUser(User user);
 
 	String updateUser(User user);
