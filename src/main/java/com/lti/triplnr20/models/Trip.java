@@ -52,13 +52,13 @@ public class Trip {
 	@Column
 	private String spotify;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@ManyToOne @JoinColumn(nullable = false)
+	@ManyToOne @JoinColumn
 	private User snacks;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@ManyToOne @JoinColumn(nullable = false)
+	@ManyToOne @JoinColumn
 	private User navigator;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@ManyToOne @JoinColumn(nullable = false)
+	@ManyToOne @JoinColumn
 	private User music;
 	
 }
