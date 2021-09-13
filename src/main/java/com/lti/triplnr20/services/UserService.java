@@ -7,15 +7,17 @@ import com.lti.triplnr20.models.User;
 
 public interface UserService {
 	
+	User getUserBySub(String sub);
+
 	User createUser(User user);
 
 	String updateUser(User user);
 
 	User getUserById(int id);
 	
-	List<Trip> getTripsByUser(int userId);
+	List<Trip> getTripsByUser(String sub);
 
-	List<User> getFriends(String username);
+	List<User> getFriends(String sub);
 	
-	List<User> getProfiles(String username);
+	List<User> getProfiles(String sub);
 }

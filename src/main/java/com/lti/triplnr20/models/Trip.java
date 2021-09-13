@@ -49,5 +49,16 @@ public class Trip {
 	private Timestamp startTime;
 	@Column
 	private Timestamp endTime;
+	@Column
+	private String spotify;
+	@JsonIgnoreProperties({"trips", "friends"})
+	@ManyToOne @JoinColumn(nullable = false)
+	private User snacks;
+	@JsonIgnoreProperties({"trips", "friends"})
+	@ManyToOne @JoinColumn(nullable = false)
+	private User navigator;
+	@JsonIgnoreProperties({"trips", "friends"})
+	@ManyToOne @JoinColumn(nullable = false)
+	private User music;
 	
 }
