@@ -1,10 +1,10 @@
 package com.lti.triplnr20.controllers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.lti.triplnr20.models.User;
@@ -65,9 +67,9 @@ public class UserController {
 
 	}
 	
-	@PostMapping(value="/create")
-	public ResponseEntity<Void> createUser(@RequestBody User user){
-		us.createUser(user);
+	@PostMapping(value="/create", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file){
+		us.createUser(user, file);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
