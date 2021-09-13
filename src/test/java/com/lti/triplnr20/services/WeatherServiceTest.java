@@ -14,33 +14,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.jupiter.api.Assertions.*;
 import org.assertj.core.api.Assertions;
 @SpringBootTest(classes=WeatherServiceImpl.class)
-public class WeatherServiceTest {
+class WeatherServiceTest {
 	@Autowired
 	WeatherService ws = new WeatherServiceImpl();
 	static String weather;
 	@BeforeAll
-	public static void setUp(){
+	static void setUp(){
 		
 	}
 	
 	@Test
-	public void getCurrentWeather() {
+	void getCurrentWeather() {
 		assertNotNull(ws.getCurrentWeather("Uncasville,CT,US"));
 	}
 	
 	@Test
-	public void getCurrentWeatherFail() {
+	void getCurrentWeatherFail() {
 		assertNotNull(ws.getCurrentWeather("Uncasville,CT,US"));
 	}
 	
 	@Test
-	public void  getDestiationWeatherPass(){
+	void  getDestiationWeatherPass(){
 		String address = "waller,tx";
 		assertNotNull(ws.getDestinationWeather(address, 1));
 	}
 	
 	@Test
-	public void  getDestiationWeatherFail(){
+	void  getDestiationWeatherFail(){
 		String address = "Uncasville,CT";
 		assertNotEquals(ws.getDestinationWeather(address, 1), ws.getDestinationWeather(address, 2));
 		

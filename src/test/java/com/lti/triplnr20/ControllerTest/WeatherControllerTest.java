@@ -23,7 +23,7 @@ import com.lti.triplnr20.controllers.WeatherController;
 import com.lti.triplnr20.services.WeatherService;
 
 @WebMvcTest(WeatherController.class)
-public class WeatherControllerTest {
+class WeatherControllerTest {
 	
 	@MockBean
 	private WeatherService ws;
@@ -32,7 +32,7 @@ public class WeatherControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	public void getCurrentWeather() throws Exception {
+	void getCurrentWeather() throws Exception {
 		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(null);
 		
 		mockMvc.perform(get("/weather/Uncasville,CT")
@@ -41,7 +41,7 @@ public class WeatherControllerTest {
 	}
 	
 	@Test
-	public void getCurrentWeatherFail() throws Exception {
+	void getCurrentWeatherFail() throws Exception {
 		String res = "2021-09-08 71.1 Rain, Partially cloudy";
 		when(ws.getCurrentWeather("Unvasville,CT")).thenReturn(null);
 		
@@ -51,7 +51,7 @@ public class WeatherControllerTest {
 	}
 	
 	@Test
-	public void getDestWeather() throws Exception {
+	void getDestWeather() throws Exception {
 		String res = "2021-09-10 66.8 Clear";
 		when(ws.getDestinationWeather("Unvasville,CT",1)).thenReturn(null);
 		
@@ -61,7 +61,7 @@ public class WeatherControllerTest {
 	}
 	
 	@Test
-	public void getDestWeatherFail() throws Exception {
+	void getDestWeatherFail() throws Exception {
 		String res = "2021-09-10 66.8 Clear";
 		when(ws.getDestinationWeather("Unvasville,CT",10)).thenReturn(null);
 		

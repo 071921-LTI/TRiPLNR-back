@@ -1,6 +1,6 @@
 package com.lti.triplnr20.services;
 
-import java.util.List;
+
 
 import com.lti.triplnr20.models.weather.Day;
 
