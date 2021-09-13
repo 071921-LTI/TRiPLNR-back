@@ -1,5 +1,6 @@
 package com.lti.triplnr20.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,10 +29,10 @@ public class FriendRequest {
 	@Column(nullable = false)
 	private int requestId;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@ManyToOne @JoinColumn(nullable = false)
+	@ManyToOne(cascade = {CascadeType.ALL}) @JoinColumn(nullable = false)
 	private User from;
 	@JsonIgnoreProperties({"trips", "friends"})
-	@ManyToOne @JoinColumn(nullable = false)
+	@ManyToOne(cascade = {CascadeType.ALL}) @JoinColumn(nullable = false)
 	private User to;
 
 }
