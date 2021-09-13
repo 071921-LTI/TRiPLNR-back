@@ -17,9 +17,7 @@ public class WeatherServiceImpl implements WeatherService {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
 				.queryParam("key", System.getenv("WEATHER_API_KEY"));
 		String uri = builder.build(false).toUriString();
-		System.out.println(uri);
 		WeatherJSON r = rt.getForObject(uri, WeatherJSON.class);
-		
 		return r.getCurrentConditions();	
 	}
 
@@ -30,7 +28,6 @@ public class WeatherServiceImpl implements WeatherService {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
 				.queryParam("key", System.getenv("WEATHER_API_KEY"));
 		String uri = builder.build(false).toUriString();
-		System.out.println(uri);
 		WeatherJSON r = rt.getForObject(uri, WeatherJSON.class);
 		return r.getDays().get(day);
 	}
