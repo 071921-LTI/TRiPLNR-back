@@ -48,11 +48,22 @@ public class TripServiceImpl implements TripService {
 		List<User> tempusers = trip.getPassengers();
 		trip.setPassengers(new ArrayList <User>());
 		
+		
+		List<String> stops = trip.getStops();
+		List<String> valStops = new ArrayList<String>();
 		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
 		if(destination != null) {
 			//sets destination in object
 			trip.setDestination(destination);
+			for(String stop : stops) {
+				String tempArr = null;
+				tempArr = as.isValidAddress(stop);
+				if(tempArr != null) {
+					valStops.add(tempArr);
+				}
+			}
+			trip.setStops(valStops);
 			//saves trip
 			tr.save(trip);
 			//adds new trip object to existing trips list
@@ -84,12 +95,20 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public Trip updateTrip(Trip trip) {
 		List<User> tempusers = trip.getPassengers();
+		List<String> validAddr = new ArrayList<String>();
 		trip.setPassengers(new ArrayList <User>());
 		
 		/*list of current user trips
 		checks to make sure address is formated in a way google maps api will accept*/
 		trip.setDestination(as.isValidAddress(trip.getDestination()));
 		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
+		for(String stops : trip.getStops())
+		{
+			String tempVal = as.isValidAddress(stops);
+			if(tempVal != null)
+				validAddr.add(tempVal);
+		}
+		trip.setStops(validAddr);
 		if(trip.getDestination() != null && trip.getOrigin() != null) {
 			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
