@@ -59,11 +59,7 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public FriendRequest makeRequest(FriendRequest request) {
-		if (frr.findByFromAndTo(request.getFrom(), request.getTo()) != null) {
-			return frr.save(request);
-		} else {
-			return null;
-		}
+		return frr.save(request);
 	}
 
 }
