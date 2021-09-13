@@ -26,7 +26,7 @@ import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 
 @SpringBootTest(classes= TripServiceImpl.class)
-public class TripServiceTest {
+class TripServiceTest {
 	
 	@Autowired
 	private TripService ts;
@@ -58,7 +58,7 @@ public class TripServiceTest {
 	static List<User> mockUsers;
 	
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
 		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
 		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
@@ -99,7 +99,7 @@ public class TripServiceTest {
 	}
 	
 	@Test
-	public void createTripValid() {
+	void createTripValid() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		when(mockAs.isValidAddress(mockTrip1.getDestination())).thenReturn(mockTrip1.getDestination());
 		when(mockTr.save(mockTrip1)).thenReturn(mockTrip1);
@@ -110,7 +110,7 @@ public class TripServiceTest {
 		verify(mockUr,times(1)).save(mockTrip1.getManager());
 	}
 	@Test
-	public void createTripInvalidLocations() {
+	void createTripInvalidLocations() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		when(mockAs.isValidAddress(mockTrip1.getDestination())).thenReturn(null);
 		when(mockAs.isValidAddress(mockTrip1.getOrigin())).thenReturn(null);
@@ -118,14 +118,14 @@ public class TripServiceTest {
 		assertEquals(null, ts.createTrip(mockTrip1));
 	}
 	@Test
-	public void createTripInvalidUser() {
+	void createTripInvalidUser() {
 		when(mockUr.getById(2)).thenReturn(null);
 
 		assertEquals(null, ts.createTrip(mockTrip1));
 	}
 	
 	@Test
-	public void updateTripValid() {
+	void updateTripValid() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		when(mockAs.isValidAddress(mockTrip1.getDestination())).thenReturn(mockTrip1.getDestination());
 		when(mockAs.isValidAddress(mockTrip1.getOrigin())).thenReturn(mockTrip1.getOrigin());
@@ -138,7 +138,7 @@ public class TripServiceTest {
 		verify(mockTr,times(1)).save(mockTrip1);
 	}
 	@Test
-	public void updateTripInvalid() {
+	void updateTripInvalid() {
 		when(mockAs.isValidAddress(mockTrip1.getDestination())).thenReturn(null);
 		when(mockAs.isValidAddress(mockTrip1.getOrigin())).thenReturn(null);
 		
@@ -146,19 +146,19 @@ public class TripServiceTest {
 	}
 	
 	@Test
-	public void acceptRequestValid() {
+	void acceptRequestValid() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		ts.acceptRequest(mockRequest);
 		verify(mockPr,times(1)).delete(mockRequest);
 	}
 	@Test
-	public void acceptRequestValidNullPassTrip() {
+	void acceptRequestValidNullPassTrip() {
 		when(mockUr.getById(4)).thenReturn(mockUser4);
 		ts.acceptRequest(mockRequestNull);
 		verify(mockPr,times(1)).delete(mockRequestNull);
 	}
 	@Test
-	public void acceptRequestInvalid() {
+	void acceptRequestInvalid() {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		doNothing().when(mockPr).delete(mockRequest);
 		ts.acceptRequest(mockRequest);
@@ -167,48 +167,48 @@ public class TripServiceTest {
 
 	
 	@Test
-	public void denyRequestValid() {
+	void denyRequestValid() {
 		ts.denyRequest(mockRequest);
 		verify(mockPr,times(1)).delete(mockRequest);
 	}
 	@Test
-	public void denyRequestInvalid() {
+	void denyRequestInvalid() {
 		doNothing().when(mockPr).delete(mockRequest);
 		ts.denyRequest(mockRequest);
 		verify(mockPr,times(1)).delete(mockRequest);
 	}
 	
 	@Test
-	public void makeRequestValid() {
+	void makeRequestValid() {
 		when(mockPr.save(mockRequest)).thenReturn(mockRequest);
 		assertEquals(mockRequest, ts.makeRequest(mockRequest));
 		verify(mockPr).save(Mockito.any(PassengerRequest.class));
 	}
 	@Test
-	public void makeRequestInvalid() {
+	void makeRequestInvalid() {
 		when(mockPr.save(mockRequest)).thenReturn(null);
 		assertEquals(null, ts.makeRequest(mockRequest));
 		verify(mockPr).save(Mockito.any(PassengerRequest.class));
 	}
 	
 	@Test
-	public void getTripByIdValid() {
+	void getTripByIdValid() {
 		when(mockTr.getById(mockTrip1.getTripId())).thenReturn(mockTrip1);
 		assertEquals(mockTrip1, ts.getTripById(mockTrip1.getTripId()));
 	}
 	@Test
-	public void getTripByIdInvalid() {
+	void getTripByIdInvalid() {
 		when(mockTr.getById(mockTrip1.getTripId())).thenReturn(null);
 		assertEquals(null, ts.getTripById(mockTrip1.getTripId()));
 	}
 	
 	@Test
-	public void getByToAndFromAndTripValid() {
+	void getByToAndFromAndTripValid() {
 		when(mockPr.existsByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(true);
 		assertEquals(true, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
 	}
 	@Test
-	public void getByToAndFromAndTripInvalid() {
+	void getByToAndFromAndTripInvalid() {
 		when(mockPr.existsByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(false);
 		assertEquals(false, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
 	}
