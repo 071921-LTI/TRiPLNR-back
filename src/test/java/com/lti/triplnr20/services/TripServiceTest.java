@@ -71,10 +71,10 @@ public class TripServiceTest {
 		Timestamp t1 = new Timestamp (0);
 		Timestamp t2 = new Timestamp (1);
 		
-		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, null, p1, t1, t2);
+		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, null, p1, t1, t2, null, null, null, null);
 		p1.add(u3);
-		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, null, p1, t1, t2);
-		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, null, null, t1, t2);
+		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, null, p1, t1, t2, null, null, null, null);
+		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, null, null, t1, t2, null, null, null, null);
 		
 		List<Trip> trips = new ArrayList<Trip>();	
 		trips.add(trip1);

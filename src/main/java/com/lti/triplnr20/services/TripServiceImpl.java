@@ -168,8 +168,12 @@ public class TripServiceImpl implements TripService {
 	
 	@Override
 	public PassengerRequest makeRequest(PassengerRequest request) {
+		if (!pr.existsByToAndFromAndTrip(request.getFrom(), request.getTo(), request.getTrip())){
 		PassengerRequest request1 = pr.save(request);
 		return request1;
+		}else {
+			return null;
+		}
 	}
 	
 	//gets trip by trip id
