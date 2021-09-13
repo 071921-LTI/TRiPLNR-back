@@ -11,12 +11,11 @@ import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.User;
 
 @Service
-public class FriendServiceImpl implements FriendService{
+public class FriendServiceImpl implements FriendService {
 
 	private FriendRequestRepository frr;
 	private UserRepository ur;
-	
-	
+
 	@Autowired
 	public FriendServiceImpl(FriendRequestRepository frr, UserRepository ur) {
 		super();
@@ -24,33 +23,33 @@ public class FriendServiceImpl implements FriendService{
 		this.ur = ur;
 	}
 
-	//Accepts a friend request by adding  
+	// Accepts a friend request by adding
 	@Override
 	public void acceptRequest(FriendRequest request) {
 		User from = ur.getById(request.getFrom().getUserId());
 		User to = ur.getById(request.getTo().getUserId());
-		
+
 		List<User> fromFriends = from.getFriends();
 		List<User> toFriends = to.getFriends();
-		
+
 		fromFriends.add(to);
 		toFriends.add(from);
-		
+
 		from.setFriends(fromFriends);
 		to.setFriends(toFriends);
-		
+
 		ur.save(from);
 		ur.save(to);
-		
+
 		frr.delete(request);
-		
+
 	}
 
 	@Override
 	public void denyRequest(FriendRequest request) {
-		
+
 		frr.delete(request);
-		
+
 	}
 
 	@Override
@@ -60,9 +59,11 @@ public class FriendServiceImpl implements FriendService{
 
 	@Override
 	public FriendRequest makeRequest(FriendRequest request) {
-		return frr.save(request);
+		if (frr.findByFromAndTo(request.getFrom(), request.getTo()) != null) {
+			return frr.save(request);
+		} else {
+			return null;
+		}
 	}
-	
-	
 
 }
