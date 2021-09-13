@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+class UserControllerTest {
     @MockBean
     private UserService us;
 
@@ -24,7 +24,7 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void getUserBySubExists() throws Exception {
+    void getUserBySubExists() throws Exception {
         when(us.getUserBySub("")).thenReturn(new User());
 
         mockMvc.perform(get("/users/sub")
@@ -34,7 +34,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getUserBySubNotExists() throws Exception {
+    void getUserBySubNotExists() throws Exception {
         when(us.getUserBySub("")).thenReturn(null);
 
         mockMvc.perform(get("/users/sub")

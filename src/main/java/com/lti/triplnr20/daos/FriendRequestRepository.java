@@ -10,5 +10,5 @@ import com.lti.triplnr20.models.User;
 //This is the friend request repository that is managed by Spring
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Integer>{
 	List<FriendRequest> findByTo(User user);
-	FriendRequest findByFromAndTo(User from, User to);
+	boolean existsByFromAndTo(User from, User to);
 }
