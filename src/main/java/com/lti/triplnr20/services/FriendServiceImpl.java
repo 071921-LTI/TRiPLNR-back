@@ -59,7 +59,14 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public FriendRequest makeRequest(FriendRequest request) {
-		return frr.save(request);
+		User from = request.getFrom();
+		User to = request.getTo();
+		if (!frr.existsByFromAndTo(from, to)) {
+			return frr.save(request);
+		} else {
+			return null;
+		}
 	}
+	
 
 }
