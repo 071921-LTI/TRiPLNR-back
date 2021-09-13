@@ -23,5 +23,5 @@ public class Day{
     public String sunset;
     public String conditions;
     public String description;
-
+    public String icon;
 }
