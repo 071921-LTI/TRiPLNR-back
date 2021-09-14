@@ -152,7 +152,30 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 			
-			trip.setPassengers(tempTrip.getPassengers());
+			/*Issue is here dimwit, it adds all the passengers of the OLD trip back onto the new one,
+			 works fine if you're only adding passengers, not so much if removing them.*/
+			List<User> keepUsers = new ArrayList <User>();
+			for (User user : tempusers) {
+				for (User user2 : tempTrip.getPassengers()) {
+					if (user.getUserId() == user2.getUserId()) {
+						keepUsers.add(user);
+						
+						if(user.getUserId() == trip.getSnacks().getUserId()) {
+							trip.setSnacks(null);
+						}
+						
+						if(user.getUserId() == trip.getNavigator().getUserId()) {
+							trip.setNavigator(null);
+						}
+						
+						if(user.getUserId() == trip.getMusic().getUserId()) {
+							trip.setMusic(null);
+						} 
+					}
+				}
+			}
+			
+			trip.setPassengers(keepUsers);
 			tr.save(trip);
 
 			return trip;
