@@ -155,23 +155,26 @@ public class TripServiceImpl implements TripService {
 			//Removes passengers if they are not on the updated trip passenger list
 			List<User> keepUsers = new ArrayList <User>();
 			for (User user : tempusers) {
+				int flag = 0;
 				for (User user2 : tempTrip.getPassengers()) {
 					if (user.getUserId() == user2.getUserId()) {
 						keepUsers.add(user);
-						
-						//Checks if the user has a role, if they do remove them from that as well
-						if(trip.getSnacks() != null && user.getUserId() == trip.getSnacks().getUserId()) {
-							trip.setSnacks(null);
-						}
-						
-						if(trip.getNavigator() != null && user.getUserId() == trip.getNavigator().getUserId()) {
-							trip.setNavigator(null);
-						}
-						
-						if(trip.getMusic() != null && user.getUserId() == trip.getMusic().getUserId()) {
-							trip.setMusic(null);
-						} 
+						flag = 1;
 					}
+				}
+				if (flag == 0) {
+					//Checks if the user has a role, if they do remove them from that as well
+					if(trip.getSnacks() != null && user.getUserId() == trip.getSnacks().getUserId()) {
+						trip.setSnacks(null);
+					}
+					
+					if(trip.getNavigator() != null && user.getUserId() == trip.getNavigator().getUserId()) {
+						trip.setNavigator(null);
+					}
+					
+					if(trip.getMusic() != null && user.getUserId() == trip.getMusic().getUserId()) {
+						trip.setMusic(null);
+					} 
 				}
 			}
 			
