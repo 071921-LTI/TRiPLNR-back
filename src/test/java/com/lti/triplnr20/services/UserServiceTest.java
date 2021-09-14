@@ -38,8 +38,8 @@ class UserServiceTest {
 	
 	@BeforeAll
 	static void setup() {
-		User u1 = new User(1, "user", "first", "last", "address", null, null);
-		User u2 = new User(2, "user2", "first", "last", "address", null, null);
+		User u1 = new User(1, "user", "first", "last", "", "", "address", null, null);
+		User u2 = new User(2, "user2", "first", "last", "", "", "address", null, null);
 		mockUsers = new ArrayList<>();
 		mockUsers.add(u1);
 		mockUsers.add(u2);
@@ -70,7 +70,7 @@ class UserServiceTest {
 	@Test
 	void updateUserNotValid() {
 		when(mockAs.isValidAddress("address")).thenReturn("address");
-		when(mockUr.findUserBySub("user")).thenReturn(new User(2, "", "first", "last", "address", null, null));
+		when(mockUr.findUserBySub("user")).thenReturn(new User(2, "", "first", "last", "", "", "address", null, null));
 		assertThrows(UserAlreadyExistsException.class, () -> us.updateUser(mockUser));
 	}
 	
@@ -105,7 +105,7 @@ class UserServiceTest {
 		when(mockUr.findAll()).thenReturn(mockUsers);
 		when(mockUr.findUserBySub("user")).thenReturn(mockUser);
 		List<User> friends = new ArrayList<>();
-		friends.add(new User(2, "user2", "first", "last", "address", null, null));
+		friends.add(new User(2, "user2", "first", "last", "", "", "address", null, null));
 		mockUser.setFriends(friends);
 		assertEquals( new ArrayList<User>(), us.getProfiles("user"));
 	}

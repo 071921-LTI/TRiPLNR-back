@@ -69,12 +69,12 @@ public class UserController {
 	}
 	
 	@PostMapping(value="/create", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file){
+	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file) {
 		try {
 			us.createUser(user, file);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (IOException e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
 		}
 	}
 

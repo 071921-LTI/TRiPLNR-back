@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User createUser(User user, MultipartFile file) throws IOException {
 		if (ur.findUserBySub(user.getSub()) == null) {
-
 			String profilePic = s3.upload(file);
+			System.out.println(file);
 			user.setProfilePic(profilePic);
 
 			String address = null;
