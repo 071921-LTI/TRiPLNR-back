@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.lti.config.AmazonConfig;
+import com.lti.triplnr20.config.AmazonConfig;
 
 @Service
 public class S3ServiceImpl implements S3Service{

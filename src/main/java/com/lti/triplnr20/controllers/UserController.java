@@ -72,10 +72,10 @@ public class UserController {
 	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file){
 		try {
 			us.createUser(user, file);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (IOException e) {
-			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	// Recieves the sub in header to find logged in user
