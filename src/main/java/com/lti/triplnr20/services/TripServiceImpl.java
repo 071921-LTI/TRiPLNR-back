@@ -56,14 +56,20 @@ public class TripServiceImpl implements TripService {
 		if(destination != null) {
 			//sets destination in object
 			trip.setDestination(destination);
-			for(String stop : stops) {
-				String tempArr = null;
-				tempArr = as.isValidAddress(stop);
-				if(tempArr != null) {
-					valStops.add(tempArr);
+			
+			if(stops != null)
+			{
+				for(String stop : stops) {
+					String tempArr = null;
+					tempArr = as.isValidAddress(stop);
+					if(tempArr != null) {
+						valStops.add(tempArr);
+					}
 				}
 			}
-			trip.setStops(valStops);
+			
+			if(valStops.size() > 0 || valStops != null)
+				trip.setStops(valStops);
 			//saves trip
 			tr.save(trip);
 			//adds new trip object to existing trips list
@@ -102,13 +108,19 @@ public class TripServiceImpl implements TripService {
 		checks to make sure address is formated in a way google maps api will accept*/
 		trip.setDestination(as.isValidAddress(trip.getDestination()));
 		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
-		for(String stops : trip.getStops())
-		{
-			String tempVal = as.isValidAddress(stops);
-			if(tempVal != null)
-				validAddr.add(tempVal);
+		List<String> stops = trip.getStops();
+		if(stops != null) {
+			for(String stop : stops)
+			{
+				String tempVal = as.isValidAddress(stop);
+				if(tempVal != null)
+					validAddr.add(tempVal);
+			}
+			
 		}
-		trip.setStops(validAddr);
+		if(validAddr.size() > 0 || validAddr != null)
+			trip.setStops(validAddr);
+		
 		if(trip.getDestination() != null && trip.getOrigin() != null) {
 			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
