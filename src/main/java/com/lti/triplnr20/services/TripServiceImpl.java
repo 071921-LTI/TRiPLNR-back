@@ -173,14 +173,6 @@ public class TripServiceImpl implements TripService {
 						} 
 					}
 				}
-//				if (tempTrip.getPassengers().contains(user.getUserId())) {
-//					System.out.println(" ");
-//					System.out.println(" ");
-//					System.out.println(tempTrip.getPassengers().contains(user));
-//					System.out.println(" ");
-//					System.out.println(" ");
-//					keepUsers.add(user);
-//				}
 			}
 			
 			trip.setPassengers(keepUsers);
