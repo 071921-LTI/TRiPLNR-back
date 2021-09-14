@@ -203,7 +203,7 @@ public class TripControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(t))
                 .headers(h))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
     
     @Test
