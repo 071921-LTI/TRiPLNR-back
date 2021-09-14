@@ -1,5 +1,6 @@
 package com.lti.triplnr20.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,11 @@ public class UserController {
 	
 	@PostMapping(value="/create", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file){
-		us.createUser(user, file);
+		try {
+			us.createUser(user, file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

@@ -1,4 +1,4 @@
-package com.lti.config;
+package com.lti.triplnr20.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
