@@ -152,23 +152,23 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 			
-			/*Issue is here dimwit, it adds all the passengers of the OLD trip back onto the new one,
-			 works fine if you're only adding passengers, not so much if removing them.*/
+			//Removes passengers if they are not on the updated trip passenger list
 			List<User> keepUsers = new ArrayList <User>();
 			for (User user : tempusers) {
 				for (User user2 : tempTrip.getPassengers()) {
 					if (user.getUserId() == user2.getUserId()) {
 						keepUsers.add(user);
 						
-						if(user.getUserId() == trip.getSnacks().getUserId()) {
+						//Checks if the user has a role, if they do remove them from that as well
+						if(trip.getSnacks() != null && user.getUserId() == trip.getSnacks().getUserId()) {
 							trip.setSnacks(null);
 						}
 						
-						if(user.getUserId() == trip.getNavigator().getUserId()) {
+						if(trip.getNavigator() != null && user.getUserId() == trip.getNavigator().getUserId()) {
 							trip.setNavigator(null);
 						}
 						
-						if(user.getUserId() == trip.getMusic().getUserId()) {
+						if(trip.getMusic() != null && user.getUserId() == trip.getMusic().getUserId()) {
 							trip.setMusic(null);
 						} 
 					}
@@ -188,7 +188,6 @@ public class TripServiceImpl implements TripService {
 	//Accepts a trip request by adding requested as passenger to trip and the trip to their list
 	@Override
 	public void acceptRequest(PassengerRequest request) {
-//		User from = ur.getById(request.getFrom().getUserId());
 		User to = ur.getById(request.getTo().getUserId());
 		Trip trip = request.getTrip();
 		
