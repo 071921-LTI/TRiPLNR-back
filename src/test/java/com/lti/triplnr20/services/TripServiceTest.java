@@ -54,8 +54,10 @@ class TripServiceTest {
 	static PassengerRequest mockRequestNull;
 	static Trip mockTrip1;
 	static Trip mockTrip2;
+	static Trip mockTrip4;
 	
 	static List<User> mockUsers;
+	static List<PassengerRequest> mockPassengerRequests;
 	
 	@BeforeEach
 	void setup() {
@@ -64,17 +66,23 @@ class TripServiceTest {
 		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
 		User u4 = new User(4, "user4", "first", "last", "address", null, null);
 		
-		List<User> p1 = new ArrayList<User>();
-		p1.add(u1);
-		p1.add(u2);
-		
 		Timestamp t1 = new Timestamp (0);
 		Timestamp t2 = new Timestamp (1);
 		
-		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, null, p1, t1, t2, null, null, null, null);
+		List<String> sarray = new ArrayList<String>();
+		sarray.add("stop1");
+		sarray.add("stop2");
+		sarray.add("stop3");
+		
+		List<User> p1 = new ArrayList<User>();
+		p1.add(u1);
+		Trip trip4 = new Trip(4, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
+		p1.add(u2);
+		
+		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
 		p1.add(u3);
-		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, null, p1, t1, t2, null, null, null, null);
-		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, null, null, t1, t2, null, null, null, null);
+		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
+		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, sarray, null, t1, t2, "spotify", u1, u2, u3);
 		
 		List<Trip> trips = new ArrayList<Trip>();	
 		trips.add(trip1);
@@ -95,6 +103,7 @@ class TripServiceTest {
 		mockRequestNull = r2;
 		mockTrip1 = trip1;
 		mockTrip2 = trip2;
+		mockTrip4 = trip4;
 		
 	}
 	
@@ -129,13 +138,27 @@ class TripServiceTest {
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		when(mockAs.isValidAddress(mockTrip1.getDestination())).thenReturn(mockTrip1.getDestination());
 		when(mockAs.isValidAddress(mockTrip1.getOrigin())).thenReturn(mockTrip1.getOrigin());
-		when(mockTr.getById(mockTrip1.getTripId())).thenReturn(mockTrip2);
+		when(mockTr.getById(mockTrip1.getTripId())).thenReturn(mockTrip1);
 		when(mockTr.save(mockTrip1)).thenReturn(mockTrip1);
 		when(mockUr.save(mockUser1)).thenReturn(mockUser1);
 		when(mockUr.save(mockUser2)).thenReturn(mockUser2);
 		
 		assertEquals(mockTrip1, ts.updateTrip(mockTrip1));
 		verify(mockTr,times(1)).save(mockTrip1);
+	}
+	@Test
+	void updateTripValidDeleteAllPassengers() {
+		when(mockUr.getById(mockTrip4.getManager().getUserId())).thenReturn(mockUser4);
+		when(mockUr.getById(mockTrip4.getManager().getUserId())).thenReturn(mockUser1);
+		when(mockAs.isValidAddress(mockTrip4.getDestination())).thenReturn(mockTrip4.getDestination());
+		when(mockAs.isValidAddress(mockTrip4.getOrigin())).thenReturn(mockTrip4.getOrigin());
+		when(mockTr.getById(mockTrip4.getTripId())).thenReturn(mockTrip1);
+		when(mockTr.save(mockTrip1)).thenReturn(mockTrip1);
+		when(mockUr.save(mockUser1)).thenReturn(mockUser1);
+		when(mockTr.save(mockTrip4)).thenReturn(mockTrip4);
+		when(mockUr.save(mockUser4)).thenReturn(mockUser4);
+		
+		assertEquals(mockTrip4, ts.updateTrip(mockTrip4));
 	}
 	@Test
 	void updateTripInvalid() {
@@ -208,8 +231,14 @@ class TripServiceTest {
 		assertEquals(true, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
 	}
 	@Test
-	void getByToAndFromAndTripInvalid() {
-		when(mockPr.existsByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1)).thenReturn(false);
-		assertEquals(false, ts.getByToAndFromAndTrip(mockUser1, mockUser2, mockTrip1));
+	void getRequestByToValid() {
+		when(mockPr.findByTo(mockUser1)).thenReturn(mockPassengerRequests);
+		assertEquals(mockPassengerRequests, ts.getRequestByTo(mockUser1));
+	}
+	
+	@Test
+	void getRequestByToInvalid() {
+		when(mockPr.findByTo(mockUser1)).thenReturn(null);
+		assertEquals(null, ts.getRequestByTo(mockUser1));
 	}
 }
