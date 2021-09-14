@@ -48,11 +48,28 @@ public class TripServiceImpl implements TripService {
 		List<User> tempusers = trip.getPassengers();
 		trip.setPassengers(new ArrayList <User>());
 		
+		
+		List<String> stops = trip.getStops();
+		List<String> valStops = new ArrayList<String>();
 		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
 		if(destination != null) {
 			//sets destination in object
 			trip.setDestination(destination);
+			
+			if(stops != null)
+			{
+				for(String stop : stops) {
+					String tempArr = null;
+					tempArr = as.isValidAddress(stop);
+					if(tempArr != null) {
+						valStops.add(tempArr);
+					}
+				}
+			}
+			
+			if(valStops.size() > 0 || valStops != null)
+				trip.setStops(valStops);
 			//saves trip
 			tr.save(trip);
 			//adds new trip object to existing trips list
@@ -84,12 +101,26 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public Trip updateTrip(Trip trip) {
 		List<User> tempusers = trip.getPassengers();
+		List<String> validAddr = new ArrayList<String>();
 		trip.setPassengers(new ArrayList <User>());
 		
 		/*list of current user trips
 		checks to make sure address is formated in a way google maps api will accept*/
 		trip.setDestination(as.isValidAddress(trip.getDestination()));
 		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
+		List<String> stops = trip.getStops();
+		if(stops != null) {
+			for(String stop : stops)
+			{
+				String tempVal = as.isValidAddress(stop);
+				if(tempVal != null)
+					validAddr.add(tempVal);
+			}
+			
+		}
+		if(validAddr.size() > 0 || validAddr != null)
+			trip.setStops(validAddr);
+		
 		if(trip.getDestination() != null && trip.getOrigin() != null) {
 			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
@@ -121,7 +152,30 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 			
-			trip.setPassengers(tempTrip.getPassengers());
+			/*Issue is here dimwit, it adds all the passengers of the OLD trip back onto the new one,
+			 works fine if you're only adding passengers, not so much if removing them.*/
+			List<User> keepUsers = new ArrayList <User>();
+			for (User user : tempusers) {
+				for (User user2 : tempTrip.getPassengers()) {
+					if (user.getUserId() == user2.getUserId()) {
+						keepUsers.add(user);
+						
+						if(user.getUserId() == trip.getSnacks().getUserId()) {
+							trip.setSnacks(null);
+						}
+						
+						if(user.getUserId() == trip.getNavigator().getUserId()) {
+							trip.setNavigator(null);
+						}
+						
+						if(user.getUserId() == trip.getMusic().getUserId()) {
+							trip.setMusic(null);
+						} 
+					}
+				}
+			}
+			
+			trip.setPassengers(keepUsers);
 			tr.save(trip);
 
 			return trip;
