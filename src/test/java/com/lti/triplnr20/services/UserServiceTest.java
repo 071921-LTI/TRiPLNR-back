@@ -45,7 +45,6 @@ class UserServiceTest {
 		mockUsers.add(u1);
 		mockUsers.add(u2);
 		mockUser = u1;
-		
 	}
 	
 	@Test

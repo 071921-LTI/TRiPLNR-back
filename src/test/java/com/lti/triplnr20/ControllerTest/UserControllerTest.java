@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +19,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lti.triplnr20.controllers.UserController;
 import com.lti.triplnr20.exceptions.InvalidAddressException;
+import com.lti.triplnr20.models.PassengerRequest;
 import com.lti.triplnr20.models.Trip;
 import com.lti.triplnr20.models.User;
 import com.lti.triplnr20.services.AddressService;
 import com.lti.triplnr20.services.S3Service;
 import com.lti.triplnr20.services.UserService;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -43,6 +47,91 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    
+  //Mock objects/variables
+    static String mockToken;
+    
+	static User mockUser1;
+	static User mockUser2;
+	static User mockUser3;
+	
+	static Trip mockTrip;
+	
+	static String mockDate1;
+	static String mockDate2;
+	
+	static HttpHeaders mockHeaders;
+	
+	static String mockUserJson;
+	
+	static MockMultipartFile mockFile;
+	static MockMultipartFile mockUserFile;
+	
+	static List<User> mockUsers;
+	static List<Trip> mockTrips;
+	static List<PassengerRequest> mockPassengerRequests;
+	
+
+    
+	@BeforeAll
+	static void setup() {
+		String token = "1:token";
+		
+		User u1 = new User(1, "user", "first", "last", "pic", "bio", "address", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "pic", "bio", "address", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "pic", "bio", "address", new ArrayList<Trip>(), null);
+		
+		String d1 = "1111-11-11 11:11:11";
+		String d2 = "2021-12-21 12:12:12";
+		
+		List<String> sArray = new ArrayList<String>();
+		sArray.add("stop1");
+		sArray.add("stop2");
+		sArray.add("stop3");
+		
+		mockUsers = new ArrayList<>();
+		mockUsers.add(u1);
+		mockUsers.add(u2);
+		mockUsers.add(u3);
+		
+		Trip t = new Trip(1, "destination", "origin", "tName", u1, sArray, mockUsers, Timestamp.valueOf(d1), Timestamp.valueOf(d2), "spotify", u1, u2, u3);
+		
+		mockTrip = t;
+		
+		mockUser1 = u1;
+		mockUser2 = u2;
+		mockUser3 = u3;
+		
+		mockDate1 = d1;
+		mockDate2 = d2;
+		mockToken = token;
+		
+		mockTrips = new ArrayList<Trip>();
+		mockPassengerRequests = new ArrayList<PassengerRequest>();
+		mockHeaders = new HttpHeaders();
+		mockHeaders.add("Authorization", mockToken);
+		mockHeaders.add("StartTime", mockDate1);
+		mockHeaders.add("EndTime", mockDate2);
+		
+		ObjectMapper mapper = new ObjectMapper();
+    	try {
+    		mockUserJson = mapper.writeValueAsString(mockUser1);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		mockUserFile = new MockMultipartFile(
+    			"user", 
+    			"user.txt", 
+    			"application/json", 
+    			mockUserJson.getBytes());
+    	mockFile = new MockMultipartFile(
+    			"file", 
+    			"file.txt", 
+    			"text/blank", 
+    			"some xml".getBytes());
+	}
     
     ObjectMapper mapper = new ObjectMapper();
     private String toJson(Object object) {
@@ -65,7 +154,7 @@ class UserControllerTest {
     }
     @Test
     void getMappingNotExists() throws Exception {
-        mockMvc.perform(get("/users/te")
+        mockMvc.perform(get("/users/wrong")
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", ""))
             .andExpect(status().isBadRequest());
@@ -73,89 +162,57 @@ class UserControllerTest {
     
     @Test
     void updateValid() throws Exception {
-    	User u = new User(1, "user", "first", "last", "", "", "address", null, null);
-        when(us.getUserById(1)).thenReturn(u);
-        when(us.updateUser(u)).thenReturn("Successful");
+        when(us.getUserById(1)).thenReturn(mockUser1);
+        when(us.updateUser(mockUser1)).thenReturn("Successful");
 
         mockMvc.perform(put("/users/update")
             .contentType(MediaType.APPLICATION_JSON)
-          	.content(toJson(u))
+          	.content(toJson(mockUser1))
             .header("Authorization", "1:token"))
             .andExpect(status().isOk());
         
         verify(us,times(1)).getUserById(1);
-        verify(us,times(1)).updateUser(u);
+        verify(us,times(1)).updateUser(mockUser1);
     }
     @Test
     void updateInvalid() throws Exception {
-    	User u = new User(1, "user", "first", "last", "", "", "address", null, null);
-        when(us.getUserById(1)).thenReturn(u);
-        when(us.updateUser(u)).thenThrow(InvalidAddressException.class);
+        when(us.getUserById(1)).thenReturn(mockUser1);
+        when(us.updateUser(mockUser1)).thenThrow(InvalidAddressException.class);
 
         mockMvc.perform(put("/users/update")
             .contentType(MediaType.APPLICATION_JSON)
-          	.content(toJson(u))
+          	.content(toJson(mockUser1))
             .header("Authorization", "1:token"))
             .andExpect(status().isBadRequest());
         
         verify(us,times(1)).getUserById(1);
-        verify(us,times(1)).updateUser(u);
+        verify(us,times(1)).updateUser(mockUser1);
     }
     
 
 	@Test
     void createValid() throws Exception {
-    	List<Trip> trips = new ArrayList<Trip>();
-    	List<User> users = new ArrayList<User>();
-    	User u = new User(1, "sub", "first", "last", "pic", "bio", "address", trips, users);
-    	
-    	MockMultipartFile user = new MockMultipartFile(
-    			"user", 
-    			"user.txt", 
-    			"application/json", 
-    			toJson(u).getBytes());
-    	MockMultipartFile file = new MockMultipartFile(
-    			"file", 
-    			"file.txt", 
-    			"text/blank", 
-    			"some xml".getBytes());
-
-        when(us.createUser(u)).thenReturn(u);
-        when(s3.upload(file)).thenReturn("pic");
+        when(us.createUser(mockUser1)).thenReturn(mockUser1);
+        when(s3.upload(mockFile)).thenReturn("pic");
 
         mockMvc.perform(multipart("/users/create")
-        		.file(file)
-                .file(user)
+        		.file(mockFile)
+                .file(mockUserFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
             .header("Authorization", "1:token"))
             .andExpect(status().isCreated());
         
-        verify(us,times(1)).createUser(u);
-        verify(s3,times(1)).upload(file);
+        verify(us,times(1)).createUser(mockUser1);
+        verify(s3,times(1)).upload(mockFile);
     }
 	@Test
     void createInvalid() throws Exception {
-    	List<Trip> trips = new ArrayList<Trip>();
-    	List<User> users = new ArrayList<User>();
-    	User u = new User(1, "sub", "first", "last", null, "bio", "address", trips, users);
-    	
-    	MockMultipartFile user = new MockMultipartFile(
-    			"user", 
-    			"user.txt", 
-    			"application/json", 
-    			toJson(u).getBytes());
-    	MockMultipartFile file = new MockMultipartFile(
-    			"file", 
-    			"file.txt", 
-    			"text/blank", 
-    			"some xml".getBytes());
-
-        when(us.createUser(u)).thenReturn(u);
-        when(s3.upload(file)).thenThrow(IOException.class);
+        when(us.createUser(mockUser1)).thenReturn(mockUser1);
+        when(s3.upload(mockFile)).thenThrow(IOException.class);
 
         mockMvc.perform(multipart("/users/create")
-        		.file(file)
-                .file(user)
+        		.file(mockFile)
+                .file(mockUserFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
             .header("Authorization", "1:token"))
             .andExpect(status().isIAmATeapot());
@@ -163,7 +220,7 @@ class UserControllerTest {
     
     @Test
     void getByIdExists() throws Exception {
-        when(us.getUserById(1)).thenReturn(new User());
+        when(us.getUserById(1)).thenReturn(mockUser1);
 
         mockMvc.perform(get("/users/1")
             .contentType(MediaType.APPLICATION_JSON)
@@ -186,7 +243,7 @@ class UserControllerTest {
 
     @Test
     void getUserBySubExists() throws Exception {
-        when(us.getUserBySub("")).thenReturn(new User());
+        when(us.getUserBySub("")).thenReturn(mockUser1);
 
         mockMvc.perform(get("/users/sub")
             .contentType(MediaType.APPLICATION_JSON)
@@ -209,7 +266,7 @@ class UserControllerTest {
     
     @Test
     void getByUserExists() throws Exception {
-        when(us.getUserBySub("")).thenReturn(new User());
+        when(us.getUserBySub("")).thenReturn(mockUser1);
 
         mockMvc.perform(get("/users/user")
             .contentType(MediaType.APPLICATION_JSON)
@@ -232,8 +289,7 @@ class UserControllerTest {
     
     @Test
     void getFriendsExists() throws Exception {
-    	List<User> friends = new ArrayList<User>();
-        when(us.getFriends("")).thenReturn(friends);
+        when(us.getFriends("")).thenReturn(mockUsers);
 
         mockMvc.perform(get("/users/myfriends")
             .contentType(MediaType.APPLICATION_JSON)
@@ -256,8 +312,7 @@ class UserControllerTest {
     
     @Test
     void getProfilesExists() throws Exception {
-    	List<User> profiles = new ArrayList<User>();
-        when(us.getProfiles("")).thenReturn(profiles);
+        when(us.getProfiles("")).thenReturn(mockUsers);
 
         mockMvc.perform(get("/users/profiles")
             .contentType(MediaType.APPLICATION_JSON)
