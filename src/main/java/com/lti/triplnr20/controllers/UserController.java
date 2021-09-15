@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.lti.triplnr20.models.User;
+import com.lti.triplnr20.services.S3Service;
 import com.lti.triplnr20.services.UserService;
 
 @RestController
@@ -31,12 +32,14 @@ import com.lti.triplnr20.services.UserService;
 public class UserController {
 
 	UserService us;
+	S3Service s3;
 	Gson gson = new Gson();
 
 	@Autowired
-	public UserController(UserService us) {
+	public UserController(UserService us, S3Service s3) {
 		super();
 		this.us = us;
+		this.s3 = s3;
 	}
 
 	// Test Route
@@ -69,9 +72,12 @@ public class UserController {
 	}
 	
 	@PostMapping(value="/create", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart("file") MultipartFile file) {
+	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart(name = "file", required = false) MultipartFile file) {
 		try {
-			us.createUser(user, file);
+			if (file != null) {
+				user.setProfilePic(s3.upload(file));
+			}
+			us.createUser(user);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (IOException e) {
 			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);

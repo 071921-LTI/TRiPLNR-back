@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lti.triplnr20.daos.UserRepository;
 import com.lti.triplnr20.exceptions.AuthenticationException;
@@ -21,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
 	private UserRepository ur;
 	private AddressService as;
-	private S3Service s3;
 
 	@Autowired
 	public UserServiceImpl(UserRepository ur, AddressService as) {
@@ -39,12 +37,8 @@ public class UserServiceImpl implements UserService {
 	//Users can only be create if valid address is given and will throw an AuthenticationException if not valid, saves valid users into the database 
 	@Override
 	@Transactional
-	public User createUser(User user, MultipartFile file) throws IOException {
+	public User createUser(User user) throws IOException {
 		if (ur.findUserBySub(user.getSub()) == null) {
-			String profilePic = s3.upload(file);
-			System.out.println(file);
-			user.setProfilePic(profilePic);
-
 			String address = null;
 			address = as.isValidAddress(user.getAddress());
 			if (address != null) {
