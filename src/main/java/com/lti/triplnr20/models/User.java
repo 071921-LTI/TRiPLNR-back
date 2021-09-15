@@ -34,6 +34,10 @@ public class User {
 	private String firstName;
 	@Column(nullable = false)
 	private String lastName;
+	@Column
+	private String profilePic;
+	@Column
+	private String bio;
 	@Column(nullable = false)
 	private String address;
 	@ManyToMany @Column

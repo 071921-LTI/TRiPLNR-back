@@ -1,6 +1,6 @@
 package com.lti.triplnr20.services;
 
-
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	//Users can only be create if valid address is given and will throw an AuthenticationException if not valid, saves valid users into the database 
 	@Override
 	@Transactional
-	public User createUser(User user) {
+	public User createUser(User user) throws IOException {
 		if (ur.findUserBySub(user.getSub()) == null) {
 			String address = null;
 			address = as.isValidAddress(user.getAddress());
