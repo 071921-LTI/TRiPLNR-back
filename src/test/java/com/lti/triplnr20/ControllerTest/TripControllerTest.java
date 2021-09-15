@@ -95,6 +95,9 @@ public class TripControllerTest {
                 .content(toJson(t))
                 .headers(h))
                 .andExpect(status().isCreated());
+        
+        verify(us,times(1)).getUserBySub(token);
+        verify(ts,times(1)).createTrip(Mockito.any(Trip.class));
     }
     @Test
     void createTripInvalid() throws Exception {
@@ -131,6 +134,9 @@ public class TripControllerTest {
                 .content(toJson(t))
                 .headers(h))
                 .andExpect(status().isBadRequest());
+        
+        verify(us,times(1)).getUserBySub(token);
+        verify(ts,times(1)).createTrip(Mockito.any(Trip.class));
     }
     
     @Test
@@ -168,6 +174,9 @@ public class TripControllerTest {
                 .content(toJson(t))
                 .headers(h))
                 .andExpect(status().isCreated());
+        
+        verify(us,times(1)).getUserBySub(token);
+        verify(ts,times(1)).updateTrip(Mockito.any(Trip.class));
     }
     @Test
     void updateTripInvalid() throws Exception {
@@ -204,6 +213,9 @@ public class TripControllerTest {
                 .content(toJson(t))
                 .headers(h))
                 .andExpect(status().isOk());
+        
+        verify(us,times(1)).getUserBySub(token);
+        verify(ts,times(1)).updateTrip(Mockito.any(Trip.class));
     }
     
     @Test
@@ -224,6 +236,8 @@ public class TripControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", ""))
             .andExpect(status().isOk());
+        
+        verify(us,times(1)).getTripsByUser("");
     }
     
     @Test
@@ -306,6 +320,8 @@ public class TripControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", ""))
             .andExpect(status().isOk());
+        
+        verify(ts,times(1)).getTripById(1);
     }
     @Test
     void getTripNoTrip() throws Exception {
@@ -315,6 +331,8 @@ public class TripControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", ""))
             .andExpect(status().isOk());
+        
+        verify(ts,times(1)).getTripById(1);
     }
 
 }
