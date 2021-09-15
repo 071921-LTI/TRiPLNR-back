@@ -168,7 +168,7 @@ class UserControllerTest {
         mockMvc.perform(put("/users/update")
             .contentType(MediaType.APPLICATION_JSON)
           	.content(toJson(mockUser1))
-            .header("Authorization", "1:token"))
+            .header("Authorization", mockToken))
             .andExpect(status().isOk());
         
         verify(us,times(1)).getUserById(1);
@@ -182,7 +182,7 @@ class UserControllerTest {
         mockMvc.perform(put("/users/update")
             .contentType(MediaType.APPLICATION_JSON)
           	.content(toJson(mockUser1))
-            .header("Authorization", "1:token"))
+            .header("Authorization", mockToken))
             .andExpect(status().isBadRequest());
         
         verify(us,times(1)).getUserById(1);
@@ -199,7 +199,7 @@ class UserControllerTest {
         		.file(mockFile)
                 .file(mockUserFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-            .header("Authorization", "1:token"))
+            .header("Authorization", mockToken))
             .andExpect(status().isCreated());
         
         verify(us,times(1)).createUser(mockUser1);
@@ -214,7 +214,7 @@ class UserControllerTest {
         		.file(mockFile)
                 .file(mockUserFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-            .header("Authorization", "1:token"))
+            .header("Authorization", mockToken))
             .andExpect(status().isIAmATeapot());
     }
     
