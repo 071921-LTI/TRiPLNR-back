@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ class UserServiceTest {
 	}
 	
 	@Test
-	void createUserValid() {
+	void createUserValid() throws IOException {
 		when(mockUr.findUserBySub("user")).thenReturn(null);
 		when(mockAs.isValidAddress("address")).thenReturn("address");
 		assertEquals(mockUser, us.createUser(mockUser));

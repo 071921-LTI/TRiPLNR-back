@@ -61,10 +61,10 @@ class TripServiceTest {
 	
 	@BeforeEach
 	void setup() {
-		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
-		User u4 = new User(4, "user4", "first", "last", "address", null, null);
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u4 = new User(4, "user4", "first", "last", "address", "pic", "bio", null, null);
 		
 		Timestamp t1 = new Timestamp (0);
 		Timestamp t2 = new Timestamp (1);

@@ -63,9 +63,9 @@ public class TripControllerTest {
     @Test
     void createTripValid() throws Exception {
     	String token = "token";
-		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
 		
 		List<String> sArray = new ArrayList<String>();
 		sArray.add("stop1");
@@ -99,9 +99,9 @@ public class TripControllerTest {
     @Test
     void createTripInvalid() throws Exception {
     	String token = "token";
-		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
 		
 		List<String> sArray = new ArrayList<String>();
 		sArray.add("stop1");
@@ -136,9 +136,9 @@ public class TripControllerTest {
     @Test
     void updateTripValid() throws Exception {
     	String token = "token";
-		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
 		
 		List<String> sArray = new ArrayList<String>();
 		sArray.add("stop1");
@@ -172,9 +172,9 @@ public class TripControllerTest {
     @Test
     void updateTripInvalid() throws Exception {
     	String token = "token";
-		User u1 = new User(1, "user", "first", "last", "address", new ArrayList<Trip>(), null);
-		User u2 = new User(2, "user2","first", "last", "address", new ArrayList<Trip>(), null);
-		User u3 = new User(3, "user3","first", "last", "address", new ArrayList<Trip>(), null);
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u2 = new User(2, "user2","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
+		User u3 = new User(3, "user3","first", "last", "address", "pic", "bio", new ArrayList<Trip>(), null);
 		
 		List<String> sArray = new ArrayList<String>();
 		sArray.add("stop1");

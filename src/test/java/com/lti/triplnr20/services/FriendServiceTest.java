@@ -39,8 +39,8 @@ public class FriendServiceTest {
 	
 	@BeforeAll
 	static void setup() {
-		User u1 = new User(1, "user", "first", "last", "address", null, new ArrayList<User>());
-		User u2 = new User(2, "user2", "first", "last", "address", null, new ArrayList<User>());
+		User u1 = new User(1, "user", "first", "last", "address", "pic", "bio", null, new ArrayList<User>());
+		User u2 = new User(2, "user2", "first", "last", "address", "pic", "bio", null, new ArrayList<User>());
 		
 		mockUser1 = u1;
 		mockUser2 = u2;
