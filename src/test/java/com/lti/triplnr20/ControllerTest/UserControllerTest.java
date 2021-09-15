@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.lti.triplnr20.controllers.UserController;
 import com.lti.triplnr20.models.User;
+import com.lti.triplnr20.services.AddressService;
+import com.lti.triplnr20.services.S3Service;
 import com.lti.triplnr20.services.UserService;
 
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 class UserControllerTest {
     @MockBean
     private UserService us;
+    @MockBean
+    private S3Service s3;
 
     @Autowired
     private MockMvc mockMvc;
