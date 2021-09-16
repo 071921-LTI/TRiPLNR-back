@@ -34,7 +34,7 @@ import com.lti.triplnr20.services.TripService;
 import com.lti.triplnr20.services.UserService;
 
 @WebMvcTest(TripController.class)
-public class TripControllerTest {
+class TripControllerTest {
     @MockBean
     private TripService ts;
     @MockBean
