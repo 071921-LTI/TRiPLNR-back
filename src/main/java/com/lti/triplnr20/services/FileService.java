@@ -22,14 +22,8 @@ public class FileService {
 		return UUID.randomUUID().toString();
     }
 	
-	public InputStream getInputStream(MultipartFile file) {
-		try {
-			return file.getInputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public InputStream getInputStream(MultipartFile file) throws IOException{
+		return file.getInputStream();
     }
 	
 	public ObjectMetadata getObjectMetadata() {

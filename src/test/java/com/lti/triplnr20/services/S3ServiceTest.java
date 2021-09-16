@@ -62,7 +62,7 @@ public class S3ServiceTest {
 	}
 	
 	@Test
-	void upload() throws IOException {
+	void uploadValid() throws IOException {
 		when(mockFls.getInputStream(mockFile)).thenReturn(mockInputStream);
 		when(mockFls.getObjectMetadata()).thenReturn(mockObjectMetaData);
 		when(mockFls.generateUUID()).thenReturn(mockUUIDstring);
