@@ -37,10 +37,12 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Address is invalid.")
 	@ExceptionHandler(InvalidAddressException.class)
 	public void handleInvalidAddressExistException() {
-		
 	}
 	
-	
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Could not access weather data.")
+	@ExceptionHandler(WeatherJSONIsNullException.class)
+	public void handleWeatherJSONIsNullException() {
+	}
 	
 	
 }

@@ -1,10 +1,11 @@
 package com.lti.triplnr20.controllers;
 
-
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.lti.triplnr20.models.User;
+import com.lti.triplnr20.services.S3Service;
 import com.lti.triplnr20.services.UserService;
 
 @RestController
@@ -28,12 +32,14 @@ import com.lti.triplnr20.services.UserService;
 public class UserController {
 
 	UserService us;
+	S3Service s3;
 	Gson gson = new Gson();
 
 	@Autowired
-	public UserController(UserService us) {
+	public UserController(UserService us, S3Service s3) {
 		super();
 		this.us = us;
+		this.s3 = s3;
 	}
 
 	// Test Route
@@ -65,10 +71,17 @@ public class UserController {
 
 	}
 	
-	@PostMapping(value="/create")
-	public ResponseEntity<Void> createUser(@RequestBody User user){
-		us.createUser(user);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	@PostMapping(value="/create", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Void> createUser(@RequestPart("user") User user, @RequestPart(name = "file", required = false) MultipartFile file) {
+		try {
+			if (file != null) {
+				user.setProfilePic(s3.upload(file));
+			}
+			us.createUser(user);
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
 	}
 
 	// Recieves the sub in header to find logged in user

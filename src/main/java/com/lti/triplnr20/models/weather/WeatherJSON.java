@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.lti.triplnr20.models.geocoding.GeocodingJSON;
-import com.lti.triplnr20.models.geocoding.Result;
-
 import lombok.Data;
 
 @Data

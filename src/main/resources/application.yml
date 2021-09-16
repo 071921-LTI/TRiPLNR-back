@@ -3,7 +3,13 @@ spring:
     show-sql: false
   jackson:
     serialization:
-      fail-on-empty-beans: false  profiles:    active:    - "@profileActive@"     
+      fail-on-empty-beans: false
+  profiles:
+    active:
+    - "@profileActive@"
+  servlet:
+    multipart:
+      max-file-size: 10MB     
 management:
   endpoints:
     web:
