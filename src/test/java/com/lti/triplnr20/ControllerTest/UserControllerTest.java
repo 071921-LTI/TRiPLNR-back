@@ -5,26 +5,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lti.triplnr20.controllers.UserController;
-import com.lti.triplnr20.exceptions.InvalidAddressException;
-import com.lti.triplnr20.models.PassengerRequest;
-import com.lti.triplnr20.models.Trip;
-import com.lti.triplnr20.models.User;
-import com.lti.triplnr20.services.AddressService;
-import com.lti.triplnr20.services.S3Service;
-import com.lti.triplnr20.services.UserService;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,8 +22,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lti.triplnr20.controllers.UserController;
+import com.lti.triplnr20.exceptions.InvalidAddressException;
+import com.lti.triplnr20.models.PassengerRequest;
+import com.lti.triplnr20.models.Trip;
+import com.lti.triplnr20.models.User;
+import com.lti.triplnr20.services.S3Service;
+import com.lti.triplnr20.services.UserService;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -48,7 +43,7 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     
-  //Mock objects/variables
+    //Mock objects/variables
     static String mockToken;
     
 	static User mockUser1;
