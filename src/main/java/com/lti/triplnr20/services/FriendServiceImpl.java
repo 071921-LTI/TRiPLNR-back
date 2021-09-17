@@ -61,7 +61,7 @@ public class FriendServiceImpl implements FriendService {
 	public FriendRequest makeRequest(FriendRequest request) {
 		User from = request.getFrom();
 		User to = request.getTo();
-		if (!frr.existsByFromAndTo(from, to)) {
+		if (!frr.existsByFromAndTo(from, to) && !frr.existsByFromAndTo(to, from)) {
 			return frr.save(request);
 		} else {
 			return null;

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -52,16 +51,18 @@ public class UserController {
 	/* 
 	* Update will receive user in request body and try to update changes to the database will throw 
 	* InvalidAddressException and UserAlreadyExistsException which is handled by the Exception Handler if thrown
-	*/
-	@PutMapping("/update")
-	public ResponseEntity<String> update(@RequestBody User user, @RequestHeader("Authorization") String token ){
-		String[] authToken = token.split(":");
-	
-		int id = Integer.parseInt(authToken[0]);
-		User u = us.getUserById(id);
-		user.setUserId(u.getUserId());
-		us.updateUser(user);
-		return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
+	*/ 
+	@PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<String> update(@RequestPart("user") User user, @RequestPart(value = "file", required = false) MultipartFile file, @RequestHeader("Authorization") String token ){
+		try {
+			if (file != null) {
+				user.setProfilePic(s3.upload(file));
+			}
+			us.updateUser(user);
+			return new ResponseEntity<>(gson.toJson("Update Successful"), HttpStatus.OK);
+		} catch (IOException e) {
+				return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT); 
+		}
 	}
 	
 	//Receives a user id as path parameter and gets the current user with matched id in the database 
