@@ -125,7 +125,7 @@ public class TripServiceImpl implements TripService {
 			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
 			for (User user : tempTrip.getPassengers()) {
-				if (!tempusers.contains(user)) {
+				if (!tempusers.contains(ur.getById(user.getUserId()))) {
 					List<Trip> tempTrips = user.getTrips();
 					tempTrips.remove(tempTrip);
 					user.setTrips(tempTrips);
@@ -137,7 +137,7 @@ public class TripServiceImpl implements TripService {
 			   new passenger request for them if one doesn't currently exists for this trip for them*/
 			for (User user : tempusers) {
 				user = us.getUserById(user.getUserId());
-				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
+				if (!tempTrip.getPassengers().contains(ur.getById(user.getUserId())) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
 					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
 					makeRequest(request);
 //					List<Trip> tempTrips = user.getTrips();
