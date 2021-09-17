@@ -11,6 +11,8 @@ pipeline {
         P2_DB_PASS=credentials('P2_DB_PASS')
 	MAPS_API_KEY=credentials('MAPS_API_KEY')
 	WEATHER_API_KEY=credentials('WEATHER_API_KEY')
+	TRIPLNR_ACCESS_KEY=credentials('TRIPLNR_ACCESS_KEY')
+	TRIPLNR_SECRET_KEY=credentials('TRIPLNR_SECRET_KEY')
     }
 
    stages {
@@ -52,7 +54,7 @@ pipeline {
         }
         stage('create container') {
             steps {
-                sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USER} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -e WEATHER_API_KEY=${WEATHER_API_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
+                sh 'docker run -e P2_DB_URL=${P2_DB_URL} -e P2_DB_USER=${P2_DB_USER} -e P2_DB_PASS=${P2_DB_PASS} -e MAPS_API_KEY=${MAPS_API_KEY} -e WEATHER_API_KEY=${WEATHER_API_KEY} -e TRIPLNR_ACCESS_KEY=${TRIPLNR_ACCESS_KEY} -e TRIPLNR_SECRET_KEY=${TRIPLNR_SECRET_KEY} -d --rm -p ${PORT_HOST}:${PORT_CONT} --name ${CONTAINER_NAME} ${IMAGE_TAG} '
             }
         }
     }
