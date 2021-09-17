@@ -73,16 +73,16 @@ class TripServiceTest {
 		sarray.add("stop1");
 		sarray.add("stop2");
 		sarray.add("stop3");
-		
+		String img = ".png";
 		List<User> p1 = new ArrayList<User>();
 		p1.add(u1);
-		Trip trip4 = new Trip(4, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
+		Trip trip4 = new Trip(4, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3,img,img);
 		p1.add(u2);
 		
-		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
+		Trip trip1 = new Trip(1, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3,img,img);
 		p1.add(u3);
-		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3);
-		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, sarray, null, t1, t2, "spotify", u1, u2, u3);
+		Trip trip2 = new Trip(2, "destination", "origin", "tName", u1, sarray, p1, t1, t2, "spotify", u1, u2, u3,img,img);
+		Trip trip3 = new Trip(3, "destination", "origin", "tName", u1, sarray, null, t1, t2, "spotify", u1, u2, u3,img,img);
 		
 		List<Trip> trips = new ArrayList<Trip>();	
 		trips.add(trip1);

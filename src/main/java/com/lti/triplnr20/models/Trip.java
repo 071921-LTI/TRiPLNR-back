@@ -60,5 +60,9 @@ public class Trip {
 	@JsonIgnoreProperties({"trips", "friends"})
 	@ManyToOne @JoinColumn
 	private User music;
+	@Column
+	private String originIcon;
+	@Column
+	private String destinationIcon;
 	
 }
