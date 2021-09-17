@@ -88,8 +88,8 @@ class UserControllerTest {
 		mockUsers.add(u1);
 		mockUsers.add(u2);
 		mockUsers.add(u3);
-		
-		Trip t = new Trip(1, "destination", "origin", "tName", u1, sArray, mockUsers, Timestamp.valueOf(d1), Timestamp.valueOf(d2), "spotify", u1, u2, u3);
+		String img = ".png";
+		Trip t = new Trip(1, "destination", "origin", "tName", u1, sArray, mockUsers, Timestamp.valueOf(d1), Timestamp.valueOf(d2), "spotify", u1, u2, u3,img,img);
 		
 		mockTrip = t;
 		
