@@ -22,7 +22,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
 @SpringBootTest(classes= S3ServiceImpl.class)
-public class S3ServiceTest {
+class S3ServiceTest {
 	
 	@Autowired
 	private S3Service ss;

@@ -10,6 +10,5 @@ import com.lti.triplnr20.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-	// User findUserByUsername(String username);
 	User findUserBySub(String sub);
 }
