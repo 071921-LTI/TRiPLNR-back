@@ -68,7 +68,7 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 			
-			if(valStops.size() > 0 || valStops != null)
+			if(!valStops.isEmpty() || valStops != null)
 				trip.setStops(valStops);
 			//saves trip
 			tr.save(trip);
@@ -85,11 +85,6 @@ public class TripServiceImpl implements TripService {
 				PassengerRequest request = new PassengerRequest(0, u, user, trip);
 				makeRequest(request);
 				
-//				user = us.getUserById(user.getUserId());
-//				List<Trip> trips = user.getTrips();
-//				trips.add(trip);
-//				user.setTrips(trips);
-//				ur.save(user);
 			}
 			
 			return trip;
@@ -118,7 +113,7 @@ public class TripServiceImpl implements TripService {
 			}
 			
 		}
-		if(validAddr.size() > 0 || validAddr != null)
+		if(!validAddr.isEmpty() || validAddr != null)
 			trip.setStops(validAddr);
 		
 		if(trip.getDestination() != null && trip.getOrigin() != null) {
@@ -139,16 +134,7 @@ public class TripServiceImpl implements TripService {
 				user = us.getUserById(user.getUserId());
 				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
 					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
-					makeRequest(request);
-//					List<Trip> tempTrips = user.getTrips();
-//					if (tempTrips == null) {
-//						tempTrips = new ArrayList<>();
-//						tempTrips.add(trip);
-//					}else {
-//						tempTrips.add(trip);
-//					}
-//					user.setTrips(tempTrips);
-//					ur.save(user);
+					makeRequest(request);;
 				}
 			}
 			

@@ -58,28 +58,12 @@ public class TripController {
 		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
-//		if(startTimeString.equals(timeFormat)){
-//			String cantFollowDirections = timeFormat;
-//			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
-//			trip.setStartTime(startTimeStamp);
-//		} else {
-			//if startTimeString is in proper format, creates Timestamp datatype using string data
 			Timestamp startTimeStamp = Timestamp.valueOf(startTimeString);
 			//sets new startTimeStamp to startTime of trip
 			trip.setStartTime(startTimeStamp);	
-//		}
-		
-//		if(endTimeString.equals(timeFormat)){
-//			String cantFollowDirections2 = timeFormat;
-//			Timestamp endTimeStamp = Timestamp.valueOf(cantFollowDirections2);
-//			trip.setEndTime(endTimeStamp);
-//		} else {
-			//if startTimeString is in proper format, creates Timestamp datatype using string data
+
 			Timestamp endTimeStamp = Timestamp.valueOf(endTimeString);
-			//sets new startTimeStamp to startTime of trip
 			trip.setEndTime(endTimeStamp);	
-//		}
-		
 		
 		//sets current user to manager of trip
 		trip.setManager(u);
@@ -104,27 +88,13 @@ public class TripController {
 		User u = us.getUserBySub(token);
 		
 		//checks startTimeString header
-//		if(startTimeString.equals(timeFormat)){
-//			String cantFollowDirections = timeFormat;
-//			Timestamp startTimeStamp = Timestamp.valueOf(cantFollowDirections);
-//			trip.setStartTime(startTimeStamp);
-//		} else {
 			//if startTimeString is in proper format, creates Timestamp datatype using string data
 			Timestamp startTimeStamp = Timestamp.valueOf(startTimeString);
 			//sets new startTimeStamp to startTime of trip
 			trip.setStartTime(startTimeStamp);	
-//		}
-		
-//		if(endTimeString.equals(timeFormat)){
-//			String cantFollowDirections2 = timeFormat;
-//			Timestamp endTimeStamp = Timestamp.valueOf(cantFollowDirections2);
-//			trip.setEndTime(endTimeStamp);
-//		} else {
-			//if startTimeString is in proper format, creates Timestamp datatype using string data
 			Timestamp endTimeStamp = Timestamp.valueOf(endTimeString);
 			//sets new startTimeStamp to startTime of trip
 			trip.setEndTime(endTimeStamp);	
-//		}
 		
 		//gets address of current user and set to trip origin location
 		trip.setManager(u);

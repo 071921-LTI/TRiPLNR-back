@@ -21,7 +21,7 @@ import com.lti.triplnr20.models.FriendRequest;
 import com.lti.triplnr20.models.User;
 
 @SpringBootTest(classes=FriendServiceImpl.class)
-public class FriendServiceTest {
+class FriendServiceTest {
 	
 	@Autowired
 	private FriendService fs;
@@ -52,20 +52,20 @@ public class FriendServiceTest {
 	}
 	
 	@Test
-	public void makeRequestValid() {
+	void makeRequestValid() {
 		when(mockFrr.existsByFromAndTo(mockUser1, mockUser2)).thenReturn(false);
 		when(mockFrr.save(mockRequest)).thenReturn(mockRequest);
 		assertEquals(mockRequest, fs.makeRequest(mockRequest));
 	}
 	
 	@Test
-	public void makeRequestNotValid() {
+	void makeRequestNotValid() {
 		when(mockFrr.existsByFromAndTo(mockUser1, mockUser2)).thenReturn(true);
 		assertNull(fs.makeRequest(mockRequest));
 	}
 	
 	@Test
-	public void getRequests() {
+	void getRequests() {
 		List<FriendRequest> requests = new ArrayList<>();
 		requests.add(mockRequest);
 		when(mockFrr.findByTo(mockUser2)).thenReturn(requests);
@@ -73,7 +73,7 @@ public class FriendServiceTest {
 	}
 	
 	@Test
-	public void acceptRequest() {
+	void acceptRequest() {
 		when(mockUr.getById(1)).thenReturn(mockUser1);
 		when(mockUr.getById(2)).thenReturn(mockUser2);
 		fs.acceptRequest(mockRequest);
@@ -81,7 +81,7 @@ public class FriendServiceTest {
 	}
 	
 	@Test
-	public void denyRequest() {
+	void denyRequest() {
 		fs.denyRequest(mockRequest);
 		verify(mockFrr, times(1)).delete(mockRequest);
 	}

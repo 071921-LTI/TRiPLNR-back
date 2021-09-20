@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes= AddressServiceImpl.class)
-public class AddressServiceTest {
+class AddressServiceTest {
 	
 	@Autowired
 	private AddressService as;
