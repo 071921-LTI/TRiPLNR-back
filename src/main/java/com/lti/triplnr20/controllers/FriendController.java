@@ -58,11 +58,4 @@ public class FriendController {
 		fs.denyRequest(request);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
-	
-	
-	
-	
-	
-	
-
 }
