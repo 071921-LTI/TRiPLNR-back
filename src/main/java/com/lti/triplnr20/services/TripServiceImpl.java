@@ -198,11 +198,21 @@ public class TripServiceImpl implements TripService {
 		Trip trip = request.getTrip();
 
 		List<Trip> tempTrips = to.getTrips();
-		tempTrips.add(trip);
+		if (tempTrips == null) {
+			tempTrips = new ArrayList<>();
+			tempTrips.add(trip);
+		} else {
+			tempTrips.add(trip);
+		}
 		to.setTrips(tempTrips);
 
 		List<User> tempPass = trip.getPassengers();
-		tempPass.add(to);
+		if (tempPass == null) {
+			tempPass = new ArrayList<>();
+			tempPass.add(to);
+		} else {
+			tempPass.add(to);
+		}
 		trip.setPassengers(tempPass);
 
 		ur.save(to);
