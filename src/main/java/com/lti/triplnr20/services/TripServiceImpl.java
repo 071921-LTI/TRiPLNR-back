@@ -98,7 +98,7 @@ public class TripServiceImpl implements TripService {
 
 	@Override
 	public Trip updateTrip(Trip trip) {
-		List<User> tempusers = trip.getPassengers();
+		List<User> tempusers = tr.getById(trip.getTripId()).getPassengers();
 		List<String> validAddr = new ArrayList<String>();
 		trip.setPassengers(new ArrayList<User>());
 
