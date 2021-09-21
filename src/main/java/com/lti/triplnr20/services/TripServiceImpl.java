@@ -195,7 +195,7 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public void acceptRequest(PassengerRequest request) {
 		User to = ur.getById(request.getTo().getUserId());
-		Trip trip = request.getTrip();
+		Trip trip = tr.getById(request.getTrip().getTripId());
 
 		List<Trip> tempTrips = to.getTrips();
 		if (tempTrips == null) {
