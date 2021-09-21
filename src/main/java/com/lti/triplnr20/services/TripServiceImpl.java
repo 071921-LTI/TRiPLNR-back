@@ -96,9 +96,10 @@ public class TripServiceImpl implements TripService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public Trip updateTrip(Trip trip) {
-		List<User> tempusers = tr.getById(trip.getTripId()).getPassengers();
+		List<User> newPassengers = trip.getPassengers();
 		List<String> validAddr = new ArrayList<String>();
 		trip.setPassengers(new ArrayList<User>());
 
@@ -122,13 +123,23 @@ public class TripServiceImpl implements TripService {
 
 		if (trip.getDestination() != null && trip.getOrigin() != null) {
 			// removes trip to be updated from list
-			Trip tempTrip = tr.getById(trip.getTripId());
-			for (User user : tempTrip.getPassengers()) {
-				if (!tempusers.contains(user)) {
-					List<Trip> tempTrips = user.getTrips();
-					tempTrips.remove(tempTrip);
-					user.setTrips(tempTrips);
-					ur.save(user);
+			Trip oldTrip = tr.getById(trip.getTripId());
+			boolean removePass = false;
+			for (User oldPass : oldTrip.getPassengers()) {
+				removePass = false;
+				for (User newPass : newPassengers) {
+					if (newPass.getUserId() != oldPass.getUserId()) {
+						removePass = true;
+					} else {
+						removePass = false;
+						break;
+					}
+				}
+				if (removePass) {
+					List<Trip> tempTrips = oldPass.getTrips();
+					tempTrips.remove(oldTrip);
+					oldPass.setTrips(tempTrips);
+					ur.save(oldPass);
 				}
 			}
 
@@ -137,28 +148,29 @@ public class TripServiceImpl implements TripService {
 			 * a new passenger request for them if one doesn't currently exists for this
 			 * trip for them
 			 */
-			for (User user : tempusers) {
-				user = us.getUserById(user.getUserId());
-				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
-					PassengerRequest request = new PassengerRequest(0, trip.getManager(), user, trip);
+			boolean addPass = false;
+			for (User newPass : newPassengers) {
+				addPass = false;
+				for (User oldPass : oldTrip.getPassengers()) {
+					if (newPass.getUserId() != oldPass.getUserId()
+							&& !getByToAndFromAndTrip(newPass, trip.getManager(), trip)) {
+						addPass = true;
+					} else {
+						addPass = false;
+						break;
+					}
+				}
+				if (addPass) {
+					PassengerRequest request = new PassengerRequest(0, trip.getManager(), newPass, trip);
 					makeRequest(request);
-//					List<Trip> tempTrips = user.getTrips();
-//					if (tempTrips == null) {
-//						tempTrips = new ArrayList<>();
-//						tempTrips.add(trip);
-//					}else {
-//						tempTrips.add(trip);
-//					}
-//					user.setTrips(tempTrips);
-//					ur.save(user);
 				}
 			}
 
 			// Removes passengers if they are not on the updated trip passenger list
 			List<User> keepUsers = new ArrayList<User>();
-			for (User user : tempusers) {
+			for (User user : newPassengers) {
 				int flag = 0;
-				for (User user2 : tempTrip.getPassengers()) {
+				for (User user2 : oldTrip.getPassengers()) {
 					if (user.getUserId() == user2.getUserId()) {
 						keepUsers.add(user);
 						flag = 1;
