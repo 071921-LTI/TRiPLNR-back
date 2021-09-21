@@ -16,17 +16,17 @@ import com.lti.triplnr20.models.User;
 
 @Service
 public class TripServiceImpl implements TripService {
-
+	
 	private TripRepository tr;
 	private PassengerRequestRepository pr;
 	private UserRepository ur;
-
+	
+	
 	private AddressService as;
 	private UserService us;
-
+	
 	@Autowired
-	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, UserService us, AddressService as,
-			UserRepository ur) {
+	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, UserService us, AddressService as, UserRepository ur) {
 		super();
 		this.tr = tr;
 		this.us = us;
@@ -34,94 +34,95 @@ public class TripServiceImpl implements TripService {
 		this.ur = ur;
 		this.pr = pr;
 	}
-
+	
 	@Override
 	@Transactional
 	public Trip createTrip(Trip trip) {
 		String destination = null;
 		User u = trip.getManager();
-
-		// list of current user trips
+		
+		//list of current user trips
 		List<Trip> temptrip = u.getTrips();
-
-		// Save list of seperate passengers on trip
+		
+		//Save list of seperate passengers on trip
 		List<User> tempusers = trip.getPassengers();
-		trip.setPassengers(new ArrayList<User>());
-
+		trip.setPassengers(new ArrayList <User>());
+		
+		
 		List<String> stops = trip.getStops();
 		List<String> valStops = new ArrayList<String>();
-		// checks to make sure address is formated in a way google maps api will accept
+		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
-		if (destination != null) {
-			// sets destination in object
+		if(destination != null) {
+			//sets destination in object
 			trip.setDestination(destination);
-
-			if (stops != null) {
-				for (String stop : stops) {
+			
+			if(stops != null)
+			{
+				for(String stop : stops) {
 					String tempArr = null;
 					tempArr = as.isValidAddress(stop);
-					if (tempArr != null) {
+					if(tempArr != null) {
 						valStops.add(tempArr);
 					}
 				}
 			}
-
-			if (valStops.size() > 0 || valStops != null)
+			
+			if(valStops.size() > 0 || valStops != null)
 				trip.setStops(valStops);
-			// saves trip
+			//saves trip
 			tr.save(trip);
-			// adds new trip object to existing trips list
+			//adds new trip object to existing trips list
 			temptrip.add(trip);
-			// sets new list to current user
+			//sets new list to current user
 			u.setTrips(temptrip);
-			// updates user with new trips list
+			//updates user with new trips list
 			ur.save(u);
-
+			
 			for (User user : tempusers) {
-
-				// Send out passenger requests to all passengers on trip
+				
+				//Send out passenger requests to all passengers on trip
 				PassengerRequest request = new PassengerRequest(0, u, user, trip);
 				makeRequest(request);
-
+				
 //				user = us.getUserById(user.getUserId());
 //				List<Trip> trips = user.getTrips();
 //				trips.add(trip);
 //				user.setTrips(trips);
 //				ur.save(user);
 			}
-
+			
 			return trip;
 		} else {
 			return null;
 		}
 	}
-
+	
 	@Override
 	public Trip updateTrip(Trip trip) {
 		List<User> tempusers = trip.getPassengers();
 		List<String> validAddr = new ArrayList<String>();
-		trip.setPassengers(new ArrayList<User>());
-
-		/*
-		 * list of current user trips checks to make sure address is formated in a way
-		 * google maps api will accept
-		 */
+		trip.setPassengers(new ArrayList <User>());
+		
+		/*list of current user trips
+		checks to make sure address is formated in a way google maps api will accept*/
 		trip.setDestination(as.isValidAddress(trip.getDestination()));
 		trip.setOrigin(as.isValidAddress(trip.getOrigin()));
 		List<String> stops = trip.getStops();
-		if (stops != null) {
-			for (String stop : stops) {
+		if(stops != null) {
+			for(String stop : stops)
+			{
 				String tempVal = as.isValidAddress(stop);
-				if (tempVal != null)
+				if(tempVal != null)
 					validAddr.add(tempVal);
 			}
-
+			
 		}
-		if (validAddr.size() > 0 || validAddr != null)
+		if(validAddr.size() > 0 || validAddr != null)
 			trip.setStops(validAddr);
-
-		if (trip.getDestination() != null && trip.getOrigin() != null) {
-			// removes trip to be updated from list
+		
+		if(trip.getDestination() != null && trip.getOrigin() != null) {
+			//removes trip to be updated from list
 			Trip tempTrip = tr.getById(trip.getTripId());
 			for (User user : tempTrip.getPassengers()) {
 				if (!tempusers.contains(user)) {
@@ -131,12 +132,9 @@ public class TripServiceImpl implements TripService {
 					ur.save(user);
 				}
 			}
-
-			/*
-			 * Go through passenger list of new the trip, and for every new passenger create
-			 * a new passenger request for them if one doesn't currently exists for this
-			 * trip for them
-			 */
+			
+			/*Go through passenger list of new the trip, and for every new passenger create a
+			   new passenger request for them if one doesn't currently exists for this trip for them*/
 			for (User user : tempusers) {
 				user = us.getUserById(user.getUserId());
 				if (!tempTrip.getPassengers().contains(user) && !getByToAndFromAndTrip(user, trip.getManager(), trip)) {
@@ -153,9 +151,9 @@ public class TripServiceImpl implements TripService {
 //					ur.save(user);
 				}
 			}
-
-			// Removes passengers if they are not on the updated trip passenger list
-			List<User> keepUsers = new ArrayList<User>();
+			
+			//Removes passengers if they are not on the updated trip passenger list
+			List<User> keepUsers = new ArrayList <User>();
 			for (User user : tempusers) {
 				int flag = 0;
 				for (User user2 : tempTrip.getPassengers()) {
@@ -165,21 +163,21 @@ public class TripServiceImpl implements TripService {
 					}
 				}
 				if (flag == 0) {
-					// Checks if the user has a role, if they do remove them from that as well
-					if (trip.getSnacks() != null && user.getUserId() == trip.getSnacks().getUserId()) {
+					//Checks if the user has a role, if they do remove them from that as well
+					if(trip.getSnacks() != null && user.getUserId() == trip.getSnacks().getUserId()) {
 						trip.setSnacks(null);
 					}
-
-					if (trip.getNavigator() != null && user.getUserId() == trip.getNavigator().getUserId()) {
+					
+					if(trip.getNavigator() != null && user.getUserId() == trip.getNavigator().getUserId()) {
 						trip.setNavigator(null);
 					}
-
-					if (trip.getMusic() != null && user.getUserId() == trip.getMusic().getUserId()) {
+					
+					if(trip.getMusic() != null && user.getUserId() == trip.getMusic().getUserId()) {
 						trip.setMusic(null);
-					}
+					} 
 				}
 			}
-
+			
 			trip.setPassengers(keepUsers);
 			tr.save(trip);
 
@@ -189,20 +187,30 @@ public class TripServiceImpl implements TripService {
 		}
 	}
 
-	// Accepts a trip request by adding requested as passenger to trip and the trip
-	// to their list
+	
+	//Accepts a trip request by adding requested as passenger to trip and the trip to their list
 	@Transactional
 	@Override
 	public void acceptRequest(PassengerRequest request) {
 		User to = ur.getById(request.getTo().getUserId());
 		Trip trip = request.getTrip();
-
+		
 		List<Trip> tempTrips = to.getTrips();
-		tempTrips.add(trip);
+		if (tempTrips == null) {
+			tempTrips = new ArrayList<>();
+			tempTrips.add(trip);
+		}else {
+			tempTrips.add(trip);	
+		}
 		to.setTrips(tempTrips);
-
+		
 		List<User> tempPass = trip.getPassengers();
-		tempPass.add(to);
+		if (tempPass == null) {
+			tempPass = new ArrayList<>();
+			tempPass.add(to);
+		}else {
+			tempPass.add(to);	
+		}
 		trip.setPassengers(tempPass);
 
 		ur.save(to);
@@ -214,30 +222,33 @@ public class TripServiceImpl implements TripService {
 	public void denyRequest(PassengerRequest request) {
 		pr.delete(request);
 	}
-
+	
 	@Override
 	public PassengerRequest makeRequest(PassengerRequest request) {
 
+		
 		return pr.save(request);
 
 	}
-
-	// gets trip by trip id
+	
+	//gets trip by trip id
 	@Override
 	public Trip getTripById(int tripId) {
 		return tr.getById(tripId);
 	}
-
-	// gets trip by trip id
+	
+	//gets trip by trip id
 	@Override
 	public List<PassengerRequest> getRequestByTo(User to) {
 		return pr.findByTo(to);
 	}
-
-	// gets passenger request by trip id
+	
+	//gets passenger request by trip id
 	@Override
 	public boolean getByToAndFromAndTrip(User to, User from, Trip trip) {
 		return pr.existsByToAndFromAndTrip(to, from, trip);
 	}
-
+	
 }
+
+
