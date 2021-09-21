@@ -4,8 +4,9 @@ pipeline {
     environment {
         PORT_HOST="8081"
         PORT_CONT="8080"
-        IMAGE_TAG="trip-image"
-        CONTAINER_NAME="trip-app:trip-app"
+        IMAGE_TAG="trip-image:trip-image"
+	IMAGERM="trip-image"
+        CONTAINER_NAME="trip-app"
         P2_DB_URL=credentials('P2_DB_URL')
         P2_DB_USER=credentials('P2_DB_USER')
         P2_DB_PASS=credentials('P2_DB_PASS')
@@ -38,7 +39,7 @@ pipeline {
       }
       stage('remove previous image if exists') {
             steps {
-                sh 'docker rmi -f ${IMAGE_TAG} || true'
+                sh 'docker rmi -f ${IMAGERM} || true'
             }
         }
 
