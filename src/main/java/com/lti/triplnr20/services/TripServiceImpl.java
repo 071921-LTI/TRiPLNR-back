@@ -22,14 +22,12 @@ public class TripServiceImpl implements TripService {
 	private UserRepository ur;
 
 	private AddressService as;
-	private UserService us;
 
 	@Autowired
-	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, UserService us, AddressService as,
+	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, AddressService as,
 			UserRepository ur) {
 		super();
 		this.tr = tr;
-		this.us = us;
 		this.as = as;
 		this.ur = ur;
 		this.pr = pr;
@@ -46,11 +44,12 @@ public class TripServiceImpl implements TripService {
 
 		// Save list of seperate passengers on trip
 		List<User> tempusers = trip.getPassengers();
-		trip.setPassengers(new ArrayList<User>());
-
+		trip.setPassengers(new ArrayList<>());
+		
+		
 		List<String> stops = trip.getStops();
-		List<String> valStops = new ArrayList<String>();
-		// checks to make sure address is formated in a way google maps api will accept
+		List<String> valStops = new ArrayList<>();
+		//checks to make sure address is formated in a way google maps api will accept
 		destination = as.isValidAddress(trip.getDestination());
 		if (destination != null) {
 			// sets destination in object
@@ -66,7 +65,7 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 
-			if (valStops.size() > 0 || valStops != null)
+			if(!valStops.isEmpty() || valStops != null)
 				trip.setStops(valStops);
 			// saves trip
 			tr.save(trip);
@@ -82,12 +81,6 @@ public class TripServiceImpl implements TripService {
 				// Send out passenger requests to all passengers on trip
 				PassengerRequest request = new PassengerRequest(0, u, user, trip);
 				makeRequest(request);
-
-//				user = us.getUserById(user.getUserId());
-//				List<Trip> trips = user.getTrips();
-//				trips.add(trip);
-//				user.setTrips(trips);
-//				ur.save(user);
 			}
 
 			return trip;
@@ -118,7 +111,8 @@ public class TripServiceImpl implements TripService {
 			}
 
 		}
-		if (validAddr.size() > 0 || validAddr != null)
+
+		if(!validAddr.isEmpty() || validAddr != null)
 			trip.setStops(validAddr);
 
 		if (trip.getDestination() != null && trip.getOrigin() != null) {
@@ -165,6 +159,7 @@ public class TripServiceImpl implements TripService {
 					makeRequest(request);
 				}
 			}
+
 
 			// Removes passengers if they are not on the updated trip passenger list
 			List<User> keepUsers = new ArrayList<User>();

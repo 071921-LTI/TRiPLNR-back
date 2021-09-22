@@ -28,7 +28,7 @@ import com.lti.triplnr20.services.FriendService;
 import com.lti.triplnr20.services.UserService;
 
 @WebMvcTest(FriendController.class)
-public class FriendControllerTest {
+class FriendControllerTest {
     @MockBean
     private FriendService fs;
     @MockBean
