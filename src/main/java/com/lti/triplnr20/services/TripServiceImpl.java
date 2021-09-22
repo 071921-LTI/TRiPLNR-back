@@ -65,7 +65,7 @@ public class TripServiceImpl implements TripService {
 				}
 			}
 
-			if(!valStops.isEmpty() || valStops != null)
+			if(!valStops.isEmpty())
 				trip.setStops(valStops);
 			// saves trip
 			tr.save(trip);
@@ -93,8 +93,8 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public Trip updateTrip(Trip trip) {
 		List<User> newPassengers = trip.getPassengers();
-		List<String> validAddr = new ArrayList<String>();
-		trip.setPassengers(new ArrayList<User>());
+		List<String> validAddr = new ArrayList<>();
+		trip.setPassengers(new ArrayList<>());
 
 		/*
 		 * list of current user trips checks to make sure address is formated in a way
@@ -162,7 +162,7 @@ public class TripServiceImpl implements TripService {
 
 
 			// Removes passengers if they are not on the updated trip passenger list
-			List<User> keepUsers = new ArrayList<User>();
+			List<User> keepUsers = new ArrayList<>();
 			for (User user : newPassengers) {
 				int flag = 0;
 				for (User user2 : oldTrip.getPassengers()) {
