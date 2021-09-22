@@ -24,11 +24,10 @@ public class TripServiceImpl implements TripService {
 	private AddressService as;
 
 	@Autowired
-	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, UserService us, AddressService as,
+	public TripServiceImpl(TripRepository tr, PassengerRequestRepository pr, AddressService as,
 			UserRepository ur) {
 		super();
 		this.tr = tr;
-		this.us = us;
 		this.as = as;
 		this.ur = ur;
 		this.pr = pr;
