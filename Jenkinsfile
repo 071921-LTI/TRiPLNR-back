@@ -4,7 +4,7 @@ pipeline {
     environment {
         PORT_HOST="8081"
         PORT_CONT="8080"
-        IMAGE_TAG="trip-image"
+        IMAGE_TAG="trip-image:trip-image"
         CONTAINER_NAME="trip-app"
         P2_DB_URL=credentials('P2_DB_URL')
         P2_DB_USER=credentials('P2_DB_USER')
